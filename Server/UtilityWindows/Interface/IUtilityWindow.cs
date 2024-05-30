@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 
-namespace Server.Interfaces
+namespace Server.UtilityWindows.Interface
 {
     internal interface IUtilityWindow
     {
-        public static BitmapImage UtilityIcon { get; }
-        
     }
 }

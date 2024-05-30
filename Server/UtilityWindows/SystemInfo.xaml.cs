@@ -1,4 +1,4 @@
-﻿using Server.Interfaces;
+﻿using Server.UtilityWindows.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +24,10 @@ namespace Server.UtilityWindows
         {
             InitializeComponent();
         }
-        public  BitmapImage UtilityIcon => throw new NotImplementedException();
+
+        private void icon_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

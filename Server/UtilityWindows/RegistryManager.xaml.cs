@@ -1,4 +1,5 @@
-﻿using Server.Interfaces;
+﻿
+using Server.UtilityWindows.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +19,16 @@ namespace Server.UtilityWindows
     /// <summary>
     /// Interaction logic for RegistryManager.xaml
     /// </summary>
-    public partial class RegistryManager : Window, IUtilityWindow
+    public partial class RegistryManager :Window, IUtilityWindow
     {
         public RegistryManager()
         {
             InitializeComponent();
         }
 
-        public BitmapImage UtilityIcon => throw new NotImplementedException();
+        private void icon_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -94,7 +94,6 @@ namespace Server.UI.Pages.ClientPage
         private async void dataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.ContextMenu = await BuildContextMenu((ClientInfoDTO)e.Row.DataContext);
-            e.Row.ContextMenu.Tag =
         }
     }
 }

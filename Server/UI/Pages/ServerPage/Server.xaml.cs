@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.CoreServerFunctionality;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,10 @@ namespace Server.UI.Pages.ServerPage
         {
             InitializeComponent();
         }
-
+        Listener listener = new Listener();
+        private void portStart_Click(object sender, RoutedEventArgs e)
+        {
+            listener.AddPortToListener(int.Parse(portInput.Text)).GetAwaiter().GetResult();
+        }
     }
 }

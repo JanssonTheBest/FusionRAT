@@ -112,7 +112,7 @@
 
         <StackPanel Height="30" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20">
             <TextBox x:Name="portInput" Width="80" Background="Transparent"/>
-            <Button x:Name="portStart" Width="40" Content="*" Click="PortStart" Margin="20,0,0,0"/>
+            <Button x:Name="portStart" Width="40" Content="*" Click="portStart_Click" Margin="20,0,0,0"/>
         </StackPanel>
 
     </Grid>

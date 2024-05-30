@@ -1,4 +1,6 @@
-﻿using Server.Interfaces;
+﻿using Server.CoreServerFunctionality;
+using Server.UI.Pages.ClientPage;
+using Server.UtilityWindows.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +20,19 @@ namespace Server.UtilityWindows
     /// <summary>
     /// Interaction logic for AudioManager.xaml
     /// </summary>
-    public partial class AudioManager : Window, IUtilityWindow
+    public partial class AudioManager :Window, IUtilityWindow
     {
-        public AudioManager()
+        ServerSession _session;
+        public AudioManager(ServerSession session)
         {
             InitializeComponent();
+            _session = session;
         }
 
-        public BitmapImage UtilityIcon => throw new NotImplementedException();
+
+        private void icon_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

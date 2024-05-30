@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="HVNC" Height="450" Width="800">
     <Grid>
-        
+        <Image x:Name="icon" Loaded="icon_Loaded"></Image>
+
     </Grid>
 </Window>
