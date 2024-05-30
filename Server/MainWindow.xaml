@@ -5,7 +5,7 @@
         Title="MainWindow" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         MinWidth="775" MinHeight="422"
         d:Width="1450" d:Height="800"
-        Background="Transparent" FontSize="13" Foreground="#fff">
+        Background="Transparent" FontSize="13" Foreground="#fff" >
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="2.1" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
