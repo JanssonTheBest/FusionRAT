@@ -11,7 +11,12 @@
         <WindowChrome CaptionHeight="2.1" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
 
-    <Border Background="#202020">
+    <Border>
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource Primary}"/>
+            </Style>
+        </Border.Style>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="52"/>
@@ -27,7 +32,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock VerticalAlignment="Top" Text="Fusion" HorizontalAlignment="Left" Margin="20,10,0,0" Foreground="White" FontWeight="Bold"/>
+                <TextBlock VerticalAlignment="Top" Text="Fusion" HorizontalAlignment="Left" Margin="20,10,0,0" Foreground="{StaticResource Text}" FontWeight="Bold"/>
                 <Button Grid.Column="1" Content="_" Width="30" VerticalAlignment="Top" Height="30" Click="MinimizeButton_Click"/>
                 <Button Grid.Column="2" Content="□" Width="30" VerticalAlignment="Top" Height="30" Click="MaximizeButton_Click"/>
                 <Button Grid.Column="3" Content="X" Width="30" VerticalAlignment="Top" Height="30" Click="CloseButton_Click"/>
@@ -45,7 +50,7 @@
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
                                             <Image Source="/UI/assets/Other/home.png" Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                            <TextBlock Text="Home" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                            <TextBlock Text="Home" FontWeight="Medium" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
                                 </RadioButton.Content>
@@ -61,7 +66,7 @@
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
                                             <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/client.png"/>
-                                            <TextBlock Text="Client" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                            <TextBlock Text="Client" FontWeight="Medium" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
                                 </RadioButton.Content>
@@ -77,7 +82,7 @@
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
                                             <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/server.png"/>
-                                            <TextBlock Text="Server" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                            <TextBlock Text="Server" FontWeight="Medium" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
                                 </RadioButton.Content>
@@ -93,7 +98,7 @@
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
                                             <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/fileSettings.png"/>
-                                            <TextBlock Text="Builder" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                            <TextBlock Text="Builder" FontWeight="Medium" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
                                 </RadioButton.Content>
@@ -110,7 +115,7 @@
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
                                             <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/support.png"/>
-                                            <TextBlock Text="Support" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                            <TextBlock Text="Support" FontWeight="Medium" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
                                 </RadioButton.Content>
@@ -125,7 +130,7 @@
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
                                             <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/settings.png"/>
-                                            <TextBlock Text="Settings" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                            <TextBlock Text="Settings" FontWeight="Medium" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
                                 </RadioButton.Content>
@@ -140,7 +145,12 @@
                 </Border>
 
                 <!--// Frame panel //-->
-                <Border x:Name="framePanel" CornerRadius="7,0,0,0" Background="#08FFFFFF" Margin="220,0,0,0">
+                <Border x:Name="framePanel" CornerRadius="7,0,0,0" Margin="220,0,0,0">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="{StaticResource Secondary}"/>
+                        </Style>
+                    </Border.Style>
                     <Grid>
                         <HomePage:Home x:Name="homeUC"/>
                         <ClientPage:Client x:Name="clientUC" Visibility="Hidden"/>

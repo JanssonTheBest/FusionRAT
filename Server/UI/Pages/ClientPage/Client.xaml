@@ -16,7 +16,7 @@
             <Setter Property="RowHeight" Value="30" />
             <Setter Property="ColumnHeaderHeight" Value="40" />
             <Setter Property="GridLinesVisibility" Value="None" />
-            <Setter Property="AlternatingRowBackground" Value="#08FFFFFF" />
+            <Setter Property="AlternatingRowBackground" Value="{StaticResource Secondary}" />
             <Setter Property="RowBackground" Value="Transparent" />
             <Setter Property="EnableRowVirtualization" Value="True" />
             <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
@@ -28,7 +28,7 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0,0,1,1" />
             <Setter Property="BorderBrush" Value="#1F1F1F" />
-            <Setter Property="Foreground" Value="#DBDFE0" />
+            <Setter Property="Foreground" Value="{StaticResource Text}" />
             <Setter Property="FontWeight" Value="Medium" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -51,17 +51,23 @@
             <Setter Property="Padding" Value="5" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="#DBDFE0" />
+            <Setter Property="Foreground" Value="{StaticResource Text}" />
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontWeight" Value="Regular" />
             <Setter Property="BorderThickness" Value="0" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Selected}" />
+                </Trigger>
+            </Style.Triggers>
+
         </Style>
 
         <!-- Style for TextBlocks within DataGrid cells -->
         <Style x:Key="CenteredTextBlockStyle" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="#DBDFE0" />
+            <Setter Property="Foreground" Value="{StaticResource Text}" />
         </Style>
     </UserControl.Resources>
 
@@ -74,7 +80,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Image Width="21" Height="21" Margin="0,0,5,0" Source="\UI\Assets\Other\location.png"/>
-                                <TextBlock Text="{Binding Location}" VerticalAlignment="Center" Foreground="White"/>
+                                <TextBlock Text="{Binding Location}" VerticalAlignment="Center" Foreground="{StaticResource Text}"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

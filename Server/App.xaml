@@ -8,6 +8,11 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="\UI\Style\Common\NavigationRBTN.xaml"/>
+                
+                <!--//Theme//-->
+                <ResourceDictionary Source="\UI\Assets\Theme.xaml"/>
+                
+                <ResourceDictionary Source="\UI\Style\Common\NavigationRBTN.xaml"/>
 
                 <!--//Animations//-->
                 <ResourceDictionary Source="\UI\Pages\HomePage\KeyFrames\Page_Show.xaml"/>
