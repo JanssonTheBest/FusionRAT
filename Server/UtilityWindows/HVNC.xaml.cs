@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,13 @@ namespace Server.UtilityWindows
     /// <summary>
     /// Interaction logic for HVNC.xaml
     /// </summary>
-    public partial class HVNC : Window
+    public partial class HVNC : Window, IUtilityWindow
     {
         public HVNC()
         {
             InitializeComponent();
         }
+
+        public BitmapImage UtilityIcon => throw new NotImplementedException();
     }
 }

@@ -29,15 +29,16 @@ namespace Common.Comunication
         private readonly MessagePackSerializerOptions messagePackSerializerOptions = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block).WithResolver(MessagePack.Resolvers.StandardResolver.Instance);
         private SemaphoreSlim sendSemaphore = new SemaphoreSlim(1, 1);
         private int bufferSize = 1024;
-
+        private TcpClient _client;
         public EventHandler OnPing;
         public EventHandler OnClientInfo;
 
-        public Session(SslStream sslStream)
+        public Session(SslStream sslStream, TcpClient client)
         {
             _sslStream = sslStream;
             pipeReader = pipe.Reader;
             pipeWriter = pipe.Writer;
+            _client = client;
         }
 
         public void BeginSession()

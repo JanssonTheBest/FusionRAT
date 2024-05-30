@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,12 @@ namespace Server.UtilityWindows
     /// <summary>
     /// Interaction logic for SystemInfo.xaml
     /// </summary>
-    public partial class SystemInfo : Window
+    public partial class SystemInfo : Window, IUtilityWindow
     {
         public SystemInfo()
         {
             InitializeComponent();
         }
+        public  BitmapImage UtilityIcon => throw new NotImplementedException();
     }
 }

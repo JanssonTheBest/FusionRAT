@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,12 @@ namespace Server.UtilityWindows
     /// <summary>
     /// Interaction logic for TaskManager.xaml
     /// </summary>
-    public partial class TaskManager : Window
+    public partial class TaskManager : Window, IUtilityWindow
     {
         public TaskManager()
         {
             InitializeComponent();
         }
+        public  BitmapImage UtilityIcon => throw new NotImplementedException();
     }
 }

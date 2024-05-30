@@ -1,10 +1,12 @@
 ﻿using Common.DTOs.MessagePack;
+using Server.Helper;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,6 +32,28 @@ namespace Server.UI.Pages.ClientPage
         {
             InitializeComponent();
             clients.CollectionChanged += UpdateClientGrid;
+        }
+
+        private async Task<ContextMenu> BuildContextMenu(ClientInfoDTO info)
+        {
+            List<string> utilities = await ApplicationHelperMethods.RetrievUtilityNames();
+            var contextMenu = new ContextMenu();
+            foreach (var utility in utilities)
+            {
+                MenuItem menuItem = new MenuItem()
+                {
+                    Header = utility.Substring(utility.IndexOf('.')),
+                    Icon = await ApplicationHelperMethods.RetrievIconThroughUtilityName(utility),
+                };
+                contextMenu.Items.Add(menuItem);
+            }
+            
+            return contextMenu;
+        }
+
+        private void OnMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         private async Task RemoveClient(ClientInfoDTO clientInfoDTO)
@@ -65,6 +89,12 @@ namespace Server.UI.Pages.ClientPage
                 }
                 return;
             }
+        }
+
+        private async void dataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.ContextMenu = await BuildContextMenu((ClientInfoDTO)e.Row.DataContext);
+            e.Row.ContextMenu.Tag =
         }
     }
 }

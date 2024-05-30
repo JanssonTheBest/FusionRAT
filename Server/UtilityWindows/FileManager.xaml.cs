@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,13 @@ namespace Server.UtilityWindows
     /// <summary>
     /// Interaction logic for FileManager.xaml
     /// </summary>
-    public partial class FileManager : Window
+    public partial class FileManager : Window, IUtilityWindow
     {
         public FileManager()
         {
             InitializeComponent();
         }
+
+        public  BitmapImage UtilityIcon => throw new NotImplementedException();
     }
 }

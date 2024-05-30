@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,12 @@ namespace Server.UtilityWindows
     /// <summary>
     /// Interaction logic for ReverseShell.xaml
     /// </summary>
-    public partial class ReverseShell : Window
+    public partial class ReverseShell : Window, IUtilityWindow
     {
         public ReverseShell()
         {
             InitializeComponent();
         }
+        public  BitmapImage UtilityIcon => throw new NotImplementedException();
     }
 }
