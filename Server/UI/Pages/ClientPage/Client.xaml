@@ -73,7 +73,7 @@
 
 
     <Grid>
-        <DataGrid ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0" x:Name="dataGrid" LoadingRow="dataGrid_LoadingRow">
+        <DataGrid x:Name="dataGrid" ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0" LoadingRow="dataGrid_LoadingRow" PreviewMouseLeftButtonDown="DataGrid_PreviewMouseLeftButtonDown" SelectionMode="Extended">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Location" Width="*">
                     <DataGridTemplateColumn.CellTemplate>

@@ -1,29 +1,14 @@
 ﻿using Common.DTOs.MessagePack;
 using Server.Helper;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Server.UI.Pages.ClientPage
 {
-    /// <summary>
-    /// Interaction logic for Client.xaml
-    /// </summary>
     public partial class Client : UserControl
     {
         private ObservableCollection<ClientInfoDTO> clients = new();
@@ -95,5 +80,79 @@ namespace Server.UI.Pages.ClientPage
         {
             e.Row.ContextMenu = await BuildContextMenu((ClientInfoDTO)e.Row.DataContext);
         }
+
+        #region DataGrid Features
+        private void DataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DataGrid dataGrid = sender as DataGrid;
+            DataGridRow clickedRow = GetDataGridRowUnderMouse(dataGrid, e.GetPosition(dataGrid));
+
+            if (clickedRow != null)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    HandleShiftSelection(dataGrid, clickedRow);
+                }
+                else if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    HandleCtrlSelection(dataGrid, clickedRow);
+                }
+                else
+                {
+                    dataGrid.SelectedItems.Clear();
+                    dataGrid.SelectedItem = clickedRow.Item;
+                }
+                e.Handled = true;
+            }
+        }
+
+        private void HandleShiftSelection(DataGrid dataGrid, DataGridRow clickedRow)
+        {
+            int currentIndex = dataGrid.ItemContainerGenerator.IndexFromContainer(clickedRow);
+
+            if (dataGrid.SelectedItems.Count == 0)
+            {
+                dataGrid.SelectedItem = clickedRow.Item;
+                return;
+            }
+
+            int firstSelectedIndex = dataGrid.Items.IndexOf(dataGrid.SelectedItems[0]);
+            dataGrid.SelectedItems.Clear();
+
+            int start = Math.Min(firstSelectedIndex, currentIndex);
+            int end = Math.Max(firstSelectedIndex, currentIndex);
+
+            for (int i = start; i <= end; i++)
+            {
+                dataGrid.SelectedItems.Add(dataGrid.Items[i]);
+            }
+        }
+
+        private void HandleCtrlSelection(DataGrid dataGrid, DataGridRow clickedRow)
+        {
+            if (dataGrid.SelectedItems.Contains(clickedRow.Item))
+            {
+                dataGrid.SelectedItems.Remove(clickedRow.Item);
+            }
+            else
+            {
+                dataGrid.SelectedItems.Add(clickedRow.Item);
+            }
+        }
+
+        private DataGridRow GetDataGridRowUnderMouse(DataGrid dataGrid, Point position)
+        {
+            IInputElement clickedElement = dataGrid.InputHitTest(position);
+            return FindParent<DataGridRow>(clickedElement as DependencyObject);
+        }
+
+        private T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+            if (parentObject == null) return null;
+
+            return parentObject is T parent ? parent : FindParent<T>(parentObject);
+        }
+        #endregion
     }
 }

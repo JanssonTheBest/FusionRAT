@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Server.UtilityWindows"
         mc:Ignorable="d"
         Title="AudioManager" Height="450" Width="800">
+
     <Grid>
         <Image x:Name="icon" Loaded="icon_Loaded"></Image>
     </Grid>
