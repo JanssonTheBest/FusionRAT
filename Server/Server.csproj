@@ -35,6 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="UI\Assets\Other\client.png" />
     <Resource Include="UI\Assets\Other\close.png" />
     <Resource Include="UI\Assets\Other\Dark.png" />

@@ -65,8 +65,9 @@
         </Style>
     </UserControl.Resources>
 
+
     <Grid>
-        <DataGrid ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0">
+        <DataGrid ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0" x:Name="dataGrid">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Location" Width="*">
                     <DataGridTemplateColumn.CellTemplate>

@@ -31,6 +31,7 @@ namespace Common.Comunication
         private int bufferSize = 1024;
 
         public EventHandler OnPing;
+        public EventHandler OnClientInfo;
 
         public Session(SslStream sslStream)
         {
