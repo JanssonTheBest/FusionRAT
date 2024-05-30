@@ -16,8 +16,10 @@
     <None Remove="UI\Assets\Other\home.png" />
     <None Remove="UI\Assets\Other\ISmaximized.png" />
     <None Remove="UI\Assets\Other\Light.png" />
+    <None Remove="UI\Assets\Other\location.png" />
     <None Remove="UI\Assets\Other\maximizedNot.png" />
     <None Remove="UI\Assets\Other\minimize.png" />
+    <None Remove="UI\Assets\Other\os.png" />
     <None Remove="UI\Assets\Other\server.png" />
     <None Remove="UI\Assets\Other\settings.png" />
     <None Remove="UI\Assets\Other\support.png" />
@@ -27,7 +29,6 @@
     <Folder Include="UI\Assets\Icons\" />
     <Folder Include="UI\CustomControls\" />
     <Folder Include="UI\Pages\BuilderPage\Style\" />
-    <Folder Include="UI\Pages\ClientPage\Style\" />
     <Folder Include="UI\Pages\HomePage\Style\" />
     <Folder Include="UI\Pages\ServerPage\Style\" />
     <Folder Include="UI\Pages\SupportPage\Style\" />
@@ -41,8 +42,10 @@
     <Resource Include="UI\Assets\Other\home.png" />
     <Resource Include="UI\Assets\Other\ISmaximized.png" />
     <Resource Include="UI\Assets\Other\Light.png" />
+    <Resource Include="UI\Assets\Other\location.png" />
     <Resource Include="UI\Assets\Other\maximizedNot.png" />
     <Resource Include="UI\Assets\Other\minimize.png" />
+    <Resource Include="UI\Assets\Other\os.png" />
     <Resource Include="UI\Assets\Other\server.png" />
     <Resource Include="UI\Assets\Other\settings.png" />
     <Resource Include="UI\Assets\Other\support.png" />

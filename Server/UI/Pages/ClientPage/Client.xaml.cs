@@ -23,6 +23,7 @@ namespace Server.UI.Pages.ClientPage
         public Client()
         {
             InitializeComponent();
+            DataContext = new ClientViewModel();
         }
     }
 }
