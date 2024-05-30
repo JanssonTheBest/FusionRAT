@@ -23,10 +23,11 @@
     <None Remove="UI\Assets\Other\server.png" />
     <None Remove="UI\Assets\Other\settings.png" />
     <None Remove="UI\Assets\Other\support.png" />
+    <None Remove="UI\Pages\HomePage\bgBlured.png" />
+    <None Remove="UI\Pages\HomePage\Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UI\Assets\Icons\" />
     <Folder Include="UI\CustomControls\" />
     <Folder Include="UI\Pages\BuilderPage\Style\" />
     <Folder Include="UI\Pages\HomePage\Style\" />
@@ -53,6 +54,8 @@
     <Resource Include="UI\Assets\Other\server.png" />
     <Resource Include="UI\Assets\Other\settings.png" />
     <Resource Include="UI\Assets\Other\support.png" />
+    <Resource Include="UI\Pages\HomePage\bgBlured.png" />
+    <Resource Include="UI\Assets\Icons\Logo.png" />
   </ItemGroup>
 
 </Project>

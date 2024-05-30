@@ -25,6 +25,6 @@ namespace Server.UtilityWindows
             InitializeComponent();
         }
 
-        public BitmapImage UtilityIcon => throw new NotImplementedException();
+        public BitmapImage UtilityIcon;
     }
 }

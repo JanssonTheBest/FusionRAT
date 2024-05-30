@@ -9,7 +9,7 @@ namespace Server.Interfaces
 {
     internal interface IUtilityWindow
     {
-        public static BitmapImage UtilityIcon { get; }
+        public static BitmapImage UtilityIcon { get; set; }
         
     }
 }

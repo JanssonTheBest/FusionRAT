@@ -5,8 +5,80 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Server.UI.Pages.HomePage"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="748" d:DesignWidth="1230">
+
+
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="32"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="32"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="42"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Background="{StaticResource Secondary}" Grid.Column="0" Grid.RowSpan="3" Panel.ZIndex="1"/>
+        <Grid Background="{StaticResource Secondary}" Grid.Column="2" Grid.RowSpan="3" Panel.ZIndex="1"/>
+        <Grid Background="{StaticResource Secondary}" Grid.Column="1" Panel.ZIndex="1"/>
+        <Grid Background="{StaticResource Secondary}" Grid.Column="1" Grid.Row="3" Panel.ZIndex="1"/>
+
+        <Border Grid.Column="1" Grid.Row="1" Margin="-4">
+            <Border.Background>
+                <ImageBrush ImageSource="/UI/Pages/HomePage/bgBlured.png"/>
+            </Border.Background>
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                
+                <!--// Content //-->
+                <Grid Margin="4">
+                    <Grid Height="200" VerticalAlignment="Top">
+
+                    </Grid>
+                    
+                    <Grid Background="{StaticResource Secondary}" Margin="0,200,0,0">
+                        <Grid Margin="0,35,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition MinWidth="260"/>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition MinWidth="260"/>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition MinWidth="260"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="90"/>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Background="#07FFFFFF" Grid.Column="0" CornerRadius="6">
+                                <Grid>
+                                    
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#07FFFFFF" Grid.Column="2" CornerRadius="6">
+                                <Grid>
+
+                                </Grid>
+                            </Border>
+
+                            <Border Background="#07FFFFFF" Grid.Column="4" CornerRadius="6">
+                                <Grid>
+
+                                </Grid>
+                            </Border>
+
+
+                            <Border Background="#07FFFFFF" Grid.Row="2" Grid.ColumnSpan="5" CornerRadius="6">
+                                
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Border>
+
     </Grid>
 </UserControl>
