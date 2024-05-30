@@ -24,5 +24,6 @@ namespace Server.UI.Pages.ServerPage
         {
             InitializeComponent();
         }
+
     }
 }

@@ -8,7 +8,7 @@
                 <ControlTemplate TargetType="RadioButton">
                     <Border x:Name="navBG" Background="Transparent" CornerRadius="3">
                         <Grid>
-                            <Border x:Name="NavHomeRBTN_Indicator" Opacity="0" Width="3" Height="16" Background="#1E9BFD" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <Border x:Name="NavHomeRBTN_Indicator" Opacity="0" Width="3" Height="16" Background="{StaticResource Accent}" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                             <ContentPresenter/>
                         </Grid>
                     </Border>
@@ -22,7 +22,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="navBG"
                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="#08FFFFFF" Duration="0:0:0.15">
+                                                        To="{StaticResource Trigger_Secondary}" Duration="0:0:0.15">
                                             <ColorAnimation.EasingFunction>
                                                 <QuadraticEase EasingMode="EaseInOut"/>
                                             </ColorAnimation.EasingFunction>
