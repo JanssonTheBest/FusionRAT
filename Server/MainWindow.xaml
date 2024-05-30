@@ -8,7 +8,7 @@
         Background="Transparent" FontSize="13" Foreground="#fff">
 
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="0" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
+        <WindowChrome CaptionHeight="2.1" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
 
     <Border Background="#202020">
