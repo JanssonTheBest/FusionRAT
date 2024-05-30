@@ -3,7 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Server"
              StartupUri="MainWindow.xaml">
+    
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="\UI\Style\Common\NavigationRBTN.xaml"/>
+
+                <!--//Animations//-->
+                <ResourceDictionary Source="\UI\Pages\HomePage\KeyFrames\Page_Show.xaml"/>
+                <ResourceDictionary Source="\UI\Pages\ClientPage\KeyFrames\Page_Show.xaml"/>
+                <ResourceDictionary Source="\UI\Pages\ServerPage\KeyFrames\Page_Show.xaml"/>
+                <ResourceDictionary Source="\UI\Pages\BuilderPage\KeyFrames\Page_Show.xaml"/>
+                <ResourceDictionary Source="\UI\Pages\SupportPage\KeyFrames\Page_Show.xaml"/>
+                <ResourceDictionary Source="\UI\Pages\SettingsPage\KeyFrames\Page_Show.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -9,9 +9,40 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="UI\Assets\Other\client.png" />
+    <None Remove="UI\Assets\Other\close.png" />
+    <None Remove="UI\Assets\Other\fileSettings.png" />
+    <None Remove="UI\Assets\Other\home.png" />
+    <None Remove="UI\Assets\Other\ISmaximized.png" />
+    <None Remove="UI\Assets\Other\maximizedNot.png" />
+    <None Remove="UI\Assets\Other\minimize.png" />
+    <None Remove="UI\Assets\Other\server.png" />
+    <None Remove="UI\Assets\Other\settings.png" />
+    <None Remove="UI\Assets\Other\support.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UI\Assets\Icons\" />
     <Folder Include="UI\CustomControls\" />
-    <Folder Include="UI\Pages\" />
-    <Folder Include="UI\Style\" />
+    <Folder Include="UI\Pages\BuilderPage\Style\" />
+    <Folder Include="UI\Pages\ClientPage\Style\" />
+    <Folder Include="UI\Pages\HomePage\Style\" />
+    <Folder Include="UI\Pages\ServerPage\Style\" />
+    <Folder Include="UI\Pages\SettingsPage\Style\" />
+    <Folder Include="UI\Pages\SupportPage\Style\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="UI\Assets\Other\client.png" />
+    <Resource Include="UI\Assets\Other\close.png" />
+    <Resource Include="UI\Assets\Other\fileSettings.png" />
+    <Resource Include="UI\Assets\Other\home.png" />
+    <Resource Include="UI\Assets\Other\ISmaximized.png" />
+    <Resource Include="UI\Assets\Other\maximizedNot.png" />
+    <Resource Include="UI\Assets\Other\minimize.png" />
+    <Resource Include="UI\Assets\Other\server.png" />
+    <Resource Include="UI\Assets\Other\settings.png" />
+    <Resource Include="UI\Assets\Other\support.png" />
   </ItemGroup>
 
 </Project>

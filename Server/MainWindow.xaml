@@ -1,12 +1,284 @@
 ﻿<Window x:Class="Server.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Server"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Server" xmlns:HomePage="clr-namespace:Server.UI.Pages.HomePage" xmlns:ClientPage="clr-namespace:Server.UI.Pages.ClientPage" xmlns:ServerPage="clr-namespace:Server.UI.Pages.ServerPage" xmlns:BuilderPage="clr-namespace:Server.UI.Pages.BuilderPage" xmlns:SupportPage="clr-namespace:Server.UI.Pages.SupportPage" xmlns:SettingsPage="clr-namespace:Server.UI.Pages.SettingsPage"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
+        MinWidth="775" MinHeight="422"
+        d:Width="1450" d:Height="800"
+        Background="Transparent" FontSize="13" Foreground="#fff">
 
-    </Grid>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
+    </WindowChrome.WindowChrome>
+
+    <Border Background="#202020">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="52"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--//TitleBar//-->
+            <Grid Background="Transparent" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" MouseMove="TitleBar_MouseMove" MouseLeftButtonUp="TitleBar_MouseLeftButtonUp">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock VerticalAlignment="Top" Text="Fusion" HorizontalAlignment="Left" Margin="20,10,0,0" Foreground="White" FontWeight="Bold"/>
+                <Button Grid.Column="1" Content="_" Width="30" VerticalAlignment="Top" Height="30" Click="MinimizeButton_Click"/>
+                <Button Grid.Column="2" Content="□" Width="30" VerticalAlignment="Top" Height="30" Click="MaximizeButton_Click"/>
+                <Button Grid.Column="3" Content="X" Width="30" VerticalAlignment="Top" Height="30" Click="CloseButton_Click"/>
+            </Grid>
+
+            <!--// Main //-->
+            <Grid Grid.Row="1">
+
+                <!--// Side panel //-->
+                <Border x:Name="sidePanel" Width="220" HorizontalAlignment="Left">
+                    <Grid>
+                        <StackPanel>
+                            <RadioButton GroupName="navRBTN" IsChecked="True" x:Name="navHome" Style="{StaticResource Common_navRBTN}" HorizontalAlignment="Left" Height="38" Margin="6,0,6,2" Width="208">
+                                <RadioButton.Content>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
+                                            <Image Source="/UI/assets/Other/home.png" Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                            <TextBlock Text="Home" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                        <BeginStoryboard Storyboard="{StaticResource HomeUC-Show}"/>
+                                    </EventTrigger>
+                                </RadioButton.Triggers>
+                            </RadioButton>
+
+                            <RadioButton GroupName="navRBTN" x:Name="navClient" Style="{StaticResource Common_navRBTN}" HorizontalAlignment="Left" Width="208" Height="38" Margin="6,0,6,2">
+                                <RadioButton.Content>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
+                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/client.png"/>
+                                            <TextBlock Text="Client" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                        <BeginStoryboard Storyboard="{StaticResource ClientUC-Show}"/>
+                                    </EventTrigger>
+                                </RadioButton.Triggers>
+                            </RadioButton>
+
+                            <RadioButton GroupName="navRBTN" x:Name="navServer" Style="{StaticResource Common_navRBTN}" HorizontalAlignment="Left" Width="208" Height="38" Margin="6,0,6,2">
+                                <RadioButton.Content>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
+                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/server.png"/>
+                                            <TextBlock Text="Server" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                        <BeginStoryboard Storyboard="{StaticResource ServerUC-Show}"/>
+                                    </EventTrigger>
+                                </RadioButton.Triggers>
+                            </RadioButton>
+
+                            <RadioButton GroupName="navRBTN" x:Name="navBuilder" Style="{StaticResource Common_navRBTN}" HorizontalAlignment="Left" Width="208" Height="38" Margin="6,0,6,2">
+                                <RadioButton.Content>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
+                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/fileSettings.png"/>
+                                            <TextBlock Text="Builder" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                        <BeginStoryboard Storyboard="{StaticResource BuilderUC-Show}"/>
+                                    </EventTrigger>
+                                </RadioButton.Triggers>
+                            </RadioButton>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,6">
+                            <RadioButton GroupName="navRBTN" x:Name="navSupport" Style="{StaticResource Common_navRBTN}" HorizontalAlignment="Left" Width="208" Height="38" Margin="6,0,6,2" VerticalAlignment="Bottom">
+                                <RadioButton.Content>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
+                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/support.png"/>
+                                            <TextBlock Text="Support" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                        <BeginStoryboard Storyboard="{StaticResource SupportUC-Show}"/>
+                                    </EventTrigger>
+                                </RadioButton.Triggers>
+                            </RadioButton>
+                            <RadioButton GroupName="navRBTN" x:Name="navSettings" Style="{StaticResource Common_navRBTN}" HorizontalAlignment="Left" Width="208" Height="38" Margin="6,0,6,0" VerticalAlignment="Bottom">
+                                <RadioButton.Content>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="9,0,0,0">
+                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/settings.png"/>
+                                            <TextBlock Text="Settings" FontWeight="Medium" Foreground="#fff" VerticalAlignment="Center" Margin="9,-1,0,0" FontSize="14"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </RadioButton.Content>
+                                <RadioButton.Triggers>
+                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                        <BeginStoryboard Storyboard="{StaticResource SettingsUC-Show}"/>
+                                    </EventTrigger>
+                                </RadioButton.Triggers>
+                            </RadioButton>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!--// Frame panel //-->
+                <Border x:Name="framePanel" CornerRadius="7,0,0,0" Background="#08FFFFFF" Margin="220,0,0,0">
+                    <Grid>
+                        <HomePage:Home x:Name="homeUC"/>
+                        <ClientPage:Client x:Name="clientUC" Visibility="Hidden"/>
+                        <ServerPage:Server x:Name="serverUC" Visibility="Hidden"/>
+                        <BuilderPage:Builder x:Name="builderUC" Visibility="Hidden"/>
+                        <SupportPage:Support x:Name="supportUC" Visibility="Hidden"/>
+                        <SettingsPage:Settings x:Name="settingsUC" Visibility="Hidden"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+
+
+    <Window.Resources>
+        <Storyboard x:Key="Impact_SidePanel">
+
+            <!--Panels srink-->
+            <DoubleAnimation Storyboard.TargetName="sidePanel"
+                          Storyboard.TargetProperty="Width"
+                          To="51" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ThicknessAnimation Storyboard.TargetName="framePanel"
+                          Storyboard.TargetProperty="Margin"
+                          To="51,0,0,0" Duration="0">
+                <ThicknessAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+
+            <!--Nav buttons go from big to Impact-->
+            <DoubleAnimation Storyboard.TargetName="navHome"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navClient"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navServer"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navBuilder"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navSupport"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navSettings"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="Expand_SidePanel">
+
+            <!--Panels expand-->
+            <DoubleAnimation Storyboard.TargetName="sidePanel"
+                         Storyboard.TargetProperty="Width"
+                         To="220" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ThicknessAnimation Storyboard.TargetName="framePanel"
+                            Storyboard.TargetProperty="Margin"
+                            To="220,0,0,0" Duration="0">
+                <ThicknessAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+
+            <!--Nav buttons go from Impact to expanded-->
+            <DoubleAnimation Storyboard.TargetName="navHome"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navClient"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navServer"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navBuilder"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navSupport"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="navSettings"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </Window.Resources>
 </Window>
