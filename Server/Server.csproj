@@ -27,7 +27,9 @@
     <None Remove="UI\Pages\HomePage\bgBlured.png" />
     <None Remove="UI\Pages\HomePage\ChangeLog2.jpg" />
     <None Remove="UI\Pages\HomePage\ChangeLog3.png" />
+    <None Remove="UI\Pages\HomePage\Client.png" />
     <None Remove="UI\Pages\HomePage\Logo.png" />
+    <None Remove="UI\Pages\HomePage\pcHealth.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +61,8 @@
     <Resource Include="UI\Assets\Icons\Logo.png" />
     <Resource Include="UI\Assets\Other\ChangeLog2.jpg" />
     <Resource Include="UI\Assets\Other\ChangeLog3.png" />
+    <Resource Include="UI\Pages\HomePage\Client.png" />
+    <Resource Include="UI\Pages\HomePage\pcHealth.png" />
   </ItemGroup>
 
 </Project>

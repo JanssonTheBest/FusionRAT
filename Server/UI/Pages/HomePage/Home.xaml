@@ -34,9 +34,9 @@
                 <ImageBrush ImageSource="\UI\Assets\Other\bgBlured.png"/>
             </Border.Background>
             <ScrollViewer VerticalScrollBarVisibility="Visible" Margin="0,0,-17,0">
-                
-                <!--// Content //-->
                 <Grid>
+                    
+                    <!--//Cangelog start//-->
                     <ToggleButton Style="{StaticResource Common_ToggleButton}" Background="Transparent">
                         <ToggleButton.Triggers>
                             <EventTrigger RoutedEvent="ToggleButton.Checked">
@@ -145,25 +145,56 @@
                                 <RowDefinition MinHeight="240"/>
                             </Grid.RowDefinitions>
 
+                            <!--//Clients count//-->
                             <Border Background="#07FFFFFF" Grid.Column="0" CornerRadius="6">
                                 <Grid>
-                                    
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Image Source="/UI/Pages/HomePage/Client.png" Width="70"/>
+                                        <StackPanel Margin="15,-3,0,0">
+                                            <TextBlock Text="Clients" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock x:Name="clientOnCount" Text="{Binding}" FontSize="14" Foreground="#A5A5A5"/>
+                                                <TextBlock Text=" | " FontSize="14" Foreground="#A5A5A5"/>
+                                                <TextBlock x:Name="clientOffCount" Text="{Binding}" FontSize="14" Foreground="#A5A5A5"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
                                 </Grid>
                             </Border>
 
+                            <!--//Health//-->
                             <Border Background="#07FFFFFF" Grid.Column="2" CornerRadius="6">
                                 <Grid>
-
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Image Width="70" Source="/UI/Pages/HomePage/pcHealth.png"/>
+                                        <StackPanel Margin="15,-3,0,0">
+                                            <TextBlock Text="Health" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Memory: " FontSize="14" Foreground="#A5A5A5"/>
+                                                <TextBlock x:Name="userMemory" Text="{Binding}" FontSize="14" Foreground="#A5A5A5"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
                                 </Grid>
                             </Border>
 
+                            <!--//Rank//-->
                             <Border Background="#07FFFFFF" Grid.Column="4" CornerRadius="6">
                                 <Grid>
-
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Image Source="/UI/Pages/HomePage/Client.png" Width="70"/>
+                                        <StackPanel Margin="15,-3,0,0">
+                                            <TextBlock Text="Rank" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock x:Name="userRank" Text="{Binding}" FontSize="14" Foreground="#A5A5A5"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
                                 </Grid>
                             </Border>
 
 
+                            <!--//Logs//-->
                             <Border Background="#07FFFFFF" Grid.Row="2" Grid.ColumnSpan="5" CornerRadius="6">
                                 
                             </Border>
