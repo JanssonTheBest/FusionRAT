@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Server" xmlns:HomePage="clr-namespace:Server.UI.Pages.HomePage" xmlns:ClientPage="clr-namespace:Server.UI.Pages.ClientPage" xmlns:ServerPage="clr-namespace:Server.UI.Pages.ServerPage" xmlns:BuilderPage="clr-namespace:Server.UI.Pages.BuilderPage" xmlns:SupportPage="clr-namespace:Server.UI.Pages.SupportPage" xmlns:SettingsPage="clr-namespace:Server.UI.Pages.SettingsPage"
         mc:Ignorable="d"
         Title="MainWindow" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
-        MinWidth="810" MinHeight="480"
+        MinWidth="940" MinHeight="480"
         d:Width="1450" d:Height="800"
         Background="Transparent" FontSize="13" Foreground="#fff" >
 
