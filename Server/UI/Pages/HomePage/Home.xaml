@@ -50,6 +50,17 @@
                                                 <QuadraticEase EasingMode="EaseInOut"/>
                                             </ThicknessAnimation.EasingFunction>
                                         </ThicknessAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="changeLogContent"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" Duration="0:0:0.15" BeginTime="0:0:0.5">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="changeLogContent"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
@@ -58,11 +69,22 @@
                                     <Storyboard>
                                         <ThicknessAnimation Storyboard.TargetProperty="Margin"
                                                              Storyboard.TargetName="other"
-                                                             To="0,200,0,0" Duration="0:0:0.35">
+                                                             To="0,200,0,0" Duration="0:0:0.35" BeginTime="0:0:0.15">
                                             <ThicknessAnimation.EasingFunction>
                                                 <QuadraticEase EasingMode="EaseInOut"/>
                                             </ThicknessAnimation.EasingFunction>
                                         </ThicknessAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="changeLogContent"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" Duration="0:0:0.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="changeLogContent"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
@@ -80,7 +102,7 @@
 
 
                                 <!--ChangeLog-->
-                                <Grid Margin="0,200,0,0">
+                                <Grid x:Name="changeLogContent" Margin="0,200,0,0" Opacity="0" Visibility="Collapsed">
                                     <Rectangle Width="3" HorizontalAlignment="Left" Margin="70,0,0,0" Fill="#19FFFFFF"/>
                                     <StackPanel Margin="45,35,0,0">
                                         <ToggleButton Style="{StaticResource ChangeLogItem}" Margin="0,0,0,70">
