@@ -1,4 +1,5 @@
 ﻿using Common.DTOs.MessagePack;
+using Server.CoreServerFunctionality;
 using Server.Helper;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -11,74 +12,43 @@ namespace Server.UI.Pages.ClientPage
 {
     public partial class Client : UserControl
     {
-        private ObservableCollection<ClientInfoDTO> clients = new();
         private SemaphoreSlim semaphoreSlim = new(1, 1);
         public Client()
         {
             InitializeComponent();
-            clients.CollectionChanged += UpdateClientGrid;
-        }
-
-        private async Task<ContextMenu> BuildContextMenu(ClientInfoDTO info)
-        {
-            List<string> utilities = await ApplicationHelperMethods.RetrievUtilityNames();
-            var contextMenu = new ContextMenu();
-            foreach (var utility in utilities)
-            {
-                MenuItem menuItem = new MenuItem()
-                {
-                    Header = utility.Substring(utility.IndexOf('.')),
-                    Icon = await ApplicationHelperMethods.RetrievIconThroughUtilityName(utility),
-                };
-                contextMenu.Items.Add(menuItem);
-            }
-            
-            return contextMenu;
+            ClientHandler._sessions.CollectionChanged += UpdateClientGrid;
         }
 
         private void OnMenuItemClick(object sender, RoutedEventArgs e)
         {
-            
-        }
 
-        private async Task RemoveClient(ClientInfoDTO clientInfoDTO)
-        {
-            await semaphoreSlim.WaitAsync();
-            clients.Remove(clientInfoDTO);
-            semaphoreSlim.Release();
-        }
-
-        private async Task AddClient(ClientInfoDTO clientInfoDTO)
-        {
-            await semaphoreSlim.WaitAsync();
-            clients.Add(clientInfoDTO);
-            semaphoreSlim.Release();
         }
 
         private void UpdateClientGrid(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Remove)
+            if (!Dispatcher.CheckAccess())
             {
-                foreach (var item in e.OldItems)
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    dataGrid.Items.Remove(item);
-                }
+                    UpdateClientGrid(sender, e);
+                });
                 return;
             }
+            MapCollectionToGrid();
+        }
 
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (var item in e.NewItems)
-                {
-                    dataGrid.Items.Add(item);
-                }
-                return;
+        private void MapCollectionToGrid()
+        {
+            dataGrid.Items.Clear();
+            foreach (var item in ClientHandler._sessions) 
+            { 
+                dataGrid.Items.Add(item);
             }
         }
 
         private async void dataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
-            e.Row.ContextMenu = await BuildContextMenu((ClientInfoDTO)e.Row.DataContext);
+            //e.Row.ContextMenu = await BuildContextMenu();
         }
 
         #region DataGrid Features

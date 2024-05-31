@@ -61,13 +61,13 @@ namespace Server.CoreServerFunctionality
                 Task.Run(async () =>
                 {
                     listener.Start();
-                    while (cts.Token.IsCancellationRequested)
+                    while (!cts.Token.IsCancellationRequested)
                     {
                         var client = await listener.AcceptTcpClientAsync();
                         _listener.OnClientConnected.Invoke(client, EventArgs.Empty);
                     }
+                    listener.Dispose();
                 }, cts.Token);
-                listener.Dispose();
             }
             public void Dispose()
             {

@@ -15,6 +15,11 @@ using System.Threading.Tasks;
 
 namespace Common.Comunication
 {
+    public interface IConnectionProperties
+    {
+        TcpClient Client { get; set; }
+        SslStream SslStream { get; set; }
+    }
     public class Session
     {
         private SslStream _sslStream;
@@ -33,12 +38,13 @@ namespace Common.Comunication
         public EventHandler OnPing;
         public EventHandler OnClientInfo;
 
-        public Session(SslStream sslStream, TcpClient client)
+        public Session(IConnectionProperties connectionProperties)
         {
-            _sslStream = sslStream;
+            _sslStream = connectionProperties.SslStream;
             pipeReader = pipe.Reader;
             pipeWriter = pipe.Writer;
-            _client = client;
+            _client = connectionProperties.Client;
+            BeginSession();
         }
 
         public void BeginSession()
