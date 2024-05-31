@@ -3,12 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Server" xmlns:HomePage="clr-namespace:Server.UI.Pages.HomePage" xmlns:ClientPage="clr-namespace:Server.UI.Pages.ClientPage" xmlns:ServerPage="clr-namespace:Server.UI.Pages.ServerPage" xmlns:BuilderPage="clr-namespace:Server.UI.Pages.BuilderPage" xmlns:SupportPage="clr-namespace:Server.UI.Pages.SupportPage" xmlns:SettingsPage="clr-namespace:Server.UI.Pages.SettingsPage"
         mc:Ignorable="d"
         Title="MainWindow" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
-        MinWidth="775" MinHeight="422"
+        MinWidth="810" MinHeight="480"
         d:Width="1450" d:Height="800"
         Background="Transparent" FontSize="13" Foreground="#fff" >
 
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="2.1" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
+        <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
 
     <Border>
@@ -152,12 +152,12 @@
                         </Style>
                     </Border.Style>
                     <Grid>
-                        <HomePage:Home x:Name="homeUC"/>
-                        <ClientPage:Client x:Name="clientUC" Visibility="Hidden"/>
-                        <ServerPage:Server x:Name="serverUC" Visibility="Hidden"/>
-                        <BuilderPage:Builder x:Name="builderUC" Visibility="Hidden"/>
-                        <SupportPage:Support x:Name="supportUC" Visibility="Hidden"/>
-                        <SettingsPage:Settings x:Name="settingsUC" Visibility="Hidden"/>
+                        <HomePage:Home x:Name="homeUC" Visibility="Visible"/>
+                        <ClientPage:Client x:Name="clientUC" Visibility="Collapsed"/>
+                        <ServerPage:Server x:Name="serverUC" Visibility="Collapsed"/>
+                        <BuilderPage:Builder x:Name="builderUC" Visibility="Collapsed"/>
+                        <SupportPage:Support x:Name="supportUC" Visibility="Collapsed"/>
+                        <SettingsPage:Settings x:Name="settingsUC" Visibility="Collapsed"/>
                     </Grid>
                 </Border>
             </Grid>

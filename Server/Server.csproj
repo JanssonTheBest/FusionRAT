@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="UI\Assets\Other\bgBlured.png" />
     <None Remove="UI\Assets\Other\client.png" />
     <None Remove="UI\Assets\Other\close.png" />
     <None Remove="UI\Assets\Other\Dark.png" />
@@ -28,9 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UI\CustomControls\" />
     <Folder Include="UI\Pages\BuilderPage\Style\" />
-    <Folder Include="UI\Pages\HomePage\Style\" />
     <Folder Include="UI\Pages\ServerPage\Style\" />
     <Folder Include="UI\Pages\SupportPage\Style\" />
   </ItemGroup>
@@ -41,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="UI\Assets\Other\bgBlured.png" />
     <Resource Include="UI\Assets\Other\client.png" />
     <Resource Include="UI\Assets\Other\close.png" />
     <Resource Include="UI\Assets\Other\Dark.png" />
@@ -55,7 +55,6 @@
     <Resource Include="UI\Assets\Other\server.png" />
     <Resource Include="UI\Assets\Other\settings.png" />
     <Resource Include="UI\Assets\Other\support.png" />
-    <Resource Include="UI\Pages\HomePage\bgBlured.png" />
     <Resource Include="UI\Assets\Icons\Logo.png" />
   </ItemGroup>
 

@@ -10,7 +10,7 @@
 
     <!--To triggers works all triggers-->
     <Color x:Key="Trigger_Primary">#202020</Color>
-    <Color x:Key="Trigger_Secondary">#2B2B2B</Color>
+    <Color x:Key="Trigger_Secondary">#08FFFFFF</Color>
     <Color x:Key="Trigger_Accent">#1E9BFD</Color>
     <Color x:Key="Trigger_Text">#DEDEE0</Color>
     <Color x:Key="Trigger_Selected">#4B4990</Color>
