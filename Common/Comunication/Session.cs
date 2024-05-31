@@ -35,8 +35,11 @@ namespace Common.Comunication
         private SemaphoreSlim sendSemaphore = new SemaphoreSlim(1, 1);
         private int bufferSize = 1024;
         private TcpClient _client;
+        private MemoryStream tempBuffer = new();
+
         public EventHandler OnPing;
         public EventHandler OnClientInfo;
+
 
         public Session(IConnectionProperties connectionProperties)
         {
@@ -76,6 +79,27 @@ namespace Common.Comunication
             }
         }
 
+        public async Task SendPacketAsync(IPacket packet)
+        {
+            await sendSemaphore.WaitAsync();
+            byte[] data = MessagePackSerializer.Serialize(packet);
+            await tempBuffer.WriteAsync(BitConverter.GetBytes(data.Length));
+            await tempBuffer.WriteAsync(data);
+            try
+            {
+                await _sslStream.WriteAsync(tempBuffer.ToArray());
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                tempBuffer.SetLength(0);
+                sendSemaphore.Release();
+            }
+        }
+
         private async Task ExtractPacketsLoop()
         {
             int readThreashold = headerLength + 1;
@@ -101,7 +125,7 @@ namespace Common.Comunication
                     }
 
                     IPacket packet = MessagePackSerializer.Deserialize<IPacket>(buffer.Slice(headerLength + bytesConsumed, packetLength), messagePackSerializerOptions, cancellationTokenSource.Token);
-                    await packet.HandlePacket(this);
+                    Task.Run(()=>packet.HandlePacket(this));
                     bytesConsumed += packetLength + headerLength;
                 }
                 pipeReader.AdvanceTo(buffer.GetPosition(bytesConsumed), buffer.End);

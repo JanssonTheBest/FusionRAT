@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace Server.Generated
 {
-    public partial class UtilityInfo
+    public static partial class UtilityInfo
     {
-        string[] utilityNames;
-        partial void GetUtilityNames();
-        
+        public static string[] Utilitites { get; set; }
+        public static string[] ImageSources { get; set; }
+
+        static partial void GetUtilityNamesArray();
+        static partial void GetImageSourcesArray();
+        public static void FetchData()
+        {
+            GetUtilityNamesArray();
+            GetImageSourcesArray();
+        }
     }
 }

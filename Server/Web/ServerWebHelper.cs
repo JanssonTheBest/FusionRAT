@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.UtilityWindows.Interface
+namespace Server.Web
 {
-    internal interface IUtilityWindow
+    internal class ServerWebHelper
     {
         
     }

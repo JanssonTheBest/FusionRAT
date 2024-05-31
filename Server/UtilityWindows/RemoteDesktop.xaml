@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="RemoteDesktop" Height="450" Width="800">
     <Grid>
-        <Image x:Name="icon" Loaded="icon_Loaded"></Image>
-
+        <Image x:Name="icon" Loaded="icon_Loaded" Visibility="Hidden"></Image>
+        <Image x:Name="frame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Image>
     </Grid>
 </Window>

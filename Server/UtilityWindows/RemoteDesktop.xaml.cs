@@ -1,4 +1,5 @@
 ﻿
+using Server.CoreServerFunctionality;
 using Server.UtilityWindows.Interface;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Server.UtilityWindows
     /// </summary>
     public partial class RemoteDesktop :Window, IUtilityWindow
     {
-        public RemoteDesktop()
+        public RemoteDesktop(ServerSession serverSession)
         {
             InitializeComponent();
         }

@@ -9,6 +9,20 @@
 
     <UserControl.Resources>
         <!-- Style for the DataGrid -->
+        <ContextMenu x:Key="utilityContextMenu" Opened="ContextMenu_Opened">
+            <MenuItem Header="Audio Manager" Click="AudioManager_Click"/>
+            <MenuItem Header="File Manager" Click="FileManager_Click"/>
+            <MenuItem Header="HVNC" Click="HVNC_Click"/>
+            <MenuItem Header="Key Logger" Click="KeyLogger_Click"/>
+            <MenuItem Header="Registry Manager" Click="RegistryManager_Click"/>
+            <MenuItem Header="Remote Desktop" Click="RemoteDesktop_Click"/>
+            <MenuItem Header="Reverse Shell" Click="ReverseShell_Click"/>
+            <MenuItem Header="System Info" Click="SystemInfo_Click"/>
+            <MenuItem Header="Task Manager" Click="TaskManager_Click"/>
+            <MenuItem Header="Webcam Control" Click="WebcamControl_Click"/>
+        </ContextMenu>
+
+
         <Style TargetType="DataGrid">
             <Setter Property="AutoGenerateColumns" Value="False" />
             <Setter Property="CanUserAddRows" Value="False" />
@@ -79,7 +93,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Image Width="21" Height="21" Margin="0,0,5,0" Source="\UI\Assets\Other\location.png"/>
+                                <Image Width="21" Height="21" Margin="0,0,5,0" Source="{Binding Flag}"/>
                                 <TextBlock Text="{Binding Location}" VerticalAlignment="Center" Foreground="{StaticResource Text}"/>
                             </StackPanel>
                         </DataTemplate>
