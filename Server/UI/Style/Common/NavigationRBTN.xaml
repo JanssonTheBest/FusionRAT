@@ -8,7 +8,7 @@
                 <ControlTemplate TargetType="RadioButton">
                     <Border x:Name="navBG" Background="Transparent" CornerRadius="3">
                         <Grid>
-                            <Border x:Name="NavHomeRBTN_Indicator" Opacity="0" Width="3" Height="16" Background="{StaticResource Accent}" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <Border x:Name="NavHomeRBTN_Indicator" Opacity="0" Width="3" Height="18" Background="{StaticResource Accent}" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                             <ContentPresenter/>
                         </Grid>
                     </Border>

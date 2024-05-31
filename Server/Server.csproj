@@ -25,6 +25,8 @@
     <None Remove="UI\Assets\Other\settings.png" />
     <None Remove="UI\Assets\Other\support.png" />
     <None Remove="UI\Pages\HomePage\bgBlured.png" />
+    <None Remove="UI\Pages\HomePage\ChangeLog2.jpg" />
+    <None Remove="UI\Pages\HomePage\ChangeLog3.png" />
     <None Remove="UI\Pages\HomePage\Logo.png" />
   </ItemGroup>
 
@@ -56,6 +58,8 @@
     <Resource Include="UI\Assets\Other\settings.png" />
     <Resource Include="UI\Assets\Other\support.png" />
     <Resource Include="UI\Assets\Icons\Logo.png" />
+    <Resource Include="UI\Assets\Other\ChangeLog2.jpg" />
+    <Resource Include="UI\Assets\Other\ChangeLog3.png" />
   </ItemGroup>
 
 </Project>
