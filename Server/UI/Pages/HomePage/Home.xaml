@@ -83,7 +83,17 @@
                                 <Grid Margin="0,200,0,0">
                                     <Rectangle Width="3" HorizontalAlignment="Left" Margin="70,0,0,0" Fill="#19FFFFFF"/>
                                     <StackPanel Margin="45,35,0,0">
-                                        <ToggleButton Style="{StaticResource ChangeLogItem}">
+                                        <ToggleButton Style="{StaticResource ChangeLogItem}" Margin="0,0,0,70">
+                                            <ToggleButton.Content>
+                                                <StackPanel>
+                                                    <ContentControl Style="{StaticResource NewItem}" Content="New items added to change log." FontSize="14" FontWeight="Medium"/>
+                                                    <ContentControl Style="{StaticResource FixedItem}" Content="Fixed items in change log." FontSize="14" FontWeight="Medium"/>
+                                                    <ContentControl Style="{StaticResource UpdatedItem}" Content="Updated items in change log for better performance." FontSize="14" FontWeight="Medium"/>
+                                                    <ContentControl Style="{StaticResource RemovedItem}" Content="Removed items in change log."/>
+                                                </StackPanel>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
+                                        <ToggleButton Style="{StaticResource ChangeLogItem}" Margin="0,0,0,70">
                                             <ToggleButton.Content>
                                                 <StackPanel>
                                                     <ContentControl Style="{StaticResource NewItem}" Content="New items added to change log." FontSize="14" FontWeight="Medium"/>
