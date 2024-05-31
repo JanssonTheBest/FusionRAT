@@ -7,6 +7,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="748" d:DesignWidth="1230">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style\ContentControl\ChangeLogStatus.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -20,36 +28,90 @@
             <RowDefinition Height="42"/>
         </Grid.RowDefinitions>
         
-        <Grid Background="{StaticResource Secondary}" Grid.Column="0" Grid.RowSpan="3" Panel.ZIndex="1"/>
-        <Grid Background="{StaticResource Secondary}" Grid.Column="2" Grid.RowSpan="3" Panel.ZIndex="1"/>
-        <Grid Background="{StaticResource Secondary}" Grid.Column="1" Panel.ZIndex="1"/>
-        <Grid Background="{StaticResource Secondary}" Grid.Column="1" Grid.Row="3" Panel.ZIndex="1"/>
+        
 
-        <Border Grid.Column="1" Grid.Row="1" Margin="-4">
+        <Border Grid.Column="1" Grid.Row="1">
             <Border.Background>
-                <ImageBrush ImageSource="/UI/Pages/HomePage/bgBlured.png"/>
+                <ImageBrush ImageSource="\UI\Assets\Other\bgBlured.png"/>
             </Border.Background>
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
                 
                 <!--// Content //-->
-                <Grid Margin="4">
-                    <Grid Height="200" VerticalAlignment="Top">
+                <Grid>
+                    <ToggleButton Style="{StaticResource Common_ToggleButton}" Background="Transparent">
+                        <ToggleButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                             Storyboard.TargetName="other"
+                                                             To="0,1080,0,0" Duration="0:0:0.35">
+                                            <ThicknessAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </ThicknessAnimation.EasingFunction>
+                                        </ThicknessAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                             Storyboard.TargetName="other"
+                                                             To="0,200,0,0" Duration="0:0:0.35">
+                                            <ThicknessAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </ThicknessAnimation.EasingFunction>
+                                        </ThicknessAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ToggleButton.Triggers>
+                        <ToggleButton.Content>
+                            <Grid>
+                                <!--top-->
+                                <Grid VerticalAlignment="Top" Height="200">
+                                    <StackPanel Margin="70,45,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                                        <TextBlock Text="Welcome User" Foreground="{StaticResource Accent}" FontSize="20" FontWeight="Medium"/>
+                                        <TextBlock Text="Remote Administration Tool" Foreground="{StaticResource Text}" FontSize="17" FontWeight="Medium" Margin="0,3,0,12"/>
+                                        <TextBlock Text="Click to see the newest change logs" Foreground="{StaticResource Text}" FontSize="15"/>
+                                    </StackPanel>
+                                </Grid>
 
-                    </Grid>
-                    
-                    <Grid Background="{StaticResource Secondary}" Margin="0,200,0,0">
+
+                                <!--ChangeLog-->
+                                <Grid Margin="0,200,0,0">
+                                    <Rectangle Width="3" HorizontalAlignment="Left" Margin="70,0,0,0" Fill="#19FFFFFF"/>
+                                    <StackPanel Margin="45,35,0,0">
+                                        <ToggleButton Style="{StaticResource ChangeLogItem}">
+                                            <ToggleButton.Content>
+                                                <StackPanel>
+                                                    <ContentControl Style="{StaticResource NewItem}" Content="New items added to change log." FontSize="14" FontWeight="Medium"/>
+                                                    <ContentControl Style="{StaticResource FixedItem}" Content="Fixed items in change log." FontSize="14" FontWeight="Medium"/>
+                                                    <ContentControl Style="{StaticResource UpdatedItem}" Content="Updated items in change log for better performance." FontSize="14" FontWeight="Medium"/>
+                                                    <ContentControl Style="{StaticResource RemovedItem}" Content="Removed items in change log."/>
+                                                </StackPanel>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+
+                    <Grid Background="{StaticResource Secondary}" Margin="0,200,0,0" x:Name="other">
                         <Grid Margin="0,35,0,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition MinWidth="260"/>
+                                <ColumnDefinition MinWidth="210"/>
                                 <ColumnDefinition Width="25"/>
-                                <ColumnDefinition MinWidth="260"/>
+                                <ColumnDefinition MinWidth="210"/>
                                 <ColumnDefinition Width="25"/>
-                                <ColumnDefinition MinWidth="260"/>
+                                <ColumnDefinition MinWidth="210"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="90"/>
                                 <RowDefinition Height="35"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition MinHeight="240"/>
                             </Grid.RowDefinitions>
 
                             <Border Background="#07FFFFFF" Grid.Column="0" CornerRadius="6">

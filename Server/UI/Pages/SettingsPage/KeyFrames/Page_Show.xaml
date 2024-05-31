@@ -32,7 +32,7 @@
             </DoubleAnimation>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="homeUC"
                                        Storyboard.TargetProperty="Visibility">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Hidden}"/>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
 
             <!--Client page-->
@@ -45,7 +45,7 @@
             </DoubleAnimation>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="clientUC"
                                        Storyboard.TargetProperty="Visibility">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Hidden}"/>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
 
             <!--Server page-->
@@ -58,7 +58,7 @@
             </DoubleAnimation>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="serverUC"
                                        Storyboard.TargetProperty="Visibility">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Hidden}"/>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
 
             <!--Builder page-->
@@ -71,7 +71,7 @@
             </DoubleAnimation>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="builderUC"
                                        Storyboard.TargetProperty="Visibility">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Hidden}"/>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
 
             <!--Support page-->
@@ -84,7 +84,7 @@
             </DoubleAnimation>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="supportUC"
                                        Storyboard.TargetProperty="Visibility">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Hidden}"/>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
 

@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="ToggleButton" x:Key="ChangeLogItem">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="#DBDFE0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid>
+                        <StackPanel Width="110" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Border Background="#6B3EC5" Height="27" CornerRadius="3" Margin="0,0,0,5">
+                                <TextBlock Text="Release 1.0" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                            <Border Background="#7FAFAFFF" Height="21" CornerRadius="2">
+                                <TextBlock Text="05/27/2024" FontWeight="Regular" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+
+                        <ContentPresenter Margin="70,80,0,0" VerticalAlignment="Top"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
