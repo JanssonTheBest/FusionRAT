@@ -17,16 +17,16 @@
             <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="1" Grid.Column="1">
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Margin="-36,0,-36,0">
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" >
-                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
             </WrapPanel>
         </ScrollViewer>
     </Grid>
