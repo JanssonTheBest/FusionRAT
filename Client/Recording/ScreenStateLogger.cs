@@ -18,6 +18,8 @@ namespace Client.Recording
         private Texture2D _screenTexture;
         private int _width;
         private int _height;
+        private Bitmap _bitmap;
+        private MemoryStream _memoryStream;
 
         public int Size { get; private set; }
         public EventHandler<byte[]> ScreenRefreshed;
@@ -61,6 +63,9 @@ namespace Client.Recording
                 Usage = ResourceUsage.Staging
             };
             _screenTexture = new Texture2D(_device, textureDesc);
+
+            _bitmap = new Bitmap(_width, _height, PixelFormat.Format32bppArgb);
+            _memoryStream = new MemoryStream();
         }
 
         private void CaptureScreen()
@@ -73,18 +78,14 @@ namespace Client.Recording
                     {
                         if (TryCaptureFrame(duplicatedOutput, out var screenResource, out var mapSource))
                         {
-                            using (var bitmap = new Bitmap(_width, _height, PixelFormat.Format32bppArgb))
-                            {
-                                CopyPixelsToBitmap(bitmap, mapSource);
-                                _device.ImmediateContext.UnmapSubresource(_screenTexture, 0);
+                            CopyPixelsToBitmap(_bitmap, mapSource);
+                            _device.ImmediateContext.UnmapSubresource(_screenTexture, 0);
 
-                                using (var ms = new MemoryStream())
-                                {
-                                    bitmap.Save(ms, ImageFormat.Jpeg);
-                                    ScreenRefreshed?.Invoke(this, ms.ToArray());
-                                    _init = true;
-                                }
-                            }
+                            _memoryStream.SetLength(0); // Reset the stream
+                            _bitmap.Save(_memoryStream, ImageFormat.Jpeg);
+                            ScreenRefreshed?.Invoke(this, _memoryStream.ToArray());
+                            _init = true;
+
                             screenResource.Dispose();
                             duplicatedOutput.ReleaseFrame();
                         }
@@ -146,6 +147,8 @@ namespace Client.Recording
             _output1?.Dispose();
             _device?.Dispose();
             _factory?.Dispose();
+            _bitmap?.Dispose();
+            _memoryStream?.Dispose();
         }
     }
 }

@@ -1,25 +1,31 @@
-﻿
-using Common.DTOs.MessagePack;
-using Server.CoreServerFunctionality;
-using Server.UtilityWindows.Interface;
-using System.IO;
+﻿using System.IO;
 using System.Timers;
 using System.Windows;
 using System.Windows.Media;
+using Common.DTOs.MessagePack;
 using System.Windows.Media.Imaging;
+using Server.CoreServerFunctionality;
+using Server.UtilityWindows.Interface;
 
 namespace Server.UtilityWindows
 {
-    public partial class RemoteDesktop :Window, IUtilityWindow
+    public partial class RemoteDesktop : Window, IUtilityWindow
     {
+        private readonly ServerSession _serverSession;
+        private readonly System.Timers.Timer _fpsTimer;
+        private int _frameCounter;
+
         public RemoteDesktop(ServerSession serverSession)
         {
             InitializeComponent();
-            serverSession.OnRemoteDesktop += HandlePacket;
-            serverSession.SendPacketAsync(new RemoteDesktopDTO()
-            {
-                Frame=new byte[1]
-            });
+            _serverSession = serverSession;
+            _serverSession.OnRemoteDesktop += HandlePacket;
+            _serverSession.SendPacketAsync(new RemoteDesktopDTO { Frame = new byte[1] });
+
+            _fpsTimer = new System.Timers.Timer(1000);
+            _fpsTimer.Elapsed += OnTimerCallBack;
+            _fpsTimer.AutoReset = true;
+            _fpsTimer.Start();
         }
 
         private void HandlePacket(object? sender, EventArgs e)
@@ -27,55 +33,40 @@ namespace Server.UtilityWindows
             DisplayFrame(((RemoteDesktopDTO)sender).Frame);
         }
 
-        System.Timers.Timer fpsTimer =new System.Timers.Timer();
-        int frameCounter = 0;
         private async Task DisplayFrame(byte[] frameBytes)
         {
-            if (!fpsTimer.Enabled)
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                Task.Run(() =>
-                {
-                    fpsTimer.Interval = 1000;
-                    fpsTimer.Elapsed += OnTimerCallBack;
-                    fpsTimer.AutoReset = true;
-                    fpsTimer.Start();
-                });
-            }
-
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                frame.Source = await ByteArrayToImageSource(frameBytes);
+                frame.Source = ByteArrayToImageSource(frameBytes);
+                _frameCounter++;
             });
-            frameCounter++;
         }
 
         private void OnTimerCallBack(object? sender, ElapsedEventArgs e)
         {
             Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                fpsLabel.Content = frameCounter;
-                frameCounter = 0;
+                fpsLabel.Content = _frameCounter;
+                _frameCounter = 0;
             });
         }
 
-        private async Task<ImageSource> ByteArrayToImageSource(byte[] byteArray)
+        private ImageSource ByteArrayToImageSource(byte[] byteArray)
         {
-            BitmapImage bitmap = new BitmapImage();
-            using (MemoryStream stream = new MemoryStream(byteArray))
+            using (var stream = new MemoryStream(byteArray))
             {
-                stream.Seek(0, SeekOrigin.Begin);
+                var bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.StreamSource = stream;
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
                 bitmap.Freeze();
+                return bitmap;
             }
-            return bitmap;
         }
 
         private void icon_Loaded(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }
