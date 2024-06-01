@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="UI\Assets\Icons\BuilderConnectionsIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderEnPIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderOneIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderPersistenceIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderUInDIcon.png" />
     <None Remove="UI\Assets\Other\bgBlured.png" />
     <None Remove="UI\Assets\Other\client.png" />
     <None Remove="UI\Assets\Other\close.png" />
@@ -24,6 +29,7 @@
     <None Remove="UI\Assets\Other\server.png" />
     <None Remove="UI\Assets\Other\settings.png" />
     <None Remove="UI\Assets\Other\support.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderConnectionsIcon.png" />
     <None Remove="UI\Pages\HomePage\bgBlured.png" />
     <None Remove="UI\Pages\HomePage\ChangeLog2.jpg" />
     <None Remove="UI\Pages\HomePage\ChangeLog3.png" />
@@ -33,7 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UI\CustomControls\BuilderControls\" />
     <Folder Include="UI\Pages\BuilderPage\Style\" />
     <Folder Include="UI\Pages\ServerPage\Style\" />
     <Folder Include="UI\Pages\SupportPage\Style\" />
@@ -44,6 +49,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="UI\Assets\Icons\BuilderConnectionsIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Assets\Icons\BuilderEnPIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Assets\Icons\BuilderOneIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Assets\Icons\BuilderPersistenceIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Assets\Icons\BuilderUInDIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="UI\Assets\Other\bgBlured.png" />
     <Resource Include="UI\Assets\Other\client.png" />
     <Resource Include="UI\Assets\Other\close.png" />
@@ -62,6 +82,7 @@
     <Resource Include="UI\Assets\Icons\Logo.png" />
     <Resource Include="UI\Assets\Other\ChangeLog2.jpg" />
     <Resource Include="UI\Assets\Other\ChangeLog3.png" />
+    <Resource Include="UI\CustomControls\BuilderControls\BuilderConnectionsIcon.png" />
     <Resource Include="UI\Pages\HomePage\Client.png" />
     <Resource Include="UI\Pages\HomePage\pcHealth.png" />
   </ItemGroup>

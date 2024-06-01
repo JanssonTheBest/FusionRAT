@@ -4,9 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Server.UI.Pages.BuilderPage"
+             xmlns:uccontrols="clr-namespace:Server.UI.CustomControls.BuilderControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="748" d:DesignWidth="1230">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="42"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="42"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="1" Grid.Column="1">
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" >
+                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
+                <uccontrols:ConnectionsUC Margin="0,15,15,0"/>
+            </WrapPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
