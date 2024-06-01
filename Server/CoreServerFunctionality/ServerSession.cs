@@ -1,20 +1,6 @@
 ﻿using Common.Comunication;
 using Common.DTOs.MessagePack;
-using MessagePack.Formatters;
-using Server.UtilityWindows.Interface;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Security;
-using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Server.CoreServerFunctionality
