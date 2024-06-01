@@ -1,9 +1,13 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Client.Recording
 {
@@ -82,7 +86,8 @@ namespace Client.Recording
                             _device.ImmediateContext.UnmapSubresource(_screenTexture, 0);
 
                             _memoryStream.SetLength(0); // Reset the stream
-                            _bitmap.Save(_memoryStream, ImageFormat.Jpeg);
+
+                            SaveJpegWithQuality(_bitmap, _memoryStream, 50L);
                             ScreenRefreshed?.Invoke(this, _memoryStream.ToArray());
                             _init = true;
 
@@ -134,6 +139,29 @@ namespace Client.Recording
             }
 
             bitmap.UnlockBits(mapDest);
+        }
+
+        private void SaveJpegWithQuality(Bitmap bitmap, Stream stream, long quality)
+        {
+            var encoder = GetEncoder(ImageFormat.Jpeg);
+            var encoderParams = new EncoderParameters(1)
+            {
+                Param = { [0] = new EncoderParameter(Encoder.Quality, quality) }
+            };
+            bitmap.Save(stream, encoder, encoderParams);
+        }
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            var codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (var codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
 
         public void Stop()
