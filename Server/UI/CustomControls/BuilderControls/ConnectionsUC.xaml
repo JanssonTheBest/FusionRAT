@@ -21,6 +21,7 @@
             <Setter Property="FontWeight" Value="Regular"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
         <!-- Togglebutton -->
@@ -28,8 +29,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Grid Cursor="Hand">
-                            <Border x:Name="toggleSwitchBackground" Width="35" Height="18" CornerRadius="9" BorderThickness="1" BorderBrush="#373737" Background="Transparent"/>
+                        <Grid Cursor="Hand" Margin="10,0,0,0">
+                            <Border x:Name="toggleSwitchBackground" Width="35" Height="18" CornerRadius="9" BorderThickness="1" BorderBrush="#373737" Background="Transparent" />
                             <Ellipse x:Name="toggleSwitch" Fill="#373737" Width="12" Height="12" HorizontalAlignment="Left" Margin="3,0,0,0"/>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -82,11 +83,16 @@
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1">
                     <TextBlock Text="Save" Foreground="#99FFFFFF" VerticalAlignment="Center"/>
-                    <ToggleButton Style="{StaticResource CheckboxToggle}" BorderThickness="1" Margin="10,0,0,0"/>
+                    <ToggleButton Style="{StaticResource CheckboxToggle}" />
                 </StackPanel>
 
-                <TextBox Background="Transparent" VerticalContentAlignment="Center" BorderThickness="2" BorderBrush="#272727" Foreground="White" Grid.Row="3"/>
-                <TextBox Background="Transparent" VerticalContentAlignment="Center" BorderThickness="2" BorderBrush="#272727" Foreground="White" Grid.Row="5"/>
+                <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Grid.Row="3">
+                    <TextBox Style="{StaticResource Common_TextBox}" />
+                </Border>
+
+                <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Grid.Row="5">
+                    <TextBox Style="{StaticResource Common_TextBox}" />
+                </Border>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="8" HorizontalAlignment="Center">
                     <Button Content="Add connection" Width="240" Style="{StaticResource ConnectionsGradientBTN}"/>

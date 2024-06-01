@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="\UI\Style\Common\ToggleButton.xaml"/>
                 <ResourceDictionary Source="\UI\Style\Common\Scrollbar.xaml"/>
                 <ResourceDictionary Source="\UI\Style\Common\Button.xaml"/>
+                <ResourceDictionary Source="\UI\Style\Common\Textbox.xaml"/>
                 <ResourceDictionary Source="\UI\CustomControls\ChangeLogItem\Item.xaml"/>
                 <!--//Theme//-->
                 <ResourceDictionary Source="\UI\Assets\Theme.xaml"/>
