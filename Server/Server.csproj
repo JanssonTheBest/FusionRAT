@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="UI\CustomControls\BuilderControls\" />
     <Folder Include="UI\Pages\BuilderPage\Style\" />
     <Folder Include="UI\Pages\ServerPage\Style\" />
     <Folder Include="UI\Pages\SupportPage\Style\" />
