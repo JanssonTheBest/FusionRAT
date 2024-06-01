@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Client.Utilities
 {
-    internal class HVNC
+    internal class WebcamControl
     {
-        public HVNC(ClientSession session)
+        public WebcamControl(ClientSession session)
         {
         }
     }

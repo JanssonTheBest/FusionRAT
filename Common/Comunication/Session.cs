@@ -33,12 +33,13 @@ namespace Common.Comunication
         private int headerLength = 4;
         private readonly MessagePackSerializerOptions messagePackSerializerOptions = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block).WithResolver(MessagePack.Resolvers.StandardResolver.Instance);
         private SemaphoreSlim sendSemaphore = new SemaphoreSlim(1, 1);
-        private int bufferSize = 1024;
+        private int bufferSize = 65536;
         private TcpClient _client;
         private MemoryStream tempBuffer = new();
 
         public EventHandler OnPing;
         public EventHandler OnClientInfo;
+        public EventHandler OnRemoteDesktop;
 
 
         public Session(IConnectionProperties connectionProperties)
@@ -47,13 +48,10 @@ namespace Common.Comunication
             pipeReader = pipe.Reader;
             pipeWriter = pipe.Writer;
             _client = connectionProperties.Client;
-            BeginSession();
-        }
-
-        public void BeginSession()
-        {
             Task.Run(StartReceivingData);
         }
+
+
 
         public async Task ChangeNetworkBufferSize(int newSize)
         {
@@ -108,28 +106,42 @@ namespace Common.Comunication
                 var result = await pipeReader.ReadAtLeastAsync(readThreashold);
                 ReadOnlySequence<byte> buffer = result.Buffer;
                 int bytesConsumed = 0;
+                bool packetIncomplete = false;
+
                 while (!cancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    if (buffer.Length < headerLength + 1 + bytesConsumed)
+                    if (buffer.Length < bytesConsumed + headerLength)
                     {
+                        packetIncomplete = true;
                         readThreashold = headerLength + 1;
                         break;
                     }
+                    int packetLength = BitConverter.ToInt32(buffer.Slice(bytesConsumed, headerLength).ToArray());
 
-                    int packetLength = BitConverter.ToInt32(buffer.Slice(0, headerLength).ToArray());
-
-                    if (buffer.Length < packetLength + headerLength + bytesConsumed)
+                    if (buffer.Length < bytesConsumed + headerLength + packetLength)
                     {
-                        readThreashold = packetLength + headerLength;
+                        packetIncomplete = true;
+                        readThreashold = headerLength + packetLength;
                         break;
                     }
-
-                    IPacket packet = MessagePackSerializer.Deserialize<IPacket>(buffer.Slice(headerLength + bytesConsumed, packetLength), messagePackSerializerOptions, cancellationTokenSource.Token);
-                    Task.Run(()=>packet.HandlePacket(this));
-                    bytesConsumed += packetLength + headerLength;
+                    IPacket packet = MessagePackSerializer.Deserialize<IPacket>(
+                        buffer.Slice(bytesConsumed + headerLength, packetLength),
+                        messagePackSerializerOptions,
+                        cancellationTokenSource.Token);
+                    Task.Run(() => packet.HandlePacket(this));
+                    bytesConsumed += headerLength + packetLength;
                 }
                 pipeReader.AdvanceTo(buffer.GetPosition(bytesConsumed), buffer.End);
+                if (packetIncomplete)
+                {
+                    readThreashold = headerLength + 1;
+                }
+                else
+                {
+                    readThreashold = headerLength;
+                }
             }
         }
+
     }
 }

@@ -10,6 +10,7 @@ namespace Common.DTOs.MessagePack
 {
     [Union(0, typeof(PingDTO))]
     [Union(1, typeof(ClientInfoDTO))]
+    [Union(2, typeof(RemoteDesktopDTO))]
     public interface IPacket
     {
         public Task HandlePacket(Session packetHandler);
@@ -21,6 +22,17 @@ namespace Common.DTOs.MessagePack
         public async Task HandlePacket(Session session)
         {
             session.OnPing.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    [MessagePackObject]
+    public class RemoteDesktopDTO : IPacket
+    {
+        [Key(0)]
+        public byte[] Frame { get; set; }
+        public async Task HandlePacket(Session session)
+        {
+            session.OnRemoteDesktop.Invoke(this, EventArgs.Empty);
         }
     }
 
