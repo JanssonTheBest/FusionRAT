@@ -1,7 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -26,11 +25,9 @@ namespace RemoteDesktopPlugin
         private MemoryStream _memoryStream;
 
         public int Size { get; private set; }
-        public EventHandler<byte[]> ScreenRefreshed;
+        public event EventHandler<byte[]> ScreenRefreshed;
 
-        public ScreenStateLogger()
-        {
-        }
+        public ScreenStateLogger() { }
 
         public void Start()
         {
@@ -124,18 +121,18 @@ namespace RemoteDesktopPlugin
             return true;
         }
 
-        private void CopyPixelsToBitmap(Bitmap bitmap, DataBox mapSource)
+        private unsafe void CopyPixelsToBitmap(Bitmap bitmap, DataBox mapSource)
         {
             var boundsRect = new Rectangle(0, 0, _width, _height);
             var mapDest = bitmap.LockBits(boundsRect, ImageLockMode.WriteOnly, bitmap.PixelFormat);
-            var sourcePtr = mapSource.DataPointer;
-            var destPtr = mapDest.Scan0;
+            byte* sourcePtr = (byte*)mapSource.DataPointer.ToPointer();
+            byte* destPtr = (byte*)mapDest.Scan0.ToPointer();
 
             for (int y = 0; y < _height; y++)
             {
-                SharpDX.Utilities.CopyMemory(destPtr, sourcePtr, _width * 4);
-                sourcePtr = IntPtr.Add(sourcePtr, mapSource.RowPitch);
-                destPtr = IntPtr.Add(destPtr, mapDest.Stride);
+                System.Buffer.MemoryCopy(sourcePtr, destPtr, _width * 4, _width * 4);
+                sourcePtr += mapSource.RowPitch;
+                destPtr += mapDest.Stride;
             }
 
             bitmap.UnlockBits(mapDest);
