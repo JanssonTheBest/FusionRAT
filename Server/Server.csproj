@@ -36,10 +36,14 @@
     <Folder Include="UI\Pages\BuilderPage\Style\" />
     <Folder Include="UI\Pages\ServerPage\Style\" />
     <Folder Include="UI\Pages\SupportPage\Style\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ClientInfo\ClientInfo.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\RemoteDesktop\RemoteDesktopPlugin.csproj" />
+    <ProjectReference Include="..\ReverseShell\ReverseShell.csproj" />
   </ItemGroup>
 
   <ItemGroup>

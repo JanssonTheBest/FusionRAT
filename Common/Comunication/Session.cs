@@ -1,17 +1,10 @@
 ﻿using Common.DTOs.MessagePack;
 using MessagePack;
-using System;
 using System.Buffers;
-using System.Collections.Generic;
 using System.IO.Pipelines;
-using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
-using System.Net.WebSockets;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+
 
 namespace Common.Comunication
 {
@@ -37,6 +30,7 @@ namespace Common.Comunication
         private TcpClient _client;
         private MemoryStream tempBuffer = new();
 
+        public EventHandler OnPlugin;
         public EventHandler OnPing;
         public EventHandler OnClientInfo;
         public EventHandler OnRemoteDesktop;

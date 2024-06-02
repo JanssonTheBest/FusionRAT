@@ -6,6 +6,7 @@ namespace Common.DTOs.MessagePack
     [Union(0, typeof(PingDTO))]
     [Union(1, typeof(ClientInfoDTO))]
     [Union(2, typeof(RemoteDesktopDTO))]
+    [Union(3, typeof(PluginDTO))]
     public interface IPacket
     {
         public Task HandlePacket(Session packetHandler);
@@ -25,6 +26,8 @@ namespace Common.DTOs.MessagePack
     {
         [Key(0)]
         public byte[] Frame { get; set; }
+        [Key(1)]
+        public string[] Screen {  get; set; }
         public async Task HandlePacket(Session session)
         {
             session.OnRemoteDesktop.Invoke(this, EventArgs.Empty);
@@ -54,6 +57,19 @@ namespace Common.DTOs.MessagePack
         public async Task HandlePacket(Session session)
         {
             session.OnClientInfo.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    [MessagePackObject]
+    public class PluginDTO : IPacket
+    {
+        [Key(0)]
+        public byte[] Plugin { get; set; }
+        [Key(1)]
+        public string PluginFullName { get; set; }
+        public async Task HandlePacket(Session session)
+        {
+            session.OnPlugin.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Server.UtilityWindows
             InitializeComponent();
             _serverSession = serverSession;
             _serverSession.OnRemoteDesktop += HandlePacket;
-            _serverSession.SendPacketAsync(new RemoteDesktopDTO { Frame = new byte[1] });
+            _serverSession.SendPlugin(typeof(RemoteDesktopPlugin.Plugin));
 
             _fpsTimer = new System.Timers.Timer(1000);
             _fpsTimer.Elapsed += OnTimerCallBack;
@@ -28,9 +28,15 @@ namespace Server.UtilityWindows
             _fpsTimer.Start();
         }
 
-        private void HandlePacket(object? sender, EventArgs e)
+        private async void HandlePacket(object? sender, EventArgs e)
         {
-            DisplayFrame(((RemoteDesktopDTO)sender).Frame);
+            var dto = (RemoteDesktopDTO)sender;
+            if(dto.Screen is not null)
+            {
+
+                return;
+            }
+           await DisplayFrame(dto.Frame);
         }
 
         private async Task DisplayFrame(byte[] frameBytes)

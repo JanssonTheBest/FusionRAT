@@ -1,16 +1,16 @@
-﻿using Client.Communication;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Utilities
+namespace ReverseShell
 {
-    internal class HVNC
+    public class Plugin
     {
-        public HVNC(ClientSession session)
+        public Plugin()
         {
+            Console.WriteLine("Yap");
         }
     }
 }
