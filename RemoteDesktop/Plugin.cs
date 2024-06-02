@@ -76,7 +76,7 @@ namespace RemoteDesktopPlugin
                 Console.WriteLine($"GetMonitorInfo failed with error code {error}");
                 return true; // continue enumeration
             }
-            string[] screen = new string[] { monitorInfo.szDevice, monitorInfo.rcMonitor.Left.ToString(), monitorInfo.rcMonitor.Top.ToString() }
+            string[] screen = new string[] { monitorInfo.szDevice, monitorInfo.rcMonitor.Left.ToString(), monitorInfo.rcMonitor.Top.ToString() };
             screens.Add(screen);
             _session.SendPacketAsync(new RemoteDesktopDTO()
             {
