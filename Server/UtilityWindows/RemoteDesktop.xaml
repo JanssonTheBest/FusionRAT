@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="RemoteDesktop" Height="450" Width="800">
     <Grid>
+        <ComboBox Height="30" VerticalAlignment="Top" x:Name="screens" SelectionChanged="screens_SelectionChanged"></ComboBox>
         <Image x:Name="icon" Loaded="icon_Loaded" Visibility="Hidden"></Image>
         <Label Foreground="LightGreen" Name="fpsLabel" FontSize="20" Content="0" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left"></Label>
         <Image x:Name="frame" HorizontalAlignment="Stretch" Panel.ZIndex="-1" VerticalAlignment="Stretch" Stretch="Fill"></Image>
