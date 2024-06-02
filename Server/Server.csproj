@@ -9,27 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="UI\Assets\Other\bgBlured.png" />
-    <None Remove="UI\Assets\Other\client.png" />
-    <None Remove="UI\Assets\Other\close.png" />
-    <None Remove="UI\Assets\Other\Dark.png" />
-    <None Remove="UI\Assets\Other\fileSettings.png" />
-    <None Remove="UI\Assets\Other\home.png" />
-    <None Remove="UI\Assets\Other\ISmaximized.png" />
-    <None Remove="UI\Assets\Other\Light.png" />
-    <None Remove="UI\Assets\Other\location.png" />
-    <None Remove="UI\Assets\Other\maximizedNot.png" />
-    <None Remove="UI\Assets\Other\minimize.png" />
-    <None Remove="UI\Assets\Other\os.png" />
-    <None Remove="UI\Assets\Other\server.png" />
-    <None Remove="UI\Assets\Other\settings.png" />
-    <None Remove="UI\Assets\Other\support.png" />
-    <None Remove="UI\Pages\HomePage\bgBlured.png" />
-    <None Remove="UI\Pages\HomePage\ChangeLog2.jpg" />
-    <None Remove="UI\Pages\HomePage\ChangeLog3.png" />
-    <None Remove="UI\Pages\HomePage\Client.png" />
-    <None Remove="UI\Pages\HomePage\Logo.png" />
-    <None Remove="UI\Pages\HomePage\pcHealth.png" />
+    <None Remove="UI\Assets\Icons\BuilderConnectionsIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderOneIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderPersistenceIcon.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderConnectionsIcon.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderOneIcon.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderPersistenceIcon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +32,11 @@
   </ItemGroup>
 
   <ItemGroup>
+	<Resource Include="UI\Assets\Icons\BuilderConnectionsIcon.png" />
+	<Resource Include="UI\Assets\Icons\BuilderEnPIcon.png" />
+    <Resource Include="UI\Assets\Icons\BuilderOneIcon.png" />
+    <Resource Include="UI\Assets\Icons\BuilderPersistenceIcon.png" />
+    <Resource Include="UI\Assets\Icons\BuilderUInDIcon.png" />
     <Resource Include="UI\Assets\Other\bgBlured.png" />
     <Resource Include="UI\Assets\Other\client.png" />
     <Resource Include="UI\Assets\Other\close.png" />
