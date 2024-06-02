@@ -15,7 +15,7 @@
             <Border BorderThickness="0,0,0,2" BorderBrush="#272727">
                 <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Image Width="24" Height="24" Margin="0,0,5,0" Source="/UI/Assets/Icons/BuilderPersistenceIcon.png"/>
-                    <TextBlock Text="Persistence" Foreground="White" FontSize="17" FontWeight="Medium" FontFamily="Inter" VerticalAlignment="Center"/>
+                    <TextBlock Text="Persistence" Foreground="White" FontSize="17" FontWeight="Medium" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
@@ -90,7 +90,7 @@
                         </Border>
 
                         <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Height="37" Margin="0,16,0,0" >
-                            <TextBox Style="{StaticResource Common_TextBox}" />
+                            <TextBox Style="{StaticResource Common_TextBox}"  />
                         </Border>
                     </StackPanel>
                 </Grid>

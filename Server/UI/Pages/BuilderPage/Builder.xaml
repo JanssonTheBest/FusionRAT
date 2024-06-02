@@ -16,15 +16,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="1" Grid.Column="1" Margin="-11,0,-36,0">
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" >
                 <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
                 <uccontrols:OneUC MaxWidth="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
                 <uccontrols:PersistenceUC MaxWidth="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
-                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:UindUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:EnpUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:AfUC MaxWidth="400" Margin="0,15,15,0"/>
                 <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
                 <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
             </WrapPanel>

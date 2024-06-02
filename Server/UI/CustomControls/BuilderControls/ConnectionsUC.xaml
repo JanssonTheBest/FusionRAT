@@ -18,7 +18,6 @@
             <Setter Property="BorderBrush" Value="#272727"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Foreground" Value="#99FFFFFF"/>
-            <Setter Property="FontWeight" Value="Regular"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Cursor" Value="Hand"/>
