@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Server.UI.CustomControls.BuilderControls"
+             xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
              mc:Ignorable="d" FontSize="15" Foreground="{StaticResource Text}">
     <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
@@ -66,7 +67,7 @@
 
                     <StackPanel Orientation="Horizontal" Grid.Row="7">
                         <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="140">
-                            <TextBox Style="{StaticResource Common_TextBox}"  />
+                            <TextBox Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="Enter in MB" helpers:TextBoxHelper.UseChar="False" helpers:TextBoxHelper.ValueLimit="2148" />
                         </Border>
                         <StackPanel Orientation="Horizontal" Margin="44,2,0,0" VerticalAlignment="Top">
                             <TextBlock Text="Auto-Update" VerticalAlignment="Center"/>
