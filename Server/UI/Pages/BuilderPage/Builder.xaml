@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="1" Grid.Column="1" Margin="-11,0,-36,0">
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" >

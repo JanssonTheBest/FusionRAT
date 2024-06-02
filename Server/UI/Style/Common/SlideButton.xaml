@@ -1,0 +1,93 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="CheckboxToggle" TargetType="ToggleButton">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid Margin="10,0,0,0">
+                        <Border x:Name="toggleSwitchBackground" Width="35" Height="18" CornerRadius="9" BorderThickness="1" BorderBrush="#373737">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop  x:Name="toggleSwitchBackgroundGradentStop" Color="#00125D97" Offset="0.0"/>
+                                    <GradientStop x:Name="toggleSwitchBackgroundGradientStop" Color="#001E9BFD" Offset="1.0"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+                        <Ellipse x:Name="toggleSwitch" Fill="#373737" Width="12" Height="12" HorizontalAlignment="Left">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform X="3" Y="0"/>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="toggleSwitch"
+                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                     To="20" Duration="0:0:0.3">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <ColorAnimation Storyboard.TargetName="toggleSwitchBackgroundGradientStop"
+                                                        Storyboard.TargetProperty="Color"
+                                                        To="#1E9BFD" Duration="0:0:0.4">
+                                            <ColorAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </ColorAnimation.EasingFunction>
+                                        </ColorAnimation>
+
+                                        <ColorAnimation Storyboard.TargetName="toggleSwitchBackgroundGradentStop"
+                                                        Storyboard.TargetProperty="Color"
+                                                        To="#125D97" Duration="0:0:0.4">
+                                            <ColorAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </ColorAnimation.EasingFunction>
+                                        </ColorAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="toggleSwitch"
+                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                         To="3" Duration="0:0:0.3">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <ColorAnimation Storyboard.TargetName="toggleSwitchBackgroundGradientStop"
+                                                        Storyboard.TargetProperty="Color"
+                                                        To="#001E9BFD" Duration="0:0:0.4">
+                                            <ColorAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </ColorAnimation.EasingFunction>
+                                        </ColorAnimation>
+
+                                        <ColorAnimation Storyboard.TargetName="toggleSwitchBackgroundGradentStop"
+                                                        Storyboard.TargetProperty="Color"
+                                                        To="#00125D97" Duration="0:0:0.4">
+                                            <ColorAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </ColorAnimation.EasingFunction>
+                                        </ColorAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiTrigger.ExitActions>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+</ResourceDictionary>
