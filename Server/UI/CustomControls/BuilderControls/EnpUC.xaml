@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Server.UI.CustomControls.BuilderControls"
+             xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
              mc:Ignorable="d" FontSize="15" Foreground="{StaticResource Text}">
     <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
@@ -37,7 +38,7 @@
                         <TextBlock Text="Delayed Execution" VerticalAlignment="Center"/>
                         <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center"/>
                         <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="150" Height="35" Margin="16,0,0,0" >
-                            <TextBox Style="{StaticResource Common_TextBox}" />
+                            <TextBox Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="Minutes" helpers:TextBoxHelper.UseChar="False" helpers:TextBoxHelper.ValueLimit="4321" />
                         </Border>
                     </StackPanel>
 

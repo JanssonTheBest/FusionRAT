@@ -31,29 +31,35 @@
                         <RowDefinition Height="37"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="1">
-                        <TextBlock Text="Fake Error Message" VerticalAlignment="Center"/>
-                        <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center" />
-                        <Border Width="140" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3">
+                    <Grid Grid.Row="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Fake Error Message" VerticalAlignment="Center"/>
+                            <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        
+                        <Border Width="140" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Right">
                             <Button Background="Transparent" BorderThickness="0">
                                 <Button.Content>
                                     <TextBlock Text="Configure" Foreground="White" FontSize="14" HorizontalAlignment="Center"/>
                                 </Button.Content>
                             </Button>
                         </Border>
-                    </StackPanel>
+                    </Grid>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="3">
-                        <TextBlock Text="Notification Sound" VerticalAlignment="Center"/>
-                        <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center" />
-                        <Border Width="140" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" >
+                    <Grid Grid.Row="3">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Notification Sound" VerticalAlignment="Center"/>
+                            <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        
+                        <Border Width="140" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Right">
                             <Button Background="Transparent" BorderThickness="0">
                                 <Button.Content>
                                     <TextBlock Text="Configure" Foreground="White" FontSize="14" HorizontalAlignment="Center"/>
                                 </Button.Content>
                             </Button>
                         </Border>
-                    </StackPanel>
+                    </Grid>
 
                     <StackPanel Grid.Row="5">
                         <Border Width="340" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3">
