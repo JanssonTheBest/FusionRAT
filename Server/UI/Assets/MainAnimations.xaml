@@ -1,0 +1,188 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Storyboard x:Key="MouseEnterAnimation">
+        <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                        To="#07FFFFFF" Duration="0:0:0.15">
+            <ColorAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </ColorAnimation.EasingFunction>
+        </ColorAnimation>
+    </Storyboard>
+    <Storyboard x:Key="MouseLeaveAnimation">
+        <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                        To="Transparent" Duration="0:0:0.15">
+            <ColorAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </ColorAnimation.EasingFunction>
+        </ColorAnimation>
+    </Storyboard>
+
+    <Style x:Key="ButtonAnimationStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="#07FFFFFF" Duration="0:0:0.15">
+                                            <ColorAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </ColorAnimation.EasingFunction>
+                                        </ColorAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed"/>
+                                <VisualState x:Name="Disabled"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="border" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Storyboard x:Key="Impact_SidePanel">
+        <!--Panels shrink-->
+        <DoubleAnimation Storyboard.TargetName="sidePanel"
+                         Storyboard.TargetProperty="Width"
+                         To="51" Duration="0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <ThicknessAnimation Storyboard.TargetName="framePanel"
+                            Storyboard.TargetProperty="Margin"
+                            To="51,0,0,0" Duration="0">
+            <ThicknessAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </ThicknessAnimation.EasingFunction>
+        </ThicknessAnimation>
+        <!--Nav buttons go from big to Impact-->
+        <DoubleAnimation Storyboard.TargetName="navHome"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navClient"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navServer"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navBuilder"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navSupport"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navSettings"
+                         Storyboard.TargetProperty="Width"
+                         To="39" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Key="Expand_SidePanel">
+        <!--Panels expand-->
+        <DoubleAnimation Storyboard.TargetName="sidePanel"
+                         Storyboard.TargetProperty="Width"
+                         To="220" Duration="0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <ThicknessAnimation Storyboard.TargetName="framePanel"
+                            Storyboard.TargetProperty="Margin"
+                            To="220,0,0,0" Duration="0">
+            <ThicknessAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </ThicknessAnimation.EasingFunction>
+        </ThicknessAnimation>
+        <!--Nav buttons go from Impact to expanded-->
+        <DoubleAnimation Storyboard.TargetName="navHome"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navClient"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navServer"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navBuilder"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navSupport"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="navSettings"
+                         Storyboard.TargetProperty="Width"
+                         To="208" Duration="0"
+                         BeginTime="0:0:0">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+</ResourceDictionary>
