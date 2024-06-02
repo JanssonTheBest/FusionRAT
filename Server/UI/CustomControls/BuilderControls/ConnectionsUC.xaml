@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Server.UI.CustomControls.BuilderControls"
-             mc:Ignorable="d" >
+             mc:Ignorable="d" FontSize="15" Foreground="{StaticResource Text}">
     <UserControl.Resources>
         <!-- Connections Gradient Buttons -->
         <LinearGradientBrush x:Key="ConnectionsGradientBTNBrush" StartPoint="0,0" EndPoint="1,1">
@@ -23,35 +23,6 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
-
-        <!-- Togglebutton -->
-        <Style x:Key="CheckboxToggle" TargetType="ToggleButton">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ToggleButton">
-                        <Grid Cursor="Hand" Margin="10,0,0,0">
-                            <Border x:Name="toggleSwitchBackground" Width="35" Height="18" CornerRadius="9" BorderThickness="1" BorderBrush="#373737" Background="Transparent" />
-                            <Ellipse x:Name="toggleSwitch" Fill="#373737" Width="12" Height="12" HorizontalAlignment="Left" Margin="3,0,0,0"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="toggleSwitch" Property="HorizontalAlignment" Value="Right"/>
-                                <Setter TargetName="toggleSwitch" Property="Margin" Value="0,0,3,0"/>
-                                <Setter TargetName="toggleSwitchBackground" Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                            <GradientStop Color="#125D97" Offset="0.0"/>
-                                            <GradientStop Color="#1E9BFD" Offset="1.0"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="toggleSwitchBackground" Property="BorderThickness" Value="0"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
 
     <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -63,8 +34,8 @@
 
             <Border BorderThickness="0,0,0,2" BorderBrush="#272727">
                 <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image  Width="24" Height="24" Margin="0,0,5,0" VerticalAlignment="Center" Source="/UI/CustomControls/BuilderControls/BuilderConnectionsIcon.png"/>
-                    <TextBlock Text="Connections" Foreground="White" FontSize="17" FontWeight="Medium" FontFamily="Inter" VerticalAlignment="Center"/>
+                    <Image Width="24" Height="24" Margin="0,0,5,0" Source="/UI/Assets/Icons/BuilderConnectionsIcon.png" VerticalAlignment="Center" />
+                    <TextBlock Text="Connections" FontSize="17" FontWeight="Medium" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
@@ -81,20 +52,20 @@
                     <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1">
-                    <TextBlock Text="Save" Foreground="#99FFFFFF" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <TextBlock Text="Save" VerticalAlignment="Center"/>
                     <ToggleButton Style="{StaticResource CheckboxToggle}" />
                 </StackPanel>
 
                 <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Grid.Row="3">
-                    <TextBox Style="{StaticResource Common_TextBox}" />
+                    <TextBox Style="{StaticResource Common_TextBox}" Foreground="#99FFFFFF" />
                 </Border>
 
                 <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Grid.Row="5">
-                    <TextBox Style="{StaticResource Common_TextBox}" />
+                    <TextBox Style="{StaticResource Common_TextBox}" Foreground="#99FFFFFF" />
                 </Border>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="8" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Grid.Row="8">
                     <Button Content="Add connection" Width="240" Style="{StaticResource ConnectionsGradientBTN}"/>
                     <Button Content="Fallback" Margin="10,0,0,0" Width="90" Style="{StaticResource ConnectionsGradientBTN}"/>
                 </StackPanel>

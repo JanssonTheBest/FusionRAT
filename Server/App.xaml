@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="\UI\Assets\Theme.xaml"/>
                 
                 <ResourceDictionary Source="\UI\Style\Common\NavigationRBTN.xaml"/>
+                <ResourceDictionary Source="\UI\CustomControls\BuilderControls\Style\BuilderStyles.xaml"/>
 
                 <!--//Animations//-->
                 <ResourceDictionary Source="\UI\Pages\HomePage\KeyFrames\Page_Show.xaml"/>

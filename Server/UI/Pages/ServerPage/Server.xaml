@@ -111,8 +111,16 @@
         </DataGrid>
 
         <StackPanel Height="30" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20">
-            <TextBox x:Name="portInput" Width="80" Background="Transparent"/>
-            <Button x:Name="portStart" Width="40" Content="*" Click="portStart_Click" Margin="20,0,0,0"/>
+            <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3">
+                <TextBox Style="{StaticResource Common_TextBox}" x:Name="portInput" Width="80" />
+            </Border>
+            <Button Style="{StaticResource Common_Button}" x:Name="portStart" Click="portStart_Click" Margin="20,0,0,0">
+                <Button.Content>
+                    <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="55">
+                        <TextBlock Text="Listen" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Button.Content>
+            </Button>
         </StackPanel>
 
     </Grid>
