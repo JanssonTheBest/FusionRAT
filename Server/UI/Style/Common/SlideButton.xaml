@@ -15,7 +15,7 @@
                                 </LinearGradientBrush>
                             </Border.Background>
                         </Border>
-                        <Ellipse x:Name="toggleSwitch" Fill="#373737" Width="12" Height="12" HorizontalAlignment="Left">
+                        <Ellipse x:Name="toggleSwitch" Fill="#373737" Width="12" Height="12" HorizontalAlignment="Left" >
                             <Ellipse.RenderTransform>
                                 <TranslateTransform X="3" Y="0"/>
                             </Ellipse.RenderTransform>
@@ -88,6 +88,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
 </ResourceDictionary>

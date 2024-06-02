@@ -23,9 +23,9 @@
                 <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
                 <uccontrols:OneUC MaxWidth="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
                 <uccontrols:PersistenceUC MaxWidth="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
-                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:UindUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:EnpUC MaxWidth="400" Margin="0,15,15,0"/>
+                <uccontrols:AfUC MaxWidth="400" Margin="0,15,15,0"/>
                 <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
                 <uccontrols:ConnectionsUC MaxWidth="400" Margin="0,15,15,0"/>
             </WrapPanel>

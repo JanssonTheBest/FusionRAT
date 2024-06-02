@@ -15,7 +15,7 @@
             <Border BorderThickness="0,0,0,2" BorderBrush="#272727">
                 <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Image Width="24" Height="24" Margin="0,0,5,0" Source="/UI/Assets/Icons/BuilderOneIcon.png" VerticalAlignment="Center" />
-                    <TextBlock Text="Obfuscation and Evasion" Foreground="White" FontSize="17" FontWeight="Medium" FontFamily="Inter" VerticalAlignment="Center"/>
+                    <TextBlock Text="Obfuscation and Evasion" Foreground="White" FontSize="17" FontWeight="Medium" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
 

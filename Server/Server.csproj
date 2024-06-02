@@ -10,11 +10,15 @@
 
   <ItemGroup>
     <None Remove="UI\Assets\Icons\BuilderConnectionsIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderEnPIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderOneIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderPersistenceIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderUInDIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderConnectionsIcon.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderEnPIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderOneIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderPersistenceIcon.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderUInDIcon.png" />
   </ItemGroup>
 
   <ItemGroup>

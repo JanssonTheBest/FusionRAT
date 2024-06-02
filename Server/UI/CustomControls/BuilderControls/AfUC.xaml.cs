@@ -2,9 +2,9 @@
 
 namespace Server.UI.CustomControls.BuilderControls
 {
-    public partial class PersistenceUC : UserControl
+    public partial class AfUC : UserControl
     {
-        public PersistenceUC()
+        public AfUC()
         {
             InitializeComponent();
         }
