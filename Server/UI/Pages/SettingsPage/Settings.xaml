@@ -7,15 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="748" d:DesignWidth="1230">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Style/SlideButton.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-    
+
     <Grid>
         
     </Grid>
+
 </UserControl>
