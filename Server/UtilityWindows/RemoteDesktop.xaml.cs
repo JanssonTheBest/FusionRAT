@@ -52,7 +52,7 @@ namespace Server.UtilityWindows
         }
 
         Bitmap bmp;
-        int bitrate = 12;
+        int bitrate = 6;
         int[] screen = new int[] { 1920, 1080 };
         int screenArea;
         int bmpPartSize;
@@ -101,7 +101,7 @@ namespace Server.UtilityWindows
             
 
             var b = await ConcatinateBitmap(frameBytes);
-            await Application.Current.Dispatcher.BeginInvoke(async () =>
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 frame.Source = await ToImageSource(b);
                 _frameCounter++;

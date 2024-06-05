@@ -14,7 +14,7 @@ namespace RemoteDesktopPlugin
     public class Plugin
     {
         Session _session;
-        int bitrate = 12;
+        int bitrate = 6;
         int[] screen;
         public Plugin(Session session)
         {
