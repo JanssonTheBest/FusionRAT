@@ -19,7 +19,7 @@ namespace Server.UtilityWindows
         private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly Bitmap _bmp;
         private readonly Graphics _graphics;
-        private readonly int _bitrate = 12;
+        private readonly int _bitrate = 6;
         private readonly int[] _screen = { 1920, 1080 };
         private readonly int _screenArea;
         private readonly int _bmpPartSize;
@@ -49,13 +49,13 @@ namespace Server.UtilityWindows
 
         private async void HandlePacket(object? sender, EventArgs e)
         {
-            var dto = (RemoteDesktopDTO)sender;
-            if (dto.Screen != null)
+            var dto = sender as RemoteDesktopDTO;
+            if (dto?.Screen != null)
             {
                 await Application.Current.Dispatcher.InvokeAsync(() => screens.Items.Add(string.Join("|", dto.Screen)));
                 return;
             }
-            await DisplayFrame(dto.Frame);
+            await DisplayFrame(dto?.Frame);
         }
 
         private async Task<Bitmap> ConcatenateBitmap(byte[][] bmpBytes)
