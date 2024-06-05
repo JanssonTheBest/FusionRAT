@@ -8,6 +8,8 @@ using Server.CoreServerFunctionality;
 using Server.UtilityWindows.Interface;
 using System.Windows.Controls;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Windows.Threading;
 
 namespace Server.UtilityWindows
 {
@@ -23,6 +25,14 @@ namespace Server.UtilityWindows
             _serverSession = serverSession;
             _serverSession.OnRemoteDesktop += HandlePacket;
             _serverSession.SendPlugin(typeof(RemoteDesktopPlugin.Plugin));
+
+            screenArea = screen[0] * screen[1];
+            bmpPartSize = (int)Math.Round(MathF.Sqrt(screenArea / bitrate));
+            horizontalAmount = screen[0] / bmpPartSize + 1;
+            verticalAmount = screen[1] / bmpPartSize + 1;
+
+            bmp = new(screen[0], screen[1]);
+            g =Graphics.FromImage(bmp);
 
             _fpsTimer = new System.Timers.Timer(1000);
             _fpsTimer.Elapsed += OnTimerCallBack;
@@ -41,13 +51,85 @@ namespace Server.UtilityWindows
             await DisplayFrame(dto.Frame);
         }
 
-        private async Task DisplayFrame(byte[] frameBytes)
+        Bitmap bmp;
+        int bitrate = 12;
+        int[] screen = new int[] { 1920, 1080 };
+        int screenArea;
+        int bmpPartSize;
+        int horizontalAmount;
+        int verticalAmount;
+        Graphics g;
+        SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
+        private async Task<Bitmap> ConcatinateBitmap(byte[][] bmpBytes)
         {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            List<Task> tasks = new List<Task>();
+            for (int i = 0; i < verticalAmount; i++)
             {
-                frame.Source = ByteArrayToImageSource(frameBytes);
+                for (int j = 0; j < horizontalAmount; j++)
+                {
+                    int index = j + i * horizontalAmount;
+                    System.Drawing.Point point = new System.Drawing.Point(j * bmpPartSize, i * bmpPartSize);
+                    tasks.Add(Task.Run(async () =>
+                    {
+                        if (bmpBytes[index] != null)
+                        {
+                            using (MemoryStream ms = new MemoryStream(bmpBytes[index]))
+                            {
+                                ms.Position = 0; // Reset the stream position to the beginning
+                                Bitmap partBmp = new Bitmap(ms);
+                                await semaphoreSlim.WaitAsync();
+                                try
+                                {
+                                    g.DrawImage(partBmp, point);
+                                }
+                                finally
+                                {
+                                    semaphoreSlim.Release();
+                                }
+                            }
+                        }
+                    }));
+                }
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+          return (Bitmap)bmp.Clone();
+        }
+
+        private async Task DisplayFrame(byte[][] frameBytes)
+        {
+            
+
+            var b = await ConcatinateBitmap(frameBytes);
+            await Application.Current.Dispatcher.BeginInvoke(async () =>
+            {
+                frame.Source = await ToImageSource(b);
                 _frameCounter++;
-            });
+            }, DispatcherPriority.Send);
+        }
+
+        private async Task<BitmapImage> ToImageSource(Bitmap b)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                await semaphoreSlim.WaitAsync();
+                try
+                {
+                    b.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
+                }
+                memory.Position = 0;
+
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                return bitmapImage;
+            }
         }
 
         private void OnTimerCallBack(object? sender, ElapsedEventArgs e)
@@ -57,50 +139,6 @@ namespace Server.UtilityWindows
                 fpsLabel.Content = _frameCounter;
                 _frameCounter = 0;
             });
-        }
-
-        private byte[] BitmapToJpegBytes(byte[] byteArray)
-        {
-            using (var stream = new MemoryStream(byteArray))
-            {
-                Bitmap bmp = new Bitmap(stream);
-
-                // Create a new memory stream to save the JPEG image
-                using (MemoryStream jpegStream = new MemoryStream())
-                {
-                    // Save the bitmap as JPEG to the memory stream
-                    bmp.Save(jpegStream, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                    // Return the byte array of the JPEG image
-                    return jpegStream.ToArray();
-                }
-            }
-        }
-
-        private ImageSource ByteArrayToImageSource(byte[] byteArray)
-        {
-            using (var stream = new MemoryStream(byteArray))
-            {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = stream;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-                bitmap.Freeze();
-                return bitmap;
-            }
-        }
-        public BitmapSource ByteArrayToBitmapSource(byte[] bitmapBytes, int width, int height)
-        {
-            var bitmapSource = BitmapSource.Create(
-                width, height, 96, 96, // dpiX and dpiY
-                System.Windows.Media.PixelFormats.Bgra32, // Pixel format
-                null, // Palette
-                bitmapBytes, // Bitmap data
-                width * 4 // Stride (width * 4 bytes per pixel)
-            );
-
-            return bitmapSource;
         }
 
         private void icon_Loaded(object sender, RoutedEventArgs e)

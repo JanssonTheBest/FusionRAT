@@ -57,7 +57,6 @@ namespace Server.CoreServerFunctionality
             SslStream.AuthenticateAsServer(options);
         }
     }
-#if DEBUG
     public sealed class DummyCertificate : X509Certificate2
     {
         private static readonly byte[] CertificateBytes =
@@ -250,5 +249,4 @@ namespace Server.CoreServerFunctionality
         {
         }
     }
-#endif
 }

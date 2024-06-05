@@ -25,7 +25,7 @@ namespace Common.DTOs.MessagePack
     public class RemoteDesktopDTO : IPacket
     {
         [Key(0)]
-        public byte[] Frame { get; set; }
+        public byte[][] Frame { get; set; }
         [Key(1)]
         public string[] Screen {  get; set; }
         public async Task HandlePacket(Session session)
