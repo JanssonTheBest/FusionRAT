@@ -19,7 +19,7 @@ namespace Server.UtilityWindows
         private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly Bitmap _bmp;
         private readonly Graphics _graphics;
-        private readonly int _bitrate = 12;
+        private readonly int _bitrate = 6;
         private readonly int[] _screen = { 1920, 1080 };
         private readonly int _screenArea;
         private readonly int _bmpPartSize;

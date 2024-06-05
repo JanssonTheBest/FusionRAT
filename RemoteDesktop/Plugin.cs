@@ -11,7 +11,7 @@ namespace RemoteDesktopPlugin
     public class Plugin
     {
         private readonly Session _session;
-        private readonly int _bitrate = 12;
+        private readonly int _bitrate = 6;
         private readonly int[] _screen = { 1920, 1080 };
         private readonly Bitmap[] _oldBitmaps;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
