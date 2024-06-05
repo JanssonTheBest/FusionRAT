@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="Server.UI.Pages.SettingsPage.SettingsPages.Appearance"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Server.UI.Pages.SettingsPage.SettingsPages"
+             mc:Ignorable="d" 
+                      d:DesignHeight="748" d:DesignWidth="1230" FontSize="14" Foreground="{StaticResource Text}">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition MaxHeight="115" MinHeight="45"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="2">
+            <StackPanel>
+                <Label Content="Appearance" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}"/>
+                <ToggleButton Style="{StaticResource Common_ComboBox}" Margin="0,16,0,8">
+                    <ToggleButton.Content>
+                        <Grid Margin="28,0,28,0" Height="80">
+                            <StackPanel>
+                                <TextBlock Text="Theme" Margin="0,16,0,4" Foreground="{StaticResource Text}" FontSize="15" FontWeight="Medium"/>
+                                <TextBlock Text="Choose a combination of themes" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                            </StackPanel>
+                        </Grid>
+                    </ToggleButton.Content>
+                    <ToggleButton.Tag>
+                        <Border Background="{StaticResource Primary}" Height="78" CornerRadius="0,0,4,4" MouseDown="PopupBorder_MouseDown">
+
+                        </Border>
+                    </ToggleButton.Tag>
+                </ToggleButton>
+
+
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
