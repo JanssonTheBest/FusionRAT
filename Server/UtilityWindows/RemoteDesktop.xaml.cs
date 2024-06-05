@@ -1,15 +1,13 @@
-﻿using System.IO;
-using System.Timers;
-using System.Windows;
-using System.Windows.Media;
-using Common.DTOs.MessagePack;
-using System.Windows.Media.Imaging;
+﻿using Common.DTOs.MessagePack;
 using Server.CoreServerFunctionality;
 using Server.UtilityWindows.Interface;
-using System.Windows.Controls;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.IO;
+using System.Timers;
+using System.Windows;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using System.Collections.Concurrent;
 
 namespace Server.UtilityWindows
 {
@@ -18,6 +16,15 @@ namespace Server.UtilityWindows
         private readonly ServerSession _serverSession;
         private readonly System.Timers.Timer _fpsTimer;
         private int _frameCounter;
+        private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
+        private readonly Bitmap _bmp;
+        private readonly Graphics _graphics;
+        private readonly int _bitrate = 12;
+        private readonly int[] _screen = { 1920, 1080 };
+        private readonly int _screenArea;
+        private readonly int _bmpPartSize;
+        private readonly int _horizontalAmount;
+        private readonly int _verticalAmount;
 
         public RemoteDesktop(ServerSession serverSession)
         {
@@ -26,13 +33,13 @@ namespace Server.UtilityWindows
             _serverSession.OnRemoteDesktop += HandlePacket;
             _serverSession.SendPlugin(typeof(RemoteDesktopPlugin.Plugin));
 
-            screenArea = screen[0] * screen[1];
-            bmpPartSize = (int)Math.Round(MathF.Sqrt(screenArea / bitrate));
-            horizontalAmount = screen[0] / bmpPartSize + 1;
-            verticalAmount = screen[1] / bmpPartSize + 1;
+            _screenArea = _screen[0] * _screen[1];
+            _bmpPartSize = (int)Math.Round(MathF.Sqrt(_screenArea / _bitrate));
+            _horizontalAmount = _screen[0] / _bmpPartSize + 1;
+            _verticalAmount = _screen[1] / _bmpPartSize + 1;
 
-            bmp = new(screen[0], screen[1]);
-            g =Graphics.FromImage(bmp);
+            _bmp = new Bitmap(_screen[0], _screen[1]);
+            _graphics = Graphics.FromImage(_bmp);
 
             _fpsTimer = new System.Timers.Timer(1000);
             _fpsTimer.Elapsed += OnTimerCallBack;
@@ -43,7 +50,7 @@ namespace Server.UtilityWindows
         private async void HandlePacket(object? sender, EventArgs e)
         {
             var dto = (RemoteDesktopDTO)sender;
-            if (dto.Screen is not null)
+            if (dto.Screen != null)
             {
                 await Application.Current.Dispatcher.InvokeAsync(() => screens.Items.Add(string.Join("|", dto.Screen)));
                 return;
@@ -51,79 +58,69 @@ namespace Server.UtilityWindows
             await DisplayFrame(dto.Frame);
         }
 
-        Bitmap bmp;
-        int bitrate = 6;
-        int[] screen = new int[] { 1920, 1080 };
-        int screenArea;
-        int bmpPartSize;
-        int horizontalAmount;
-        int verticalAmount;
-        Graphics g;
-        SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
-        private async Task<Bitmap> ConcatinateBitmap(byte[][] bmpBytes)
+        private async Task<Bitmap> ConcatenateBitmap(byte[][] bmpBytes)
         {
-            List<Task> tasks = new List<Task>();
-            for (int i = 0; i < verticalAmount; i++)
+            var tasks = new ConcurrentBag<Task>();
+
+            for (int i = 0; i < _verticalAmount; i++)
             {
-                for (int j = 0; j < horizontalAmount; j++)
+                for (int j = 0; j < _horizontalAmount; j++)
                 {
-                    int index = j + i * horizontalAmount;
-                    System.Drawing.Point point = new System.Drawing.Point(j * bmpPartSize, i * bmpPartSize);
-                    tasks.Add(Task.Run(async () =>
+                    int index = j + i * _horizontalAmount;
+                    var point = new System.Drawing.Point(j * _bmpPartSize, i * _bmpPartSize);
+
+                    if (bmpBytes[index] != null)
                     {
-                        if (bmpBytes[index] != null)
+                        tasks.Add(Task.Run(async () =>
                         {
-                            using (MemoryStream ms = new MemoryStream(bmpBytes[index]))
+                            using (var ms = new MemoryStream(bmpBytes[index]))
                             {
-                                ms.Position = 0; // Reset the stream position to the beginning
-                                Bitmap partBmp = new Bitmap(ms);
-                                await semaphoreSlim.WaitAsync();
+                                var partBmp = new Bitmap(ms);
+                                await _semaphoreSlim.WaitAsync();
                                 try
                                 {
-                                    g.DrawImage(partBmp, point);
+                                    _graphics.DrawImage(partBmp, point);
                                 }
                                 finally
                                 {
-                                    semaphoreSlim.Release();
+                                    _semaphoreSlim.Release();
                                 }
                             }
-                        }
-                    }));
+                        }));
+                    }
                 }
             }
+
             await Task.WhenAll(tasks);
-            tasks.Clear();
-          return (Bitmap)bmp.Clone();
+            return (Bitmap)_bmp.Clone();
         }
 
         private async Task DisplayFrame(byte[][] frameBytes)
         {
-            
-
-            var b = await ConcatinateBitmap(frameBytes);
+            var bmp = await ConcatenateBitmap(frameBytes);
             await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                frame.Source = await ToImageSource(b);
+                frame.Source = await ToImageSource(bmp);
                 _frameCounter++;
             }, DispatcherPriority.Send);
         }
 
-        private async Task<BitmapImage> ToImageSource(Bitmap b)
+        private async Task<BitmapImage> ToImageSource(Bitmap bmp)
         {
-            using (MemoryStream memory = new MemoryStream())
+            using (var memory = new MemoryStream())
             {
-                await semaphoreSlim.WaitAsync();
+                await _semaphoreSlim.WaitAsync();
                 try
                 {
-                    b.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                    bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
                 }
                 finally
                 {
-                    semaphoreSlim.Release();
+                    _semaphoreSlim.Release();
                 }
-                memory.Position = 0;
 
-                BitmapImage bitmapImage = new BitmapImage();
+                memory.Position = 0;
+                var bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
                 bitmapImage.StreamSource = memory;
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
@@ -141,15 +138,13 @@ namespace Server.UtilityWindows
             });
         }
 
-        private void icon_Loaded(object sender, RoutedEventArgs e)
-        {
-        }
+        private void icon_Loaded(object sender, RoutedEventArgs e) { }
 
         private async void screens_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             await _serverSession.SendPacketAsync(new RemoteDesktopDTO
             {
-                Screen = new string[] { "dd" }
+                Screen = new[] { "dd" }
             });
         }
     }
