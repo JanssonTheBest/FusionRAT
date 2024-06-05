@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -14,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Server.UI.Pages.SettingsPage
+namespace Server.UI.CustomControls.BuilderControls
 {
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    /// Interaction logic for DcUC.xaml
     /// </summary>
-    public partial class Settings : UserControl
+    public partial class DcUC : UserControl
     {
-        public Settings()
+        public DcUC()
         {
             InitializeComponent();
         }
-
     }
 }

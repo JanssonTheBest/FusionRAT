@@ -1,0 +1,124 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Storyboard x:Key="ComboBox_IsChecked">
+        <DoubleAnimation Storyboard.TargetName="dropdown_Content"
+                         Storyboard.TargetProperty="Opacity"
+                         To="1" Duration="0:0:0.4">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="dropdown_Content"
+                                       Storyboard.TargetProperty="Visibility">
+            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+        </ObjectAnimationUsingKeyFrames>
+        <DoubleAnimation Storyboard.TargetName="dropdown_Content"
+                         Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="1" Duration="0:0:0.35">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="ComboBox_Unchecked">
+        <DoubleAnimation Storyboard.TargetName="dropdown_Content"
+                         Storyboard.TargetProperty="Opacity"
+                         To="0" Duration="0:0:0.35">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="dropdown_Content"
+                                       Storyboard.TargetProperty="Visibility">
+            <DiscreteObjectKeyFrame KeyTime="0:0:0.4" Value="{x:Static Visibility.Collapsed}"/>
+        </ObjectAnimationUsingKeyFrames>
+        <DoubleAnimation Storyboard.TargetName="dropdown_Content"
+                         Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="0" Duration="0:0:0.4">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Style x:Key="Commons_ComboBox" TargetType="ToggleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid>
+                        <!-- ToggleButton content style -->
+                        <Border x:Name="comboBox_BG" CornerRadius="4" Background="{DynamicResource Primary}" Panel.ZIndex="1">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Border>
+
+                        <Grid x:Name="dropdown_Content" Opacity="0" Visibility="Collapsed" Margin="0,2,0,0">
+                            <ContentControl  Content="{TemplateBinding Tag}">
+                                <ContentControl.RenderTransform>
+                                    <TranslateTransform Y="{Binding ActualHeight, ElementName=comboBox_BG}"/>
+                                </ContentControl.RenderTransform>
+                            </ContentControl>
+                            <Grid.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="0"/>
+                            </Grid.RenderTransform>
+                        </Grid>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="comboBox_BG" Property="CornerRadius" Value="4,4,0,0"/>
+                            </MultiTrigger.Setters>
+                            <MultiTrigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource ComboBox_IsChecked}"/>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource ComboBox_Unchecked}"/>
+                            </MultiTrigger.ExitActions>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+    <Style x:Key="Common_RealComboBox" TargetType="ToggleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid>
+                        <!-- ToggleButton content style -->
+                        <Border x:Name="comboBox_BG" CornerRadius="4" Background="{DynamicResource Primary}">
+                            <ContentPresenter Content="{TemplateBinding Content}"/>
+                        </Border>
+
+                        <Popup IsOpen="{TemplateBinding IsChecked}"
+                               Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                               AllowsTransparency="True"
+                               Focusable="True"
+                               PopupAnimation="Slide" 
+                               VerticalOffset="2"
+                               StaysOpen="True"
+                               Placement="Bottom">
+
+                            <!-- Dropdown content style -->
+                            <ContentPresenter x:Name="PopupBorder" Content="{TemplateBinding Tag}" HorizontalAlignment="Stretch"/>
+                        </Popup>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="comboBox_BG" Property="CornerRadius" Value="4,4,0,0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

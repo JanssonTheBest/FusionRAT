@@ -9,16 +9,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="UI\Assets\Icons\BuilderConnectionsIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderConnectionIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderEnPIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderFileConfigurationIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderInfoIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderOneIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderPersistenceIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderUInDIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderConnectionsIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderEnPIcon.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderFileConfigurationIcon.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderInfoIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderOneIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderPersistenceIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderUInDIcon.png" />
+    <None Remove="UI\Pages\SettingsPage\Advanced.png" />
+    <None Remove="UI\Pages\SettingsPage\Appear.png" />
+    <None Remove="UI\Pages\SettingsPage\General.png" />
+    <None Remove="UI\Pages\SettingsPage\icons8-admin-settings-male-100.png" />
+    <None Remove="UI\Pages\SettingsPage\Report.png" />
+    <None Remove="UI\Pages\SettingsPage\Security.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,8 +50,10 @@
   </ItemGroup>
 
   <ItemGroup>
-	<Resource Include="UI\Assets\Icons\BuilderConnectionsIcon.png" />
+	<Resource Include="UI\Assets\Icons\BuilderConnectionIcon.png" />
 	<Resource Include="UI\Assets\Icons\BuilderEnPIcon.png" />
+	<Resource Include="UI\Assets\Icons\BuilderFileConfigurationIcon.png" />
+	<Resource Include="UI\Assets\Icons\BuilderInfoIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderOneIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderPersistenceIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderUInDIcon.png" />
@@ -65,6 +77,12 @@
     <Resource Include="UI\Assets\Other\ChangeLog3.png" />
     <Resource Include="UI\Pages\HomePage\Client.png" />
     <Resource Include="UI\Pages\HomePage\pcHealth.png" />
+    <Resource Include="UI\Pages\SettingsPage\Advanced.png" />
+    <Resource Include="UI\Pages\SettingsPage\Appear.png" />
+    <Resource Include="UI\Pages\SettingsPage\General.png" />
+    <Resource Include="UI\Pages\SettingsPage\icons8-admin-settings-male-100.png" />
+    <Resource Include="UI\Pages\SettingsPage\Report.png" />
+    <Resource Include="UI\Pages\SettingsPage\Security.png" />
   </ItemGroup>
 
 </Project>

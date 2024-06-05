@@ -1,10 +1,7 @@
-﻿<UserControl x:Class="Server.UI.CustomControls.BuilderControls.UindUC"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Server.UI.CustomControls.BuilderControls"
-             mc:Ignorable="d" FontSize="15" Foreground="{StaticResource Text}">
+﻿<UserControl x:Class="Server.UI.CustomControls.BuilderControls.UindUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:uc="clr-namespace:Server.UI.CustomControls.BuilderControls.BuilderCommon"
+             xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
+             FontSize="15" Foreground="{StaticResource Text}">
     <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
@@ -12,13 +9,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border BorderThickness="0,0,0,2" BorderBrush="#272727">
-                <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Width="24" Height="24" Margin="0,0,5,0" VerticalAlignment="Center" Source="/UI/Assets/Icons/BuilderUInDIcon.png" />
-                    <TextBlock Text="User Interaction and Deception" Foreground="White" FontSize="17" FontWeight="Medium" VerticalAlignment="Center"/>
-                </StackPanel>
-            </Border>
-
+            <uc:TopBorderUC ButtonImageSource="/UI/Assets/Icons/BuilderInfoIcon.png"
+                        IconSource="/UI/Assets/Icons/BuilderUInDIcon.png"
+                        Title="User Interaction and Deception"/>
 
             <Border Padding="0,0,0,30" Grid.Row="1">
                 <Grid Margin="30,0,30,0">
