@@ -1,15 +1,11 @@
 ﻿<Window x:Class="Server.UtilityWindows.RemoteDesktop"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Server.UtilityWindows"
-        mc:Ignorable="d"
         Title="RemoteDesktop" Height="450" Width="800">
     <Grid>
-        <ComboBox Height="30" VerticalAlignment="Top" x:Name="screens" SelectionChanged="screens_SelectionChanged"></ComboBox>
-        <Image x:Name="icon" Loaded="icon_Loaded" Visibility="Hidden"></Image>
+        <ComboBox Height="30" VerticalAlignment="Top" x:Name="screens" />
+        <Image x:Name="icon" Visibility="Hidden"/>
         <Label Foreground="LightGreen" Name="fpsLabel" FontSize="20" Content="0" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Image x:Name="frame" HorizontalAlignment="Stretch" Panel.ZIndex="-1" VerticalAlignment="Stretch" Stretch="Fill"></Image>
+        <Image x:Name="frame" HorizontalAlignment="Stretch" Panel.ZIndex="-1" VerticalAlignment="Stretch" Stretch="Fill"/>
     </Grid>
 </Window>

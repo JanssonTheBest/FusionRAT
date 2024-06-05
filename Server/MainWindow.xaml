@@ -145,7 +145,7 @@
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="12,0,0,0">
                                             <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/support.png"/>
-                                            <TextBlock Text="Support" FontWeight="Medium" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="10,-1,0,0" FontSize="14"/>
+                                            <TextBlock Text="Plugins" FontWeight="Medium" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="10,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
                                 </RadioButton.Content>
