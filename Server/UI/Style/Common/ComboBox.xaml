@@ -42,7 +42,7 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Style x:Key="Commons_ComboBox" TargetType="ToggleButton">
+    <Style x:Key="Common_ComboBox" TargetType="ToggleButton">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">

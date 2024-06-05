@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Server.UI.Pages.SettingsPage;
 
 namespace Server.UI.Pages.SettingsPage.SettingsPages
 {
@@ -28,6 +29,18 @@ namespace Server.UI.Pages.SettingsPage.SettingsPages
         private void PopupBorder_MouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
+        }
+
+        public enum themeNames
+        {
+            AppearanceCollapsed,
+            SettingsContentVisible,
+        }
+
+        private void buttonClick(object sender, RoutedEventArgs e)
+        {
+            Settings.AppearanceStoryboard.DynamicInvoke(themeNames.AppearanceCollapsed);
+            Settings.AppearanceStoryboard.DynamicInvoke(themeNames.SettingsContentVisible);
         }
 
     }

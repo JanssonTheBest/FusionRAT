@@ -2,10 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:settingsUC="clr-namespace:Server.UI.Pages.SettingsPage.SettingsPages"
              xmlns:local="clr-namespace:Server.UI.Pages.SettingsPage"
              mc:Ignorable="d" 
-             d:Height="748" d:Width="1230" FontSize="14" Foreground="{StaticResource Text}">
+             d:Height="748" d:Width="1230" FontSize="14" Foreground="{StaticResource Text}" x:Name="control">
 
     <UserControl.Resources>
-        <Style TargetType="Button">
+        <Style TargetType="Button" x:Key="settingsNavigation">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -47,6 +47,62 @@
             </Setter>
         </Style>
 
+        <!--//SettingsVisibility//-->
+        <Storyboard x:Key="SettingsContentVisible">
+            <DoubleAnimation Storyboard.TargetName="settingsContent"
+                             Storyboard.TargetProperty="Opacity"
+                             To="1" Duration="0:0:0.15" BeginTime="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="settingsContent"
+                                           Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="SettingsContentCollapsed">
+            <DoubleAnimation Storyboard.TargetName="settingsContent"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="settingsContent"
+                                           Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+        <!--AppearanceVisibility-->
+        <Storyboard x:Key="AppearanceVisible" BeginTime="0:0:0.15">
+            <DoubleAnimation Storyboard.TargetName="appearanceUC"
+                             Storyboard.TargetProperty="Opacity"
+                             To="1" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="appearanceUC"
+                                           Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AppearanceCollapsed">
+            <DoubleAnimation Storyboard.TargetName="appearanceUC"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="appearanceUC"
+                                           Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
     </UserControl.Resources>
 
 
@@ -64,10 +120,10 @@
             </Grid.RowDefinitions>
 
             <!--//Window Content//-->
-            <Grid Grid.Row="1" Grid.Column="1">
+            <Grid x:Name="settingsContent" Grid.Row="1" Grid.Column="1">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
-                        <Button Width="190" Height="170">
+                        <Button Style="{StaticResource settingsNavigation}" Width="190" Height="170">
                             <Button.Tag>
                                 <CornerRadius TopLeft="5"/>
                             </Button.Tag>
@@ -138,7 +194,7 @@
                                 </EventTrigger>
                             </Button.Triggers>
                         </Button>
-                        <Button Width="190" Height="170" Margin="2,0,2,0">
+                        <Button Style="{StaticResource settingsNavigation}" Width="190" Height="170" Margin="2,0,2,0">
                             <Button.Content>
                                 <StackPanel VerticalAlignment="Center">
                                     <Image x:Name="settingsGeneralImage" Height="75" Width="75" Opacity="0.4" Source="/UI/Pages/SettingsPage/General.png">
@@ -206,7 +262,7 @@
                                 </EventTrigger>
                             </Button.Triggers>
                         </Button>
-                        <Button Width="190" Height="170">
+                        <Button Style="{StaticResource settingsNavigation}" Width="190" Height="170">
                             <Button.Tag>
                                 <CornerRadius TopRight="5"/>
                             </Button.Tag>
@@ -279,7 +335,7 @@
                         </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                        <Button Width="190" Height="170">
+                        <Button Style="{StaticResource settingsNavigation}" Width="190" Height="170">
                             <Button.Tag>
                                 <CornerRadius BottomLeft="5"/>
                             </Button.Tag>
@@ -348,9 +404,13 @@
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <BeginStoryboard Storyboard="{StaticResource SettingsContentCollapsed}"/>
+                                    <BeginStoryboard Storyboard="{StaticResource AppearanceVisible}"/>
+                                </EventTrigger>
                             </Button.Triggers>
                         </Button>
-                        <Button Width="190" Height="170" Margin="2,0,2,0">
+                        <Button Style="{StaticResource settingsNavigation}" Width="190" Height="170" Margin="2,0,2,0">
                             <Button.Content>
                                 <StackPanel VerticalAlignment="Center">
                                     <Image x:Name="settingsAdvancedImage" Height="75" Width="75" Opacity="0.4" Source="/UI/Pages/SettingsPage/Advanced.png">
@@ -418,7 +478,7 @@
                                 </EventTrigger>
                             </Button.Triggers>
                         </Button>
-                        <Button Width="190" Height="170">
+                        <Button Style="{StaticResource settingsNavigation}" Width="190" Height="170">
                             <Button.Tag>
                                 <CornerRadius BottomRight="5"/>
                             </Button.Tag>
@@ -495,7 +555,7 @@
 
             <!--//Usercontrols visibility state//-->
             <Grid Grid.Row="1" Grid.Column="1">
-
+                <settingsUC:Appearance x:Name="appearanceUC" Opacity="0" Visibility="Collapsed"/>
             </Grid>
         </Grid>
     </ScrollViewer>

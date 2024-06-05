@@ -5,7 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Server.UI.Pages.SettingsPage.SettingsPages"
              mc:Ignorable="d" 
-                      d:DesignHeight="748" d:DesignWidth="1230" FontSize="14" Foreground="{StaticResource Text}">
+             d:DesignHeight="748" d:DesignWidth="1230" FontSize="14" Foreground="{StaticResource Text}" x:Name="test">
+
+    <UserControl.Resources>
+        <Storyboard x:Key="NotificationDown">
+            <DoubleAnimation Storyboard.TargetName="notificationBox"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                             To="78" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="NotificationDefault">
+            <DoubleAnimation Storyboard.TargetName="notificationBox"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                             To="0" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
 
 
     <Grid>
@@ -14,6 +35,9 @@
             <RowDefinition MaxHeight="115" MinHeight="45"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <Button Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Right" Background="Red" Click="buttonClick"/>
+
 
         <Grid Grid.Row="2">
             <StackPanel>
@@ -24,6 +48,33 @@
                             <StackPanel>
                                 <TextBlock Text="Theme" Margin="0,16,0,4" Foreground="{StaticResource Text}" FontSize="15" FontWeight="Medium"/>
                                 <TextBlock Text="Choose a combination of themes" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                            </StackPanel>
+                        </Grid>
+                    </ToggleButton.Content>
+                    <ToggleButton.Tag>
+                        <Border Background="{StaticResource Primary}" Height="78" CornerRadius="0,0,4,4" MouseDown="PopupBorder_MouseDown">
+
+                        </Border>
+                    </ToggleButton.Tag>
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard Storyboard="{StaticResource NotificationDown}"/>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard Storyboard="{StaticResource NotificationDefault}"/>
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
+                </ToggleButton>
+                
+                <ToggleButton x:Name="notificationBox" Style="{StaticResource Common_ComboBox}" Margin="0,16,0,8">
+                    <ToggleButton.RenderTransform>
+                        <TranslateTransform Y="0" X="0"/>
+                    </ToggleButton.RenderTransform>
+                    <ToggleButton.Content>
+                        <Grid Margin="28,0,28,0" Height="80">
+                            <StackPanel>
+                                <TextBlock Text="Notifications" Margin="0,16,0,4" Foreground="{StaticResource Text}" FontSize="15" FontWeight="Medium"/>
+                                <TextBlock Text="Choose a combination of notifications" Foreground="{StaticResource Text}" Opacity="0.6"/>
                             </StackPanel>
                         </Grid>
                     </ToggleButton.Content>
