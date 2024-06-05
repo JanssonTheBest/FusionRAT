@@ -1,12 +1,10 @@
 ﻿<UserControl x:Class="Server.UI.Pages.BuilderPage.Builder"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Server.UI.Pages.BuilderPage"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:uccontrols="clr-namespace:Server.UI.CustomControls.BuilderControls"
-             mc:Ignorable="d" 
-             d:DesignHeight="748" d:DesignWidth="1230">
+             mc:Ignorable="d" d:Height="748" d:Width="1230">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="42"/>
@@ -23,7 +21,7 @@
                 <uccontrols:ConnectionsUC Width="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
                 <uccontrols:OneUC Width="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
                 <uccontrols:PersistenceUC Width="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
-                <uccontrols:EnpUC Width="400" Margin="0,15,15,0"/>
+                <uccontrols:EnpUC Width="400" Height="247" Margin="0,15,15,0"/>
                 <uccontrols:UindUC Width="400" Margin="0,15,15,0"/>
                 <uccontrols:DcUC Width="400" Margin="0,15,15,0"/>
                 <uccontrols:AfUC Width="400" Margin="0,15,15,0"/>

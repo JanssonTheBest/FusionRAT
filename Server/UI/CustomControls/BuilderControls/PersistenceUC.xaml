@@ -43,26 +43,42 @@
                     <StackPanel Grid.Row="5">
                         <TextBlock Text="Registry" FontSize="13" VerticalAlignment="Center"/>
                         <Border x:Name="ToggleBorder1" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Grid.Row="5">
-                            <ComboBox Name="ComboBox1" IsReadOnly="True" IsEnabled="False">
-                                <ComboBoxItem Content="HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"/>
-                                <ComboBoxItem Content="HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"/>
-                                <ComboBoxItem Content="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run"/>
-                                <ComboBoxItem Content="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce"/>
-                                <ComboBoxItem Content="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServices"/>
-                            </ComboBox>
+                            <ToggleButton Height="30" Style="{StaticResource Common_RealComboBox}">
+                                <ToggleButton.Tag>
+                                    <Border Background="White">
+                                        <ScrollViewer HorizontalScrollBarVisibility="Visible">
+                                            <StackPanel Height="120">
+                                                <RadioButton Style="{StaticResource Common_RadioButton}" Content="HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" Height="20"/>
+                                                <RadioButton Style="{StaticResource Common_RadioButton}" Content="HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce" Height="20"/>
+                                                <RadioButton Style="{StaticResource Common_RadioButton}" Content="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" Height="20"/>
+                                                <RadioButton Style="{StaticResource Common_RadioButton}" Content="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce" Height="20"/>
+                                                <RadioButton Style="{StaticResource Common_RadioButton}" Content="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServices" Height="20"/>
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </Border>
+                                </ToggleButton.Tag>
+                            </ToggleButton>
                         </Border>
                     </StackPanel>
 
                     <StackPanel Grid.Row="7">
                         <TextBlock Text="Folder" FontSize="13" VerticalAlignment="Center"/>
                         <Border x:Name="ToggleBorder2" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Height="30" >
-                            <ComboBox Name="ComboBox2" IsReadOnly="True" IsEnabled="False">
-                                <ComboBoxItem Content="%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"/>
-                                <ComboBoxItem Content="%ProgramData%\Microsoft\Windows\Start Menu\Programs\Startup"/>
-                            </ComboBox>
+                            <ToggleButton Height="30" Style="{StaticResource Common_RealComboBox}">
+                                <ToggleButton.Tag>
+                                    <Border Background="White">
+                                        <ScrollViewer HorizontalScrollBarVisibility="Visible">
+                                            <StackPanel Height="120">
+                                                <RadioButton Style="{StaticResource Common_RadioButton}" Content="%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup" Height="20"/>
+                                                <RadioButton Style="{StaticResource Common_RadioButton}" Content="%ProgramData%\Microsoft\Windows\Start Menu\Programs\Startup" Height="20"/>
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </Border>
+                                </ToggleButton.Tag>
+                            </ToggleButton>
                         </Border>
                     </StackPanel>
-                    
+
 
                     <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Grid.Row="9" >
                         <Button Background="Transparent" BorderThickness="0">

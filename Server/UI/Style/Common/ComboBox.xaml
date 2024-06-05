@@ -92,7 +92,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid>
-                        <!-- ToggleButton content style -->
                         <Border x:Name="comboBox_BG" CornerRadius="4" Background="{DynamicResource Primary}">
                             <ContentPresenter Content="{TemplateBinding Content}"/>
                         </Border>
@@ -100,13 +99,12 @@
                         <Popup IsOpen="{TemplateBinding IsChecked}"
                                Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                                AllowsTransparency="True"
-                               Focusable="True"
+                               Focusable="False"
                                PopupAnimation="Slide" 
                                VerticalOffset="2"
-                               StaysOpen="True"
+                               StaysOpen="False"
                                Placement="Bottom">
 
-                            <!-- Dropdown content style -->
                             <ContentPresenter x:Name="PopupBorder" Content="{TemplateBinding Tag}" HorizontalAlignment="Stretch"/>
                         </Popup>
                     </Grid>
