@@ -26,8 +26,8 @@
                 <uccontrols:UindUC Width="400" Margin="0,15,15,0"/>
                 <uccontrols:EnpUC Width="400" Margin="0,15,15,0"/>
                 <uccontrols:AfUC Width="400" Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC Width="400" Margin="0,15,15,0"/>
-                <uccontrols:ConnectionsUC Width="400" Margin="0,15,15,0"/>
+                <uccontrols:FcUC Width="400" Margin="0,15,15,0"/>
+                <uccontrols:DcUC Width="400" Margin="0,15,15,0"/>
             </WrapPanel>
         </ScrollViewer>
     </Grid>

@@ -13,10 +13,17 @@
             </Grid.RowDefinitions>
 
             <Border BorderThickness="0,0,0,2" BorderBrush="#272727">
-                <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Width="24" Height="24" Margin="0,0,5,0" Source="/UI/Assets/Icons/BuilderOneIcon.png" VerticalAlignment="Center" />
-                    <TextBlock Text="Obfuscation and Evasion" Foreground="White" FontSize="17" FontWeight="Medium" VerticalAlignment="Center"/>
-                </StackPanel>
+                <Grid>
+                    <Button Background="Transparent" BorderThickness="0" Margin="0,10,10,0" Cursor="Hand" Width="21" Height="21" VerticalAlignment="Top" HorizontalAlignment="Right">
+                        <Button.Content>
+                            <Image Source="/UI/Assets/Icons/BuilderInfoIcon.png" Stretch="Uniform"/>
+                        </Button.Content>
+                    </Button>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Width="24" Height="24" Margin="0,0,5,0" Source="/UI/Assets/Icons/BuilderOneIcon.png" VerticalAlignment="Center" />
+                        <TextBlock Text="Obfuscation and Evasion" Foreground="White" FontSize="17" FontWeight="Medium" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
             </Border>
 
 
@@ -33,7 +40,7 @@
 
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Parent Spoofing" />
+                            <TextBlock Text="Parent Spoofing" VerticalAlignment="Center" />
                             <ToggleButton Style="{StaticResource CheckboxToggle}" >
                                 <ToggleButton.Triggers>
                                     <EventTrigger RoutedEvent="ToggleButton.Checked">
@@ -59,19 +66,19 @@
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="16,0,0,0">
-                            <TextBlock Text="Anti Kill" />
+                            <TextBlock Text="Anti Kill" VerticalAlignment="Center" />
                             <ToggleButton Style="{StaticResource CheckboxToggle}" />
                         </StackPanel>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="3">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="Anti Sandbox" />
+                            <TextBlock Text="Anti Sandbox" VerticalAlignment="Center" />
                             <ToggleButton Style="{StaticResource CheckboxToggle}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="16,0,0,0">
-                            <TextBlock Text="Anti VM" />
+                            <TextBlock Text="Anti VM" VerticalAlignment="Center" />
                             <ToggleButton Style="{StaticResource CheckboxToggle}" />
                         </StackPanel>
                     </StackPanel>

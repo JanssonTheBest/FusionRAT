@@ -11,11 +11,15 @@
   <ItemGroup>
     <None Remove="UI\Assets\Icons\BuilderConnectionsIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderEnPIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderFileConfigurationIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderInfoIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderOneIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderPersistenceIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderUInDIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderConnectionsIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderEnPIcon.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderFileConfigurationIcon.png" />
+    <None Remove="UI\CustomControls\BuilderControls\BuilderInfoIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderOneIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderPersistenceIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderUInDIcon.png" />
@@ -42,6 +46,8 @@
   <ItemGroup>
 	<Resource Include="UI\Assets\Icons\BuilderConnectionsIcon.png" />
 	<Resource Include="UI\Assets\Icons\BuilderEnPIcon.png" />
+	<Resource Include="UI\Assets\Icons\BuilderFileConfigurationIcon.png" />
+	<Resource Include="UI\Assets\Icons\BuilderInfoIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderOneIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderPersistenceIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderUInDIcon.png" />
