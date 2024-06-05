@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="UI\Assets\Icons\BuilderConnectionsIcon.png" />
+    <None Remove="UI\Assets\Icons\BuilderConnectionIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderEnPIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderFileConfigurationIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderInfoIcon.png" />
@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<Resource Include="UI\Assets\Icons\BuilderConnectionsIcon.png" />
+	<Resource Include="UI\Assets\Icons\BuilderConnectionIcon.png" />
 	<Resource Include="UI\Assets\Icons\BuilderEnPIcon.png" />
 	<Resource Include="UI\Assets\Icons\BuilderFileConfigurationIcon.png" />
 	<Resource Include="UI\Assets\Icons\BuilderInfoIcon.png" />

@@ -1,11 +1,7 @@
-﻿<UserControl x:Class="Server.UI.CustomControls.BuilderControls.FcUC"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Server.UI.CustomControls.BuilderControls"
+﻿<UserControl x:Class="Server.UI.CustomControls.BuilderControls.FcUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:uc="clr-namespace:Server.UI.CustomControls.BuilderControls.BuilderCommon"
              xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
-             mc:Ignorable="d" FontSize="15" Foreground="{StaticResource Text}">
+             FontSize="15" Foreground="{StaticResource Text}">
     <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
@@ -13,20 +9,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border BorderThickness="0,0,0,2" BorderBrush="#272727">
-                <Grid>
-                    <Button Background="Transparent" BorderThickness="0" Margin="0,10,10,0" Cursor="Hand" Width="21" Height="21" VerticalAlignment="Top" HorizontalAlignment="Right">
-                        <Button.Content>
-                            <Image Source="/UI/Assets/Icons/BuilderInfoIcon.png" Stretch="Uniform"/>
-                        </Button.Content>
-                    </Button>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Width="24" Height="24" Margin="0,0,5,0" VerticalAlignment="Center" Source="/UI/Assets/Icons/BuilderFileConfigurationIcon.png" />
-                        <TextBlock Text="File Configuration" Foreground="White" FontSize="17" FontWeight="Medium" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-
+            <uc:TopBorderUC ButtonImageSource="/UI/Assets/Icons/BuilderInfoIcon.png"
+                            IconSource="/UI/Assets/Icons/BuilderFileConfigurationIcon.png"
+                            Title="File Configuration"/>
 
             <Border Padding="0,0,0,30" Grid.Row="1">
                 <Grid Margin="30,0,30,0">
@@ -43,13 +28,15 @@
 
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
                         <TextBlock Text="Process Name" VerticalAlignment="Center"/>
-                        <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center" />
+                        <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center" 
+                                      helpers:ToggleTextBoxBehavior.TargetTextBox1="{Binding ElementName=TextBox1}"
+                                      helpers:ToggleTextBoxBehavior.TargetBorder="{Binding ElementName=TextBoxBorder1}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="3">
 
-                        <Border Width="160" BorderThickness="2" BorderBrush="#272727" CornerRadius="3">
-                            <TextBox Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="svhost.exe" helpers:TextBoxHelper.UseChar="False" helpers:TextBoxHelper.ValueLimit="259"/>
+                        <Border x:Name="TextBoxBorder1" Width="160" BorderThickness="2" BorderBrush="#272727" CornerRadius="3">
+                            <TextBox Name="TextBox1" Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="svhost.exe" helpers:TextBoxHelper.CharLimit="259" IsReadOnly="True" IsEnabled="False"/>
                         </Border>
 
                         <Border Width="160" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Margin="17,0,0,0" >

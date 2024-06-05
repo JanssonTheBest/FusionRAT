@@ -23,11 +23,11 @@
                 <uccontrols:ConnectionsUC Width="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
                 <uccontrols:OneUC Width="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
                 <uccontrols:PersistenceUC Width="400" Margin="0,15,15,0" VerticalAlignment="Top"/>
-                <uccontrols:UindUC Width="400" Margin="0,15,15,0"/>
                 <uccontrols:EnpUC Width="400" Margin="0,15,15,0"/>
+                <uccontrols:UindUC Width="400" Margin="0,15,15,0"/>
+                <uccontrols:DcUC Width="400" Margin="0,15,15,0"/>
                 <uccontrols:AfUC Width="400" Margin="0,15,15,0"/>
                 <uccontrols:FcUC Width="400" Margin="0,15,15,0"/>
-                <uccontrols:DcUC Width="400" Margin="0,15,15,0"/>
             </WrapPanel>
         </ScrollViewer>
     </Grid>

@@ -1,10 +1,7 @@
-﻿<UserControl x:Class="Server.UI.CustomControls.BuilderControls.PersistenceUC"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Server.UI.CustomControls.BuilderControls"
-             mc:Ignorable="d" FontSize="15" Foreground="{StaticResource Text}">
+﻿<UserControl x:Class="Server.UI.CustomControls.BuilderControls.PersistenceUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:uc="clr-namespace:Server.UI.CustomControls.BuilderControls.BuilderCommon"
+             xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
+             FontSize="15" Foreground="{StaticResource Text}">
     <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
@@ -12,20 +9,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border BorderThickness="0,0,0,2" BorderBrush="#272727">
-                <Grid>
-                    <Button Background="Transparent" BorderThickness="0" Margin="0,10,10,0" Cursor="Hand" Width="21" Height="21" VerticalAlignment="Top" HorizontalAlignment="Right">
-                        <Button.Content>
-                            <Image Source="/UI/Assets/Icons/BuilderInfoIcon.png" Stretch="Uniform"/>
-                        </Button.Content>
-                    </Button>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Width="24" Height="24" Margin="0,0,5,0" Source="/UI/Assets/Icons/BuilderPersistenceIcon.png"/>
-                        <TextBlock Text="Persistence" Foreground="White" FontSize="17" FontWeight="Medium" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-
+            <uc:TopBorderUC ButtonImageSource="/UI/Assets/Icons/BuilderInfoIcon.png"
+                        IconSource="/UI/Assets/Icons/BuilderPersistenceIcon.png"
+                        Title="Persistence"/>
 
             <Border Padding="0,0,0,30" Grid.Row="1">
                 <Grid Margin="30,0,30,0">
@@ -35,7 +21,11 @@
                         <RowDefinition Height="16"/>
                         <RowDefinition Height="18"/>
                         <RowDefinition Height="16"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="37"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
@@ -45,61 +35,42 @@
 
                     <StackPanel Orientation="Horizontal" Grid.Row="3">
                         <TextBlock Text="Auto-Start" />
-                        <ToggleButton Style="{StaticResource CheckboxToggle}" >
-                            <ToggleButton.Triggers>
-                                <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                    <BeginStoryboard>
-                                        <Storyboard >
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="RegistryTB">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                    <BeginStoryboard>
-                                        <Storyboard >
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="RegistryTB">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Collapsed}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                    <BeginStoryboard>
-                                        <Storyboard >
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="FolderTB">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                    <BeginStoryboard>
-                                        <Storyboard >
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="FolderTB">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Collapsed}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </ToggleButton.Triggers>
-                        </ToggleButton>
+                        <ToggleButton Style="{StaticResource CheckboxToggle}"
+                                      helpers:ToggleTextBoxBehavior.TargetComboBox1="{Binding ElementName=ComboBox1}"
+                                      helpers:ToggleTextBoxBehavior.TargetComboBox2="{Binding ElementName=ComboBox2}"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="5">
-                        <Border x:Name="RegistryTB" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Height="37" Margin="0,0,0,16" Visibility="Collapsed">
-                            <TextBox Style="{StaticResource Common_TextBox}" />
-                        </Border>
-
-                        <Border x:Name="FolderTB" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Height="37" Visibility="Collapsed">
-                            <TextBox Style="{StaticResource Common_TextBox}" />
-                        </Border>
-
-                        <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Height="37" Margin="0,16,0,0" >
-                            <TextBox Style="{StaticResource Common_TextBox}"  />
+                        <TextBlock Text="Registry" FontSize="13" VerticalAlignment="Center"/>
+                        <Border x:Name="ToggleBorder1" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Grid.Row="5">
+                            <ComboBox Name="ComboBox1" IsReadOnly="True" IsEnabled="False">
+                                <ComboBoxItem Content="HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"/>
+                                <ComboBoxItem Content="HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"/>
+                                <ComboBoxItem Content="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run"/>
+                                <ComboBoxItem Content="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce"/>
+                                <ComboBoxItem Content="HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServices"/>
+                            </ComboBox>
                         </Border>
                     </StackPanel>
+
+                    <StackPanel Grid.Row="7">
+                        <TextBlock Text="Folder" FontSize="13" VerticalAlignment="Center"/>
+                        <Border x:Name="ToggleBorder2" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Height="30" >
+                            <ComboBox Name="ComboBox2" IsReadOnly="True" IsEnabled="False">
+                                <ComboBoxItem Content="%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"/>
+                                <ComboBoxItem Content="%ProgramData%\Microsoft\Windows\Start Menu\Programs\Startup"/>
+                            </ComboBox>
+                        </Border>
+                    </StackPanel>
+                    
+
+                    <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Grid.Row="9" >
+                        <Button Background="Transparent" BorderThickness="0">
+                            <Button.Content>
+                                <TextBlock Text="Scheduled Tasks" Foreground="White" Opacity="0.3" FontSize="14" HorizontalAlignment="Center"/>
+                            </Button.Content>
+                        </Button>
+                    </Border>
                 </Grid>
             </Border>
         </Grid>
