@@ -49,13 +49,13 @@ namespace Server.UtilityWindows
 
         private async void HandlePacket(object? sender, EventArgs e)
         {
-            var dto = (RemoteDesktopDTO)sender;
-            if (dto.Screen != null)
+            var dto = sender as RemoteDesktopDTO;
+            if (dto?.Screen != null)
             {
                 await Application.Current.Dispatcher.InvokeAsync(() => screens.Items.Add(string.Join("|", dto.Screen)));
                 return;
             }
-            await DisplayFrame(dto.Frame);
+            await DisplayFrame(dto?.Frame);
         }
 
         private async Task<Bitmap> ConcatenateBitmap(byte[][] bmpBytes)
