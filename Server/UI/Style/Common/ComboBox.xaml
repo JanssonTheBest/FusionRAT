@@ -48,12 +48,12 @@
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid>
                         <!-- ToggleButton content style -->
-                        <Border x:Name="comboBox_BG" CornerRadius="4" Background="{DynamicResource Primary}" Panel.ZIndex="1">
-                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        <Border x:Name="comboBox_BG" CornerRadius="4" Background="{DynamicResource Primary}">
+                            <ContentPresenter Content="{TemplateBinding Tag}" />
                         </Border>
 
                         <Grid x:Name="dropdown_Content" Opacity="0" Visibility="Collapsed" Margin="0,2,0,0">
-                            <ContentControl  Content="{TemplateBinding Tag}">
+                            <ContentControl  Content="{TemplateBinding Content}">
                                 <ContentControl.RenderTransform>
                                     <TranslateTransform Y="{Binding ActualHeight, ElementName=comboBox_BG}"/>
                                 </ContentControl.RenderTransform>
