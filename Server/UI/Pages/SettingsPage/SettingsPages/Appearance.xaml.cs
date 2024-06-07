@@ -21,6 +21,7 @@ namespace Server.UI.Pages.SettingsPage.SettingsPages
     /// </summary>
     public partial class Appearance : UserControl
     {
+
         public Appearance()
         {
             InitializeComponent();

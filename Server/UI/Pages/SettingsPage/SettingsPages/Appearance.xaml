@@ -9,22 +9,42 @@
 
     <UserControl.Resources>
         <Storyboard x:Key="NotificationDown">
-            <DoubleAnimation Storyboard.TargetName="notificationBox"
-                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
-                             To="78" Duration="0:0:0.3">
-                <DoubleAnimation.EasingFunction>
+            <ThicknessAnimation Storyboard.TargetName="notificationBox"
+                                Storyboard.TargetProperty="Margin"
+                                To="0,1000,0,0" Duration="0:0:0.3">
+                <ThicknessAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
         </Storyboard>
         <Storyboard x:Key="NotificationDefault">
-            <DoubleAnimation Storyboard.TargetName="notificationBox"
-                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
-                             To="0" Duration="0:0:0.3">
-                <DoubleAnimation.EasingFunction>
+            <ThicknessAnimation Storyboard.TargetName="notificationBox"
+                                Storyboard.TargetProperty="Margin"
+                                To="0,0,0,8" Duration="0:0:0.3">
+                <ThicknessAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+
+
+        <Storyboard x:Key="IconDown">
+            <ThicknessAnimation Storyboard.TargetName="iconBox"
+                                Storyboard.TargetProperty="Margin"
+                                To="0,78,0,0" Duration="0:0:0.3">
+                <ThicknessAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+        <Storyboard x:Key="IconDefault">
+            <ThicknessAnimation Storyboard.TargetName="iconBox"
+                                Storyboard.TargetProperty="Margin"
+                                To="0,0,0,8" Duration="0:0:0.3">
+                <ThicknessAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
         </Storyboard>
     </UserControl.Resources>
 
@@ -52,7 +72,7 @@
                         </Grid>
                     </ToggleButton.Content>
                     <ToggleButton.Tag>
-                        <Border Background="{StaticResource Primary}" Height="78" CornerRadius="0,0,4,4" MouseDown="PopupBorder_MouseDown">
+                        <Border Background="{StaticResource Primary}" Height="200" CornerRadius="0,0,4,4" MouseDown="PopupBorder_MouseDown">
 
                         </Border>
                     </ToggleButton.Tag>
@@ -65,16 +85,37 @@
                         </EventTrigger>
                     </ToggleButton.Triggers>
                 </ToggleButton>
-                
-                <ToggleButton x:Name="notificationBox" Style="{StaticResource Common_ComboBox}" Margin="0,16,0,8">
-                    <ToggleButton.RenderTransform>
-                        <TranslateTransform Y="0" X="0"/>
-                    </ToggleButton.RenderTransform>
+
+                <ToggleButton x:Name="notificationBox" Style="{StaticResource Common_ComboBox}" Margin="0,0,0,8">
                     <ToggleButton.Content>
                         <Grid Margin="28,0,28,0" Height="80">
                             <StackPanel>
                                 <TextBlock Text="Notifications" Margin="0,16,0,4" Foreground="{StaticResource Text}" FontSize="15" FontWeight="Medium"/>
                                 <TextBlock Text="Choose a combination of notifications" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                            </StackPanel>
+                        </Grid>
+                    </ToggleButton.Content>
+                    <ToggleButton.Tag>
+                        <Border Background="{StaticResource Primary}" Height="78" CornerRadius="0,0,4,4" MouseDown="PopupBorder_MouseDown">
+
+                        </Border>
+                    </ToggleButton.Tag>
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard Storyboard="{StaticResource IconDown}"/>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard Storyboard="{StaticResource IconDefault}"/>
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
+                </ToggleButton>
+
+                <ToggleButton x:Name="iconBox" Style="{StaticResource Common_ComboBox}" Margin="0,0,0,8">
+                    <ToggleButton.Content>
+                        <Grid Margin="28,0,28,0" Height="80">
+                            <StackPanel>
+                                <TextBlock Text="Icons" Margin="0,16,0,4" Foreground="{StaticResource Text}" FontSize="15" FontWeight="Medium"/>
+                                <TextBlock Text="Choose a combination of icons" Foreground="{StaticResource Text}" Opacity="0.6"/>
                             </StackPanel>
                         </Grid>
                     </ToggleButton.Content>
