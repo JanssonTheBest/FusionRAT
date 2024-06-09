@@ -19,50 +19,7 @@
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>
-
-
-
-
-    <Storyboard x:Key="ComboBoxDropdown_Triggerd">
-        <DoubleAnimation Storyboard.TargetName="dropdown"
-                         Storyboard.TargetProperty="Opacity"
-                         To="1" Duration="0:0:0.25">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseInOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="dropdown"
-                                       Storyboard.TargetProperty="Visibility">
-            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-        </ObjectAnimationUsingKeyFrames>
-        <DoubleAnimation Storyboard.TargetName="dropdown_Content"
-                         Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                         To="1" Duration="0:0:0.25">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseInOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-    </Storyboard>
-    <Storyboard x:Key="ComboBoxDropdown_Default">
-        <DoubleAnimation Storyboard.TargetName="dropdown"
-                         Storyboard.TargetProperty="Opacity"
-                         To="0" Duration="0:0:0.25">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseInOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="dropdown"
-                                       Storyboard.TargetProperty="Visibility">
-            <DiscreteObjectKeyFrame KeyTime="0:0:0.25" Value="{x:Static Visibility.Collapsed}"/>
-        </ObjectAnimationUsingKeyFrames>
-        <DoubleAnimation Storyboard.TargetName="dropdown_Content"
-                         Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                         To="0" Duration="0:0:0.25">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseInOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-    </Storyboard>
+    
 
     <Style x:Key="ComboBox_Body" x:Name="comboBox_Body" TargetType="ToggleButton">
         <Setter Property="Cursor" Value="Hand"/>

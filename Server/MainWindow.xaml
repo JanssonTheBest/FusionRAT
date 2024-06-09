@@ -20,7 +20,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
+
     <Border>
         <Border.Style>
             <Style TargetType="Border">
@@ -32,7 +32,8 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="52"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="27*"/>
+                <RowDefinition Height="346*"/>
             </Grid.RowDefinitions>
 
             <!--//TitleBar//-->
@@ -69,7 +70,7 @@
             </Grid>
 
             <!--// Main //-->
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Grid.RowSpan="2">
 
                 <!--// Side panel //-->
                 <Border x:Name="sidePanel" Width="220" HorizontalAlignment="Left">
@@ -175,7 +176,8 @@
                 </Border>
 
                 <!--// Frame panel /748h/1230w/-->
-                <Border x:Name="framePanel" CornerRadius="7,0,0,0" Margin="220,0,0,0">
+                <Border x:Name="framePanel" CornerRadius="7,0,0,0" Margin="220,0,0,0"
+                        BorderThickness="1,1,0,0" BorderBrush="{StaticResource Border}">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Background" Value="{StaticResource Secondary}"/>
