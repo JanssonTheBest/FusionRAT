@@ -129,6 +129,16 @@ namespace Server.UI.Pages.ClientPage
         }
         #endregion
 
+        private void SystemInfo_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new SystemInfo());
+        }
+
+        private void Notes_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void AudioManager_Click(object sender, RoutedEventArgs e)
         {
 
@@ -159,17 +169,9 @@ namespace Server.UI.Pages.ClientPage
             serverSession.OpenUtilityWindow(new RemoteDesktop(serverSession));
         }
 
+
+
         private void ReverseShell_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SystemInfo_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void TaskManager_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -185,7 +187,5 @@ namespace Server.UI.Pages.ClientPage
         {
             serverSession =  ((ServerSession)(((DataGridRow)((ContextMenu)sender).PlacementTarget)).DataContext);
         }
-
-
     }
 }

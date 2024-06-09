@@ -10,16 +10,38 @@
     <UserControl.Resources>
         <!-- Style for the DataGrid -->
         <ContextMenu x:Key="utilityContextMenu" Opened="ContextMenu_Opened">
-            <MenuItem Header="Audio Manager" Click="AudioManager_Click"/>
-            <MenuItem Header="File Manager" Click="FileManager_Click"/>
-            <MenuItem Header="HVNC" Click="HVNC_Click"/>
-            <MenuItem Header="Key Logger" Click="KeyLogger_Click"/>
-            <MenuItem Header="Registry Manager" Click="RegistryManager_Click"/>
-            <MenuItem Header="Remote Desktop" Click="RemoteDesktop_Click"/>
-            <MenuItem Header="Reverse Shell" Click="ReverseShell_Click"/>
             <MenuItem Header="System Info" Click="SystemInfo_Click"/>
-            <MenuItem Header="Task Manager" Click="TaskManager_Click"/>
-            <MenuItem Header="Webcam Control" Click="WebcamControl_Click"/>
+            <MenuItem Header="Notes" Click="Notes_Click"/>
+            <MenuItem Header="Reverse Shell Access" Click="ReverseShell_Click"/>
+            <Separator/>
+            <MenuItem Header="Control">
+                <MenuItem Header="Webcam Control" Click="WebcamControl_Click"/>
+                <MenuItem Header="Remote Desktop" Click="RemoteDesktop_Click"/>
+                <MenuItem Header="Audio Manager" Click="AudioManager_Click"/>
+                <MenuItem Header="HVNC" Click="HVNC_Click"/>
+                <MenuItem Header="Key Logger" Click="KeyLogger_Click"/>
+            </MenuItem>
+            <MenuItem Header="Management">
+                <MenuItem Header="File Manager" Click="FileManager_Click"/>
+                <MenuItem Header="Registry Manager" Click="RegistryManager_Click"/>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Header="Recovery"/>
+            <MenuItem Header="System Options"/>
+            <MenuItem Header="Miscellaneous"/>
+            <Separator/>
+            <MenuItem Header="System Controls">
+                <MenuItem Header="Reconnect"/>
+                <MenuItem Header="Disconnect"/>
+                <MenuItem Header="Uninstall"/>
+            </MenuItem>
+            <MenuItem Header="Power">
+                <MenuItem Header="Shutdown"/>
+                <MenuItem Header="Restart"/>
+                <MenuItem Header="Hibernate"/>
+                <MenuItem Header="Sleep"/>
+                <MenuItem Header="Logoff"/>
+            </MenuItem>
         </ContextMenu>
 
 
