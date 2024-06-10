@@ -70,7 +70,7 @@
                                   BorderThickness="1" 
                                   Style="{StaticResource ComboBox_Body}"
                                   VerticalAlignment="Top">
-                        
+
                         <!--Content-->
                         <Grid>
                             <StackPanel VerticalAlignment="Center">
@@ -79,13 +79,13 @@
                             </StackPanel>
                             <TextBlock Text="Default" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
                         </Grid>
-                        
+
                         <!--Tag / Pid-->
                         <ToggleButton.Tag>
                             <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}" Opacity="0.6"/>
                         </ToggleButton.Tag>
-                        
-                        
+
+
                         <!--Triggers-->
                         <ToggleButton.Triggers>
                             <EventTrigger RoutedEvent="ToggleButton.Checked">
@@ -99,34 +99,52 @@
 
                     <!--Theme ComboBox Item-->
                     <ContentControl x:Name="theme_ComboBox_Dropdown"
-                                    Height="80"
+                                    Height="110"
                                     Margin="0,2,0,0"
                                     Opacity="0"
-                                    Visibility="Collapsed" Panel.ZIndex="10">
+                                    Visibility="Collapsed">
                         <ContentControl.RenderTransform>
                             <TranslateTransform Y="{Binding ActualHeight, ElementName=theme_ComboBox}"/>
                         </ContentControl.RenderTransform>
-                        <Border x:Name="theme_ComboBox_DropdownContent" Background="#fff" BorderThickness="1,0,1,1" BorderBrush="{StaticResource Border}" CornerRadius="0,0,4,4">
+                        <Border x:Name="theme_ComboBox_DropdownContent" Background="{StaticResource Primary}" BorderThickness="1,0,1,1" CornerRadius="0,0,4,4">
                             <Border.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="0"/>
                             </Border.RenderTransform>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <RadioButton GroupName="Theme" Height="48" Width="78" Background="{StaticResource Secondary}" Margin="0,0,24,0"/>
-                                <RadioButton GroupName="Theme" Height="48" Width="78" Background="{StaticResource Secondary}" Margin="0,0,24,0"/>
-                                <RadioButton GroupName="Theme" Height="48" Width="78" Background="{StaticResource Secondary}" Margin="0,0,24,0"/>
-                                <RadioButton GroupName="Theme" Height="48" Width="78" Background="{StaticResource Secondary}" Margin="0,0,24,0"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
 
-                                <RadioButton GroupName="Theme" Height="48" Width="78" Background="{StaticResource Secondary}" Margin="0,0,48,0"/>
-                                <RadioButton GroupName="Theme" Height="48" Width="78" Background="{StaticResource Secondary}" Margin="0,0,24,0"/>
-                                <RadioButton GroupName="Theme" Height="48" Width="78" Background="{StaticResource Secondary}" Margin="0,0,24,0"/>
-                                <RadioButton GroupName="Theme" Height="48" Width="78" Background="{StaticResource Secondary}" Margin="0,0,0,0"/>
-                            </StackPanel>
+                                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#272727" Tag="#202020" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#000" Tag="#131313" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#2B293D" Tag="#16141C" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#453C56" Tag="#372E45" Margin="0,0,48,0"/>
+
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#FFF" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#535364" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#282F54" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#44348C" Margin="0,0,24,0"/>
+                                    </StackPanel>
+                                </ScrollViewer>
+
+                                <ToggleButton Style="{StaticResource ComboBox_Body}"
+                                              HorizontalAlignment="Right"
+                                              Grid.Column="1">
+                                    <TextBlock Text="Default" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+
+                                    <!--Tag / Pid-->
+                                    <ToggleButton.Tag>
+                                        <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                                    </ToggleButton.Tag>
+                                </ToggleButton>
+                            </Grid>
                         </Border>
 
                     </ContentControl>
                 </Grid>
-
-               
 
 
 

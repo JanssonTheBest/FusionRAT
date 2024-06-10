@@ -30,7 +30,6 @@
                         <Border Background="{DynamicResource Primary}" x:Name="bodyBG"
                                 Height="{TemplateBinding Height}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{DynamicResource Border}"
                                 CornerRadius="4">
                             <Grid Margin="28,0,28,0" x:Name="content">
                                 <ContentPresenter/>
