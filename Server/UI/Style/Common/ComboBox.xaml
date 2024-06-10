@@ -19,7 +19,7 @@
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>
-    
+
 
     <Style x:Key="ComboBox_Body" x:Name="comboBox_Body" TargetType="ToggleButton">
         <Setter Property="Cursor" Value="Hand"/>
@@ -27,10 +27,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid>
-                        <Border Background="{TemplateBinding Background}" x:Name="bodyBG"
+                        <Border Background="{DynamicResource Primary}" x:Name="bodyBG"
                                 Height="{TemplateBinding Height}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderBrush="{DynamicResource Border}"
                                 CornerRadius="4">
                             <Grid Margin="28,0,28,0" x:Name="content">
                                 <ContentPresenter/>
@@ -68,17 +68,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="ComboBox_Dropdown" TargetType="ContentControl">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <ContentPresenter/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
 
 
     <Style x:Key="Common_RealComboBox" TargetType="ToggleButton">
