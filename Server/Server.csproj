@@ -16,6 +16,7 @@
     <None Remove="UI\Assets\Icons\BuilderOneIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderPersistenceIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderUInDIcon.png" />
+    <None Remove="UI\Assets\Other\Search.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderConnectionsIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderEnPIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderFileConfigurationIcon.png" />
@@ -69,6 +70,7 @@
     <Resource Include="UI\Assets\Other\maximizedNot.png" />
     <Resource Include="UI\Assets\Other\minimize.png" />
     <Resource Include="UI\Assets\Other\os.png" />
+    <Resource Include="UI\Assets\Other\Search.png" />
     <Resource Include="UI\Assets\Other\server.png" />
     <Resource Include="UI\Assets\Other\settings.png" />
     <Resource Include="UI\Assets\Other\support.png" />

@@ -54,7 +54,7 @@
                     <Border Width="240" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Right">
                         <Button Style="{StaticResource Common_Button}">
                             <Button.Content>
-                                <TextBlock Text="Add connection" Foreground="#DBDFE0" Opacity="0.6" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="Add connection" Foreground="#DBDFE0" Opacity="0.6" FontSize="15"/>
                             </Button.Content>
                             <Button.Background>
                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -67,7 +67,7 @@
                     <Border Margin="10,0,0,0" Width="90" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Right">
                         <Button Style="{StaticResource Common_Button}">
                             <Button.Content>
-                                <TextBlock Text="Fallback" Foreground="#DBDFE0" Opacity="0.6" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="Fallback" Foreground="#DBDFE0" Opacity="0.6" FontSize="15"/>
                             </Button.Content>
                             <Button.Background>
                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">

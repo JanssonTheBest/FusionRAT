@@ -1,11 +1,39 @@
-﻿<Window x:Class="Server.UtilityWindows.RemoteDesktop"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="RemoteDesktop" Height="450" Width="800">
-    <Grid>
-        <ComboBox Height="30" VerticalAlignment="Top" x:Name="screens" />
-        <Image x:Name="icon" Visibility="Hidden"/>
-        <Label Foreground="LightGreen" Name="fpsLabel" FontSize="20" Content="0" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Image x:Name="frame" HorizontalAlignment="Stretch" Panel.ZIndex="-1" VerticalAlignment="Stretch" Stretch="Fill"/>
-    </Grid>
+﻿<Window x:Class="Server.UtilityWindows.RemoteDesktop" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:header="clr-namespace:Server.UI.CustomControls.WindowHeaders"
+        xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
+        Title="Keylogger - Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
+        MinHeight="270" MinWidth="480" Height="600" Width="1000" Foreground="{StaticResource Text}">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
+    </WindowChrome.WindowChrome>
+
+    <Border Background="{StaticResource Secondary}" BorderThickness="1" BorderBrush="{StaticResource Border}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- TitleBar -->
+            <header:WindowHeader Background="{StaticResource Primary}"/>
+
+            <!-- Main Content -->
+            <Grid Grid.Row="2" Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                    
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Label Name="fpsLabel" Foreground="LightGreen" FontSize="25" Content="0"/>
+                    <Image x:Name="frame" Stretch="Fill" Panel.ZIndex="-1"/>
+                </Grid>
+
+                <DockPanel Grid.Row="1">
+                    <ComboBox Width="250" x:Name="screens" HorizontalAlignment="Right" />
+                </DockPanel>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Collections.Concurrent;
+using Server.Helper;
 
 namespace Server.UtilityWindows
 {

