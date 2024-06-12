@@ -1,13 +1,14 @@
-﻿using Server.UtilityWindows.Interface;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Server.UtilityWindows
 {
-    public partial class ReverseShell : Window, IUtilityWindow
+    public partial class ReverseShell : Window
     {
+
         public ReverseShell()
         {
             InitializeComponent();
+            
         }
     }
 }

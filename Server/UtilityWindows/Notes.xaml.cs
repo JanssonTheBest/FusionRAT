@@ -1,8 +1,9 @@
-﻿using System.Windows;
+﻿using Server.UtilityWindows.Interface;
+using System.Windows;
 
 namespace Server.UtilityWindows
 {
-    public partial class Notes : Window
+    public partial class Notes : Window, IUtilityWindow
     {
         public Notes()
         {

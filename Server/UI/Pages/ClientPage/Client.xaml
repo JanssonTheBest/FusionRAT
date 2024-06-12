@@ -11,7 +11,7 @@
         <ContextMenu x:Key="utilityContextMenu" Opened="ContextMenu_Opened">
             <MenuItem Header="System Info" Click="SystemInfo_Click"/>
             <MenuItem Header="Notes" Click="Notes_Click"/>
-            <MenuItem Header="Reverse Shell Access" Click="ReverseShell_Click"/>
+            <MenuItem Header="Reverse Shell" Click="ReverseShell_Click"/>
             <Separator/>
             <MenuItem Header="Control">
                 <MenuItem Header="Remote Desktop" Click="RemoteDesktop_Click"/>

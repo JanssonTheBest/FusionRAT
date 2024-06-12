@@ -85,10 +85,7 @@ namespace Server.UI.CustomControls.WindowHeaders
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             var window = Window.GetWindow(this);
-            if (window != null)
-            {
-                window.Close();
-            }
+            window?.Close();
         }
     }
 }

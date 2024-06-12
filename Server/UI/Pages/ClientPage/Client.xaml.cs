@@ -137,7 +137,7 @@ namespace Server.UI.Pages.ClientPage
 
         private void ReverseShell_Click(object sender, RoutedEventArgs e)
         {
-
+            serverSession.OpenUtilityWindow(new ReverseShell());
         }
         #endregion
 
