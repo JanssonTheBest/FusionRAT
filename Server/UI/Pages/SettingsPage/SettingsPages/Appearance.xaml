@@ -3,25 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:Server.UI.Pages.SettingsPage.SettingsPages"
              mc:Ignorable="d" 
              d:DesignHeight="748" d:DesignWidth="1230" FontSize="14" Foreground="{StaticResource Text}" x:Name="test">
 
     <UserControl.Resources>
         
-        <Storyboard x:Key="NotificationDown">
-            <ThicknessAnimation Storyboard.TargetName="notificationBox"
+        <Storyboard x:Key="ColorBoxDown">
+            <ThicknessAnimation Storyboard.TargetName="color_ComboBox"
                                 Storyboard.TargetProperty="Margin"
-                                To="0,78,0,16" Duration="0:0:0.3">
+                                To="0,90,0,0" Duration="0:0:0.25">
                 <ThicknessAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </ThicknessAnimation.EasingFunction>
             </ThicknessAnimation>
         </Storyboard>
-        <Storyboard x:Key="NotificationDefault">
-            <ThicknessAnimation Storyboard.TargetName="notificationBox"
+        <Storyboard x:Key="ColorBoxDownDefault">
+            <ThicknessAnimation Storyboard.TargetName="color_ComboBox"
                                 Storyboard.TargetProperty="Margin"
-                                To="0,0,0,16" Duration="0:0:0.3">
+                                To="0,16,0,0" Duration="0:0:0.25" BeginTime="0:0:0.2">
                 <ThicknessAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </ThicknessAnimation.EasingFunction>
@@ -53,7 +54,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
-            <RowDefinition MaxHeight="115" MinHeight="45"/>
+            <RowDefinition MaxHeight="75" MinHeight="35"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -66,6 +67,8 @@
 
                 <!--//Theme ComboBox//-->
                 <Grid Margin="0,16,0,0">
+                    
+                    <!--ComboBox Body-->
                     <ToggleButton x:Name="theme_ComboBox" Height="70"
                                   BorderThickness="1" 
                                   Style="{StaticResource ComboBox_Body}"
@@ -90,16 +93,18 @@
                         <ToggleButton.Triggers>
                             <EventTrigger RoutedEvent="ToggleButton.Checked">
                                 <BeginStoryboard Storyboard="{StaticResource Theme_ComboBoxDropdown_Triggerd}"/>
+                                <BeginStoryboard Storyboard="{StaticResource ColorBoxDown}"/>
                             </EventTrigger>
                             <EventTrigger RoutedEvent="ToggleButton.Unchecked">
                                 <BeginStoryboard Storyboard="{StaticResource Theme_ComboBoxDropdown_Default}"/>
+                                <BeginStoryboard Storyboard="{StaticResource ColorBoxDownDefault}"/>
                             </EventTrigger>
                         </ToggleButton.Triggers>
                     </ToggleButton>
 
                     <!--Theme ComboBox Item-->
                     <ContentControl x:Name="theme_ComboBox_Dropdown"
-                                    Height="110"
+                                    Height="85"
                                     Margin="0,2,0,0"
                                     Opacity="0"
                                     Visibility="Collapsed">
@@ -110,13 +115,8 @@
                             <Border.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="0"/>
                             </Border.RenderTransform>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="200"/>
-                                </Grid.ColumnDefinitions>
-
-                                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible">
+                            <Border Padding="28,0,20,0">
+                                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="themeContent" Opacity="0">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#272727" Tag="#202020" Margin="0,0,24,0"/>
                                         <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#000" Tag="#131313" Margin="0,0,24,0"/>
@@ -129,23 +129,77 @@
                                         <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#44348C" Margin="0,0,24,0"/>
                                     </StackPanel>
                                 </ScrollViewer>
-
-                                <ToggleButton Style="{StaticResource ComboBox_Body}"
-                                              HorizontalAlignment="Right"
-                                              Grid.Column="1">
-                                    <TextBlock Text="Default" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
-
-                                    <!--Tag / Pid-->
-                                    <ToggleButton.Tag>
-                                        <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}" Opacity="0.6"/>
-                                    </ToggleButton.Tag>
-                                </ToggleButton>
-                            </Grid>
+                            </Border>
                         </Border>
-
                     </ContentControl>
                 </Grid>
 
+                <!--//Color ComboBox//-->
+                <Grid Margin="0,16,0,0" x:Name="color_ComboBox" >
+
+                    <!--ComboBox Body-->
+                    <ToggleButton Height="70"
+                                  BorderThickness="1" 
+                                  Style="{StaticResource ComboBox_Body}"
+                                  VerticalAlignment="Top">
+
+                        <!--Content-->
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Color" FontSize="16" FontWeight="Medium" Foreground="{StaticResource Text}" Margin="0,0,0,4"/>
+                                <TextBlock Text="Choose a combonation of colors" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                            </StackPanel>
+                            <TextBlock Text="Default" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                        </Grid>
+
+                        <!--Tag / Pid-->
+                        <ToggleButton.Tag>
+                            <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                        </ToggleButton.Tag>
+
+
+                        <!--Triggers-->
+                        <ToggleButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard Storyboard="{StaticResource Color_ComboBoxDropdown_Triggerd}"/>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                <BeginStoryboard Storyboard="{StaticResource Color_ComboBoxDropdown_Default}"/>
+                            </EventTrigger>
+                        </ToggleButton.Triggers>
+                    </ToggleButton>
+
+                    <!--Theme ComboBox Item-->
+                    <ContentControl x:Name="color_ComboBox_Dropdown"
+                                    Height="85"
+                                    Margin="0,2,0,0"
+                                    Opacity="0"
+                                    Visibility="Collapsed">
+                        <ContentControl.RenderTransform>
+                            <TranslateTransform Y="{Binding ActualHeight, ElementName=theme_ComboBox}"/>
+                        </ContentControl.RenderTransform>
+                        <Border x:Name="color_ComboBox_DropdownContent" Background="{StaticResource Primary}" BorderThickness="1,0,1,1" CornerRadius="0,0,4,4">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="0"/>
+                            </Border.RenderTransform>
+                            <Border Padding="28,0,20,0">
+                                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="colorContent" Opacity="0">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#272727" Tag="#202020" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#000" Tag="#131313" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#2B293D" Tag="#16141C" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#453C56" Tag="#372E45" Margin="0,0,48,0"/>
+
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#FFF" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#535364" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#282F54" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#44348C" Margin="0,0,24,0"/>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Border>
+                        </Border>
+                    </ContentControl>
+                </Grid>
 
 
 
