@@ -8,23 +8,44 @@
              d:DesignHeight="748" d:DesignWidth="1230" FontSize="14" Foreground="{StaticResource Text}" x:Name="test">
 
     <UserControl.Resources>
+        
         <Storyboard x:Key="NotificationDown">
-            <DoubleAnimation Storyboard.TargetName="notificationBox"
-                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
-                             To="78" Duration="0:0:0.3">
-                <DoubleAnimation.EasingFunction>
+            <ThicknessAnimation Storyboard.TargetName="notificationBox"
+                                Storyboard.TargetProperty="Margin"
+                                To="0,78,0,16" Duration="0:0:0.3">
+                <ThicknessAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
         </Storyboard>
         <Storyboard x:Key="NotificationDefault">
-            <DoubleAnimation Storyboard.TargetName="notificationBox"
-                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
-                             To="0" Duration="0:0:0.3">
-                <DoubleAnimation.EasingFunction>
+            <ThicknessAnimation Storyboard.TargetName="notificationBox"
+                                Storyboard.TargetProperty="Margin"
+                                To="0,0,0,16" Duration="0:0:0.3">
+                <ThicknessAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+
+
+        <Storyboard x:Key="IconDown">
+            <ThicknessAnimation Storyboard.TargetName="iconBox"
+                                Storyboard.TargetProperty="Margin"
+                                To="0,78,0,16" Duration="0:0:0.3">
+                <ThicknessAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+        </Storyboard>
+        <Storyboard x:Key="IconDefault">
+            <ThicknessAnimation Storyboard.TargetName="iconBox"
+                                Storyboard.TargetProperty="Margin"
+                                To="0,0,0,16" Duration="0:0:0.3">
+                <ThicknessAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
         </Storyboard>
     </UserControl.Resources>
 
@@ -40,50 +61,92 @@
 
 
         <Grid Grid.Row="2">
-            <StackPanel>
+            <StackPanel >
                 <Label Content="Appearance" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}"/>
-                <ToggleButton Style="{StaticResource Common_ComboBox}" Margin="0,16,0,8">
-                    <ToggleButton.Content>
-                        <Grid Margin="28,0,28,0" Height="80">
-                            <StackPanel>
-                                <TextBlock Text="Theme" Margin="0,16,0,4" Foreground="{StaticResource Text}" FontSize="15" FontWeight="Medium"/>
-                                <TextBlock Text="Choose a combination of themes" Foreground="{StaticResource Text}" Opacity="0.6"/>
-                            </StackPanel>
-                        </Grid>
-                    </ToggleButton.Content>
-                    <ToggleButton.Tag>
-                        <Border Background="{StaticResource Primary}" Height="78" CornerRadius="0,0,4,4" MouseDown="PopupBorder_MouseDown">
 
-                        </Border>
-                    </ToggleButton.Tag>
-                    <ToggleButton.Triggers>
-                        <EventTrigger RoutedEvent="ToggleButton.Checked">
-                            <BeginStoryboard Storyboard="{StaticResource NotificationDown}"/>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                            <BeginStoryboard Storyboard="{StaticResource NotificationDefault}"/>
-                        </EventTrigger>
-                    </ToggleButton.Triggers>
-                </ToggleButton>
-                
-                <ToggleButton x:Name="notificationBox" Style="{StaticResource Common_ComboBox}" Margin="0,16,0,8">
-                    <ToggleButton.RenderTransform>
-                        <TranslateTransform Y="0" X="0"/>
-                    </ToggleButton.RenderTransform>
-                    <ToggleButton.Content>
-                        <Grid Margin="28,0,28,0" Height="80">
-                            <StackPanel>
-                                <TextBlock Text="Notifications" Margin="0,16,0,4" Foreground="{StaticResource Text}" FontSize="15" FontWeight="Medium"/>
-                                <TextBlock Text="Choose a combination of notifications" Foreground="{StaticResource Text}" Opacity="0.6"/>
-                            </StackPanel>
-                        </Grid>
-                    </ToggleButton.Content>
-                    <ToggleButton.Tag>
-                        <Border Background="{StaticResource Primary}" Height="78" CornerRadius="0,0,4,4" MouseDown="PopupBorder_MouseDown">
+                <!--//Theme ComboBox//-->
+                <Grid Margin="0,16,0,0">
+                    <ToggleButton x:Name="theme_ComboBox" Height="70"
+                                  BorderThickness="1" 
+                                  Style="{StaticResource ComboBox_Body}"
+                                  VerticalAlignment="Top">
 
+                        <!--Content-->
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Theme" FontSize="16" FontWeight="Medium" Foreground="{StaticResource Text}" Margin="0,0,0,4"/>
+                                <TextBlock Text="Choose a combonation of themes" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                            </StackPanel>
+                            <TextBlock Text="Default" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                        </Grid>
+
+                        <!--Tag / Pid-->
+                        <ToggleButton.Tag>
+                            <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                        </ToggleButton.Tag>
+
+
+                        <!--Triggers-->
+                        <ToggleButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard Storyboard="{StaticResource Theme_ComboBoxDropdown_Triggerd}"/>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                <BeginStoryboard Storyboard="{StaticResource Theme_ComboBoxDropdown_Default}"/>
+                            </EventTrigger>
+                        </ToggleButton.Triggers>
+                    </ToggleButton>
+
+                    <!--Theme ComboBox Item-->
+                    <ContentControl x:Name="theme_ComboBox_Dropdown"
+                                    Height="110"
+                                    Margin="0,2,0,0"
+                                    Opacity="0"
+                                    Visibility="Collapsed">
+                        <ContentControl.RenderTransform>
+                            <TranslateTransform Y="{Binding ActualHeight, ElementName=theme_ComboBox}"/>
+                        </ContentControl.RenderTransform>
+                        <Border x:Name="theme_ComboBox_DropdownContent" Background="{StaticResource Primary}" BorderThickness="1,0,1,1" CornerRadius="0,0,4,4">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="0"/>
+                            </Border.RenderTransform>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#272727" Tag="#202020" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#000" Tag="#131313" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#2B293D" Tag="#16141C" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#453C56" Tag="#372E45" Margin="0,0,48,0"/>
+
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#FFF" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#535364" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#282F54" Margin="0,0,24,0"/>
+                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#44348C" Margin="0,0,24,0"/>
+                                    </StackPanel>
+                                </ScrollViewer>
+
+                                <ToggleButton Style="{StaticResource ComboBox_Body}"
+                                              HorizontalAlignment="Right"
+                                              Grid.Column="1">
+                                    <TextBlock Text="Default" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+
+                                    <!--Tag / Pid-->
+                                    <ToggleButton.Tag>
+                                        <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                                    </ToggleButton.Tag>
+                                </ToggleButton>
+                            </Grid>
                         </Border>
-                    </ToggleButton.Tag>
-                </ToggleButton>
+
+                    </ContentControl>
+                </Grid>
+
+
 
 
 

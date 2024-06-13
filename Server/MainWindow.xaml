@@ -6,7 +6,7 @@
         xmlns:SupportPage="clr-namespace:Server.UI.Pages.SupportPage"
         xmlns:SettingsPage="clr-namespace:Server.UI.Pages.SettingsPage"
         mc:Ignorable="d"
-        Title="MainWindow" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
+        Title="Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         MinWidth="940" MinHeight="480" d:Width="1450" d:Height="800" Background="Transparent" FontSize="13" Foreground="#fff">
 
     <WindowChrome.WindowChrome>
@@ -20,19 +20,20 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
+
     <Border>
         <Border.Style>
             <Style TargetType="Border">
                 <Setter Property="Background" Value="{StaticResource Primary}"/>
                 <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="BorderBrush" Value="#3A3A3A"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
             </Style>
         </Border.Style>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="52"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="27*"/>
+                <RowDefinition Height="346*"/>
             </Grid.RowDefinitions>
 
             <!--//TitleBar//-->
@@ -44,7 +45,10 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock VerticalAlignment="Top" Text="Fusion" HorizontalAlignment="Left" Margin="20,10,0,0" Foreground="{StaticResource Text}" FontWeight="Bold"/>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/UI/Assets/Icons/Logo.png" Margin="10,10,0,0" Width="20" VerticalAlignment="Top" />
+                    <TextBlock VerticalAlignment="Top" Text="Fusion" Margin="5,10,0,0" Foreground="{StaticResource Text}" FontWeight="Bold"/>
+                </StackPanel>
                 <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="1" Width="50" VerticalAlignment="Top" Height="35" Click="MinimizeButton_Click">
                     <Button.Content>
                         <Border x:Name="minimizeBG" Background="Transparent">
@@ -69,7 +73,7 @@
             </Grid>
 
             <!--// Main //-->
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Grid.RowSpan="2">
 
                 <!--// Side panel //-->
                 <Border x:Name="sidePanel" Width="220" HorizontalAlignment="Left">
@@ -175,7 +179,8 @@
                 </Border>
 
                 <!--// Frame panel /748h/1230w/-->
-                <Border x:Name="framePanel" CornerRadius="7,0,0,0" Margin="220,0,0,0">
+                <Border x:Name="framePanel" CornerRadius="7,0,0,0" Margin="220,0,0,0"
+                        BorderThickness="1,1,0,0" BorderBrush="{StaticResource Border}">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Background" Value="{StaticResource Secondary}"/>

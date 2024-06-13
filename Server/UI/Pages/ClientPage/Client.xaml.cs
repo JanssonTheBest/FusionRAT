@@ -1,15 +1,10 @@
-﻿using Common.DTOs.MessagePack;
-using Server.CoreServerFunctionality;
-using Server.Generated;
-using Server.Helper;
-using Server.UtilityWindows;
-using System.Collections.ObjectModel;
+﻿using Server.CoreServerFunctionality;
 using System.Collections.Specialized;
-using System.Windows;
 using System.Windows.Controls;
+using Server.UtilityWindows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows;
 
 namespace Server.UI.Pages.ClientPage
 {
@@ -129,12 +124,36 @@ namespace Server.UI.Pages.ClientPage
         }
         #endregion
 
-        private void AudioManager_Click(object sender, RoutedEventArgs e)
+        #region No Category
+        private void SystemInfo_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new SystemInfo());
+        }
+
+        private void Notes_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new Notes());
+        }
+
+        private void ReverseShell_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new ReverseShell());
+        }
+        #endregion
+
+        #region Control
+        private void RemoteDesktop_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new RemoteDesktop(serverSession));
+        }
+
+
+        private void WebcamControl_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void FileManager_Click(object sender, RoutedEventArgs e)
+        private void AudioManager_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -144,7 +163,29 @@ namespace Server.UI.Pages.ClientPage
 
         }
 
-        private void KeyLogger_Click(object sender, RoutedEventArgs e)
+        private void KeyloggerOffline_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void KeyloggerOnline_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new Keylogger());
+        }
+        #endregion
+
+        #region Management
+        private void SystemManagement_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NetworkManagement_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FileManager_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -153,39 +194,73 @@ namespace Server.UI.Pages.ClientPage
         {
 
         }
-
-        private void RemoteDesktop_Click(object sender, RoutedEventArgs e)
-        {
-            serverSession.OpenUtilityWindow(new RemoteDesktop(serverSession));
-        }
-
-        private void ReverseShell_Click(object sender, RoutedEventArgs e)
+        private void ClipboardManager_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void SystemInfo_Click(object sender, RoutedEventArgs e)
+        private void Recovery_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void SystemOptions_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void Miscellaneous_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
+
+        #region System Controls
+        private void Reconnect_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void TaskManager_Click(object sender, RoutedEventArgs e)
+        private void Disconnect_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void WebcamControl_Click(object sender, RoutedEventArgs e)
+        private void Uninstall_Click(object sender, RoutedEventArgs e)
         {
-            
 
         }
+        #endregion
+
+        #region Power
+        private void Shutdown_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Restart_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Sleep_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Logoff_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Hibernate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
 
         ServerSession serverSession;
         private void ContextMenu_Opened(object sender, RoutedEventArgs e)
         {
             serverSession =  ((ServerSession)(((DataGridRow)((ContextMenu)sender).PlacementTarget)).DataContext);
         }
-
-
     }
 }

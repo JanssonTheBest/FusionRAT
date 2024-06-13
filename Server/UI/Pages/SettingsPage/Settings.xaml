@@ -129,7 +129,7 @@
                             </Button.Tag>
                             <Button.Content>
                                 <StackPanel VerticalAlignment="Center">
-                                    <Image x:Name="settingsAccountImage" Source="/UI/Pages/SettingsPage/icons8-admin-settings-male-100.png" Height="75" Width="75" Opacity="0.4">
+                                    <Image x:Name="settingsAccountImage" Source="\UI\Assets\Other\icons8-admin-settings-male-100.png" Height="75" Width="75" Opacity="0.4">
                                         <Image.RenderTransform>
                                             <TranslateTransform X="0" Y="22"/>
                                         </Image.RenderTransform>
@@ -197,7 +197,7 @@
                         <Button Style="{StaticResource settingsNavigation}" Width="190" Height="170" Margin="2,0,2,0">
                             <Button.Content>
                                 <StackPanel VerticalAlignment="Center">
-                                    <Image x:Name="settingsGeneralImage" Height="75" Width="75" Opacity="0.4" Source="/UI/Pages/SettingsPage/General.png">
+                                    <Image x:Name="settingsGeneralImage" Height="75" Width="75" Opacity="0.4" Source="\UI\Assets\Other\General.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform X="0" Y="22"/>
                                         </Image.RenderTransform>
@@ -268,7 +268,7 @@
                             </Button.Tag>
                             <Button.Content>
                                 <StackPanel VerticalAlignment="Center">
-                                    <Image x:Name="settingsSecurityImage" Height="75" Width="75" Opacity="0.4" Source="/UI/Pages/SettingsPage/Security.png">
+                                    <Image x:Name="settingsSecurityImage" Height="75" Width="75" Opacity="0.4" Source="\UI\Assets\Other\Security.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform X="0" Y="22"/>
                                         </Image.RenderTransform>
@@ -341,7 +341,7 @@
                             </Button.Tag>
                             <Button.Content>
                                 <StackPanel VerticalAlignment="Center">
-                                    <Image x:Name="settingsAppearanceImage" Height="75" Width="75" Opacity="0.4" Source="/UI/Pages/SettingsPage/Appear.png">
+                                    <Image x:Name="settingsAppearanceImage" Height="75" Width="75" Opacity="0.4" Source="\UI\Assets\Other\Appear.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform X="0" Y="22"/>
                                         </Image.RenderTransform>
@@ -413,7 +413,7 @@
                         <Button Style="{StaticResource settingsNavigation}" Width="190" Height="170" Margin="2,0,2,0">
                             <Button.Content>
                                 <StackPanel VerticalAlignment="Center">
-                                    <Image x:Name="settingsAdvancedImage" Height="75" Width="75" Opacity="0.4" Source="/UI/Pages/SettingsPage/Advanced.png">
+                                    <Image x:Name="settingsAdvancedImage" Height="75" Width="75" Opacity="0.4" Source="\UI\Assets\Other\Advanced.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform X="0" Y="22"/>
                                         </Image.RenderTransform>
@@ -484,7 +484,7 @@
                             </Button.Tag>
                             <Button.Content>
                                 <StackPanel VerticalAlignment="Center">
-                                    <Image x:Name="settingsReportImage" Height="75" Width="75" Opacity="0.4" Source="/UI/Pages/SettingsPage/Report.png">
+                                    <Image x:Name="settingsReportImage" Height="75" Width="75" Opacity="0.4" Source="\UI\Assets\Other\Report.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform X="0" Y="22"/>
                                         </Image.RenderTransform>

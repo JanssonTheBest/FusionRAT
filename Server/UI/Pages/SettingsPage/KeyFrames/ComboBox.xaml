@@ -1,0 +1,46 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    
+    <Storyboard x:Key="Theme_ComboBoxDropdown_Triggerd">
+        <DoubleAnimation Storyboard.TargetName="theme_ComboBox_Dropdown"
+                     Storyboard.TargetProperty="Opacity"
+                     To="1" Duration="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="theme_ComboBox_Dropdown"
+                                   Storyboard.TargetProperty="Visibility">
+            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+        </ObjectAnimationUsingKeyFrames>
+        <DoubleAnimation Storyboard.TargetName="theme_ComboBox_DropdownContent"
+                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                     To="1" Duration="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="Theme_ComboBoxDropdown_Default">
+        <DoubleAnimation Storyboard.TargetName="theme_ComboBox_Dropdown"
+                     Storyboard.TargetProperty="Opacity"
+                     To="0" Duration="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="theme_ComboBox_Dropdown"
+                                   Storyboard.TargetProperty="Visibility">
+            <DiscreteObjectKeyFrame KeyTime="0:0:0.25" Value="{x:Static Visibility.Collapsed}"/>
+        </ObjectAnimationUsingKeyFrames>
+        <DoubleAnimation Storyboard.TargetName="theme_ComboBox_DropdownContent"
+                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                     To="0" Duration="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+</ResourceDictionary>

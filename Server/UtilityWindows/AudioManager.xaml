@@ -8,6 +8,6 @@
         Title="AudioManager" Height="450" Width="800">
 
     <Grid>
-        <Image x:Name="icon" Loaded="icon_Loaded" Source="/UI/Assets/Icons/Logo.png" />
+        <Image x:Name="icon" Loaded="icon_Loaded"/>
     </Grid>
 </Window>

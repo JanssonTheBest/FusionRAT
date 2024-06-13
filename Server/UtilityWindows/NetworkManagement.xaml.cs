@@ -3,9 +3,9 @@ using System.Windows;
 
 namespace Server.UtilityWindows
 {
-    public partial class RegistryManager : Window, IUtilityWindow
+    public partial class NetworkManagement : Window, IUtilityWindow
     {
-        public RegistryManager()
+        public NetworkManagement()
         {
             InitializeComponent();
         }

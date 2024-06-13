@@ -8,11 +8,7 @@ namespace Server.UtilityWindows
         public SystemInfo()
         {
             InitializeComponent();
-        }
-
-        private void icon_Loaded(object sender, RoutedEventArgs e)
-        {
-
+            DataContext = new SystemInfoViewModel();
         }
     }
 }
