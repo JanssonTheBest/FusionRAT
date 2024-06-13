@@ -1,10 +1,9 @@
 ﻿using Common.Comunication;
 using Common.DTOs.MessagePack;
 using System.Collections.Concurrent;
-using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace RemoteDesktopPlugin
 {
@@ -17,18 +16,12 @@ namespace RemoteDesktopPlugin
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         private readonly ImageCodecInfo _jpegEncoder;
         private readonly EncoderParameters _encoderParameters;
-        private readonly int _bmpPartSize;
-        private readonly int _horizontalAmount;
-        private readonly int _verticalAmount;
 
         public Plugin(Session session)
         {
             _session = session;
             _session.OnRemoteDesktop += HandlePacket;
-            _bmpPartSize = (int)Math.Round(MathF.Sqrt(_screen[0] * _screen[1] / (float)_bitrate));
-            _horizontalAmount = _screen[0] / _bmpPartSize + 1;
-            _verticalAmount = _screen[1] / _bmpPartSize + 1;
-            _oldBitmaps = new Bitmap[_horizontalAmount * _verticalAmount];
+            _oldBitmaps = new Bitmap[CalculateBitmapArraySize()];
             _jpegEncoder = GetEncoder(ImageFormat.Jpeg);
             _encoderParameters = new EncoderParameters(1)
             {
@@ -42,23 +35,37 @@ namespace RemoteDesktopPlugin
             // Handle incoming packets
         }
 
+        private int CalculateBitmapArraySize()
+        {
+            int screenArea = _screen[0] * _screen[1];
+            int bmpPartSize = (int)Math.Round(MathF.Sqrt(screenArea / _bitrate));
+            int horizontalAmount = _screen[0] / bmpPartSize + 1;
+            int verticalAmount = _screen[1] / bmpPartSize + 1;
+            return horizontalAmount * verticalAmount;
+        }
+
         private async Task RecLoop()
         {
+            int screenArea = _screen[0] * _screen[1];
+            int bmpPartSize = (int)Math.Round(MathF.Sqrt(screenArea / _bitrate));
+            int horizontalAmount = _screen[0] / bmpPartSize + 1;
+            int verticalAmount = _screen[1] / bmpPartSize + 1;
+
             while (true)
             {
                 var frameTasks = new ConcurrentBag<Task>();
                 var dt = new RemoteDesktopDTO
                 {
-                    Frame = new byte[_horizontalAmount * _verticalAmount][]
+                    Frame = new byte[horizontalAmount * verticalAmount][]
                 };
 
-                for (int i = 0; i < _verticalAmount; i++)
+                for (int i = 0; i < verticalAmount; i++)
                 {
-                    for (int j = 0; j < _horizontalAmount; j++)
+                    for (int j = 0; j < horizontalAmount; j++)
                     {
-                        int index = j + i * _horizontalAmount;
-                        var point = new Point(j * _bmpPartSize, i * _bmpPartSize);
-                        frameTasks.Add(ProcessFramePart(index, point, _bmpPartSize, dt));
+                        int index = j + i * horizontalAmount;
+                        var point = new Point(j * bmpPartSize, i * bmpPartSize);
+                        frameTasks.Add(ProcessFramePart(index, point, bmpPartSize, dt));
                     }
                 }
 
@@ -70,10 +77,12 @@ namespace RemoteDesktopPlugin
         private async Task ProcessFramePart(int index, Point point, int bmpPartSize, RemoteDesktopDTO dt)
         {
             using (var bmp = new Bitmap(bmpPartSize, bmpPartSize))
+            using (var ms = new MemoryStream())
             using (var g = Graphics.FromImage(bmp))
             {
                 g.CopyFromScreen(point, Point.Empty, new Size(bmpPartSize, bmpPartSize));
-                var newBmp = BitmapToByteArray(bmp);
+                bmp.Save(ms, _jpegEncoder, _encoderParameters);
+                byte[] newBmp = ms.ToArray();
 
                 await _semaphore.WaitAsync();
                 try
@@ -89,15 +98,6 @@ namespace RemoteDesktopPlugin
                 {
                     _semaphore.Release();
                 }
-            }
-        }
-
-        private byte[] BitmapToByteArray(Bitmap bmp)
-        {
-            using (var ms = new MemoryStream())
-            {
-                bmp.Save(ms, _jpegEncoder, _encoderParameters);
-                return ms.ToArray();
             }
         }
 
