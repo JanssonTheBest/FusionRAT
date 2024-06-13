@@ -52,7 +52,7 @@
                         <Border x:Name="ButtonBorder1" Width="160" BorderThickness="2" BorderBrush="#272727" CornerRadius="3">
                             <Button Name="ActionButton1" IsEnabled="False" Style="{StaticResource Common_Button}">
                                 <Button.Content>
-                                    <TextBlock Text="Configure" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Configure" Foreground="White" FontSize="14"/>
                                 </Button.Content>
                             </Button>
                         </Border>
@@ -60,7 +60,7 @@
                         <Border x:Name="ButtonBorder2" Width="160" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Margin="17,0,0,0" >
                             <Button Name="ActionButton2" IsEnabled="False" Style="{StaticResource Common_Button}">
                                 <Button.Content>
-                                    <TextBlock Text="Configure" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Configure" Foreground="White" FontSize="14"/>
                                 </Button.Content>
                             </Button>
                         </Border>
@@ -104,7 +104,7 @@
                     <Border x:Name="ButtonBorder3" Width="160" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Left" Grid.Row="15">
                         <Button Name="ActionButton" IsEnabled="False" Style="{StaticResource Common_Button}" >
                             <Button.Content>
-                                <TextBlock Text="Configure" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="Configure" Foreground="White" FontSize="14"/>
                             </Button.Content>
                         </Button>
                     </Border>
