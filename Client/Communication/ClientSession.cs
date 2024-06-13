@@ -1,4 +1,4 @@
-﻿using Common.Comunication;
+﻿using Common.Communication;
 using Common.DTOs.MessagePack;
 using System.Runtime.InteropServices;
 using System.Reflection;

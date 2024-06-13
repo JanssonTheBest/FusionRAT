@@ -1,4 +1,4 @@
-﻿using Common.Comunication;
+﻿using Common.Communication;
 using System.Collections.ObjectModel;
 using System.Net.Security;
 using System.Net.Sockets;

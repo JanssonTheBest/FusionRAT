@@ -6,7 +6,7 @@ using System.Net.Security;
 using System.Net.Sockets;
 
 
-namespace Common.Comunication
+namespace Common.Communication
 {
     public interface IConnectionProperties
     {

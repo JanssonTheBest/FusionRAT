@@ -1,5 +1,5 @@
 ﻿using ClientInfo;
-using Common.Comunication;
+using Common.Communication;
 using Common.DTOs.MessagePack;
 using System.IO;
 using System.Windows;

@@ -1,4 +1,4 @@
-﻿using Common.Comunication;
+﻿using Common.Communication;
 using Common.DTOs.MessagePack;
 using System.Collections.Concurrent;
 using System.Drawing;

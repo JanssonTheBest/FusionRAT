@@ -1,4 +1,4 @@
-﻿using Common.Comunication;
+﻿using Common.Communication;
 using MessagePack;
 
 namespace Common.DTOs.MessagePack
