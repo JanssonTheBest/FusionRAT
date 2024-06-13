@@ -54,7 +54,7 @@
             <!-- Main Content -->
             <Grid Grid.Row="2" Margin="0">
                 <Image x:Name="frame" Stretch="Fill" Panel.ZIndex="-1"/>
-                <ComboBox Width="50" Height="20" x:Name="screens" HorizontalAlignment="Right" Visibility="Collapsed" />
+                <ComboBox Width="50" Height="20" x:Name="screens" HorizontalAlignment="Right" />
 
                 <StackPanel VerticalAlignment="Bottom">
                     <ToggleButton Style="{StaticResource Common_ToggleButton}" Width="36" Height="16" Background="{StaticResource Primary}" BorderThickness="1,1,1,0" BorderBrush="#3A3A3A">

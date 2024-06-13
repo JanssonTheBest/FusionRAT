@@ -84,6 +84,10 @@ namespace RemoteDesktopPlugin
                         _oldBitmaps[index] = new Bitmap(bmp);
                         dt.Frame[index] = newBmp;
                     }
+                    else
+                    {
+                        dt.Frame[index] = null;
+                    }
                 }
                 finally
                 {
