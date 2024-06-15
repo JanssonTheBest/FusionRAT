@@ -1,12 +1,26 @@
-﻿<Window x:Class="Server.UtilityWindows.WebcamControl"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Server.UtilityWindows"
-        mc:Ignorable="d"
-        Title="WebcamControl" Height="450" Width="800">
-    <Grid>
-        <Image x:Name="icon" Loaded="icon_Loaded"/>
-    </Grid>
+﻿<Window x:Class="Server.UtilityWindows.WebcamControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:header="clr-namespace:Server.UI.CustomControls.WindowHeaders"
+        xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
+        Title="Webcam Control - Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
+        MinHeight="600" MinWidth="800" Width="1000" Height="800" Foreground="{DynamicResource Text}">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
+    </WindowChrome.WindowChrome>
+
+    <Border Background="{DynamicResource Secondary}" BorderThickness="1" BorderBrush="{DynamicResource Border}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- TitleBar -->
+            <header:WindowHeader Background="{DynamicResource Primary}"/>
+
+            <!-- Main Content -->
+            <Grid Grid.Row="2" Margin="30">
+
+            </Grid>
+        </Grid>
+    </Border>
 </Window>
