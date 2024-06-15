@@ -12,6 +12,18 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style\ContentControl\ChangeLogStatus.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="ToggleButton" x:Key="ChangeTheme_TBTN">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Grid Background="Transparent">
+                                <ContentPresenter/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -37,7 +49,7 @@
                 <Grid>
                     
                     <!--//Cangelog start//-->
-                    <ToggleButton Style="{StaticResource Common_ToggleButton}" Background="Transparent">
+                    <ToggleButton Style="{StaticResource ChangeTheme_TBTN}" Background="Transparent">
                         <ToggleButton.Triggers>
                             <EventTrigger RoutedEvent="ToggleButton.Checked">
                                 <BeginStoryboard>
