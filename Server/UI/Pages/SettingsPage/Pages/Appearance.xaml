@@ -1,11 +1,5 @@
-﻿<UserControl x:Class="Server.UI.Pages.SettingsPage.Pages.Appearance"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:local="clr-namespace:Server.UI.Pages.SettingsPage.Pages"
-             mc:Ignorable="d" 
+﻿<UserControl x:Class="Server.UI.Pages.SettingsPage.Pages.Appearance" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:Server.UI.Pages.SettingsPage.Pages" mc:Ignorable="d" 
              d:DesignHeight="748" d:DesignWidth="1230" FontSize="14" Foreground="{DynamicResource Text}">
 
     <UserControl.Resources>
@@ -49,21 +43,13 @@
             </ThicknessAnimation>
         </Storyboard>
 
-        <Style x:Key="CommonThemeRadioButtonStyle" TargetType="RadioButton" BasedOn="{StaticResource Theme_RadioButton}">
+        <Style x:Key="ThemeRBTN_Style" TargetType="RadioButton" BasedOn="{StaticResource Theme_RadioButton}">
             <Setter Property="GroupName" Value="Theme"/>
             <Setter Property="Height" Value="55"/>
             <Setter Property="Width" Value="90"/>
             <Setter Property="Margin" Value="0,0,24,0"/>
             <EventSetter Event="Checked" Handler="ThemeRadioButton_Checked"/>
         </Style>
-
-        <DataTemplate x:Key="ThemeRadioButtonTemplate">
-            <RadioButton Style="{StaticResource CommonThemeRadioButtonStyle}" Background="{Binding Secondary}" Tag="{Binding}">
-                <RadioButton.IsChecked>
-                    <Binding Path="IsChecked" Mode="TwoWay"/>
-                </RadioButton.IsChecked>
-            </RadioButton>
-        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -120,13 +106,25 @@
                             </Border.RenderTransform>
                             <Border Padding="28,0,20,0">
                                 <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="themeContent" Opacity="0">
-                                    <ItemsControl ItemsSource="{Binding Themes}" ItemTemplate="{StaticResource ThemeRadioButtonTemplate}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <RadioButton x:Name="ThemeRadioButton1" Style="{StaticResource ThemeRBTN_Style}" Background="#272727" Tag="#202020" IsChecked="True" />
+                                        <RadioButton x:Name="ThemeRadioButton2" Style="{StaticResource ThemeRBTN_Style}" Background="#000000" Tag="#131313" />
+                                        <RadioButton x:Name="ThemeRadioButton3" Style="{StaticResource ThemeRBTN_Style}" Background="#2B293D" Tag="#16141C" />
+                                        <RadioButton x:Name="ThemeRadioButton4" Style="{StaticResource ThemeRBTN_Style}" Background="#453C56" Tag="#372E45" />
+
+                                        <RadioButton x:Name="ThemeRadioButton5" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#FFFFFF"/>
+                                        <RadioButton x:Name="ThemeRadioButton6" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#535364" />
+                                        <RadioButton x:Name="ThemeRadioButton7" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#282F54" />
+                                        <RadioButton x:Name="ThemeRadioButton8" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#44348C"/>
+                                        <Button Width="90" Height="55" Style="{StaticResource Common_Button}" Background="Transparent" BorderThickness="1" BorderBrush="{StaticResource Border}" Margin="0,0,24,0">
+                                            <Button.Tag>
+                                                <CornerRadius BottomLeft="11" BottomRight="11" TopLeft="11" TopRight="11"/>
+                                            </Button.Tag>
+                                            <Grid>
+                                                <Image Width="20" Height="20" Opacity="0.5" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/UI/Assets/Other/AddThemeIcon.png" />
+                                            </Grid>
+                                        </Button>
+                                    </StackPanel>
                                 </ScrollViewer>
                             </Border>
                         </Border>

@@ -16,6 +16,7 @@
     <None Remove="UI\Assets\Icons\BuilderOneIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderPersistenceIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderUInDIcon.png" />
+    <None Remove="UI\Assets\Other\AddThemeIcon.png" />
     <None Remove="UI\Assets\Other\Search.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderConnectionsIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderEnPIcon.png" />
@@ -57,6 +58,7 @@
     <Resource Include="UI\Assets\Icons\BuilderOneIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderPersistenceIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderUInDIcon.png" />
+    <Resource Include="UI\Assets\Other\AddThemeIcon.png" />
     <Resource Include="UI\Assets\Other\bgBlured.png" />
     <Resource Include="UI\Assets\Other\client.png" />
     <Resource Include="UI\Assets\Other\close.png" />
