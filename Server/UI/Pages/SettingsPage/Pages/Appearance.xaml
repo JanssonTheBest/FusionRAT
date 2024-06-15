@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="Server.UI.Pages.SettingsPage.SettingsPages.Appearance"
+﻿<UserControl x:Class="Server.UI.Pages.SettingsPage.Pages.Appearance"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:local="clr-namespace:Server.UI.Pages.SettingsPage.SettingsPages"
+             xmlns:local="clr-namespace:Server.UI.Pages.SettingsPage.Pages"
              mc:Ignorable="d" 
-             d:DesignHeight="748" d:DesignWidth="1230" FontSize="14" Foreground="{StaticResource Text}" x:Name="test">
+             d:DesignHeight="748" d:DesignWidth="1230" FontSize="14" Foreground="{DynamicResource Text}">
 
     <UserControl.Resources>
         
@@ -48,8 +48,23 @@
                 </ThicknessAnimation.EasingFunction>
             </ThicknessAnimation>
         </Storyboard>
-    </UserControl.Resources>
 
+        <Style x:Key="CommonThemeRadioButtonStyle" TargetType="RadioButton" BasedOn="{StaticResource Theme_RadioButton}">
+            <Setter Property="GroupName" Value="Theme"/>
+            <Setter Property="Height" Value="55"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Margin" Value="0,0,24,0"/>
+            <EventSetter Event="Checked" Handler="ThemeRadioButton_Checked"/>
+        </Style>
+
+        <DataTemplate x:Key="ThemeRadioButtonTemplate">
+            <RadioButton Style="{StaticResource CommonThemeRadioButtonStyle}" Background="{Binding Secondary}" Tag="{Binding}">
+                <RadioButton.IsChecked>
+                    <Binding Path="IsChecked" Mode="TwoWay"/>
+                </RadioButton.IsChecked>
+            </RadioButton>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -60,36 +75,26 @@
 
         <Button Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Right" Background="Red" Click="buttonClick"/>
 
-
         <Grid Grid.Row="2">
-            <StackPanel >
-                <Label Content="Appearance" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}"/>
+            <StackPanel>
+                <Label Content="Appearance" FontSize="17" FontWeight="Medium" Foreground="{DynamicResource Text}"/>
 
                 <!--//Theme ComboBox//-->
                 <Grid Margin="0,16,0,0">
-                    
-                    <!--ComboBox Body-->
                     <ToggleButton x:Name="theme_ComboBox" Height="70"
-                                  BorderThickness="1" 
+                                  BorderThickness="1"
                                   Style="{StaticResource ComboBox_Body}"
                                   VerticalAlignment="Top">
-
-                        <!--Content-->
                         <Grid>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="Theme" FontSize="16" FontWeight="Medium" Foreground="{StaticResource Text}" Margin="0,0,0,4"/>
-                                <TextBlock Text="Choose a combonation of themes" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                                <TextBlock Text="Theme" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}" Margin="0,0,0,4"/>
+                                <TextBlock Text="Choose a combination of themes" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6"/>
                             </StackPanel>
-                            <TextBlock Text="Default" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                            <TextBlock Text="Default" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
                         </Grid>
-
-                        <!--Tag / Pid-->
                         <ToggleButton.Tag>
-                            <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                            <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{DynamicResource Text}" Opacity="0.6"/>
                         </ToggleButton.Tag>
-
-
-                        <!--Triggers-->
                         <ToggleButton.Triggers>
                             <EventTrigger RoutedEvent="ToggleButton.Checked">
                                 <BeginStoryboard Storyboard="{StaticResource Theme_ComboBoxDropdown_Triggerd}"/>
@@ -101,8 +106,6 @@
                             </EventTrigger>
                         </ToggleButton.Triggers>
                     </ToggleButton>
-
-                    <!--Theme ComboBox Item-->
                     <ContentControl x:Name="theme_ComboBox_Dropdown"
                                     Height="85"
                                     Margin="0,2,0,0"
@@ -111,23 +114,19 @@
                         <ContentControl.RenderTransform>
                             <TranslateTransform Y="{Binding ActualHeight, ElementName=theme_ComboBox}"/>
                         </ContentControl.RenderTransform>
-                        <Border x:Name="theme_ComboBox_DropdownContent" Background="{StaticResource Primary}" BorderThickness="1,0,1,1" CornerRadius="0,0,4,4">
+                        <Border x:Name="theme_ComboBox_DropdownContent" Background="{DynamicResource Primary}" BorderThickness="1,0,1,1" CornerRadius="0,0,4,4">
                             <Border.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="0"/>
                             </Border.RenderTransform>
                             <Border Padding="28,0,20,0">
                                 <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="themeContent" Opacity="0">
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#272727" Tag="#202020" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#000" Tag="#131313" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#2B293D" Tag="#16141C" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#453C56" Tag="#372E45" Margin="0,0,48,0"/>
-
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#FFF" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#535364" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#282F54" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#44348C" Margin="0,0,24,0"/>
-                                    </StackPanel>
+                                    <ItemsControl ItemsSource="{Binding Themes}" ItemTemplate="{StaticResource ThemeRadioButtonTemplate}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
                                 </ScrollViewer>
                             </Border>
                         </Border>
@@ -146,15 +145,15 @@
                         <!--Content-->
                         <Grid>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="Color" FontSize="16" FontWeight="Medium" Foreground="{StaticResource Text}" Margin="0,0,0,4"/>
-                                <TextBlock Text="Choose a combonation of colors" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                                <TextBlock Text="Color" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}" Margin="0,0,0,4"/>
+                                <TextBlock Text="Choose a combonation of colors" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6"/>
                             </StackPanel>
-                            <TextBlock Text="Default" FontSize="15" Foreground="{StaticResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                            <TextBlock Text="Default" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
                         </Grid>
 
                         <!--Tag / Pid-->
                         <ToggleButton.Tag>
-                            <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{StaticResource Text}" Opacity="0.6"/>
+                            <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{DynamicResource Text}" Opacity="0.6"/>
                         </ToggleButton.Tag>
 
 
@@ -178,7 +177,7 @@
                         <ContentControl.RenderTransform>
                             <TranslateTransform Y="{Binding ActualHeight, ElementName=theme_ComboBox}"/>
                         </ContentControl.RenderTransform>
-                        <Border x:Name="color_ComboBox_DropdownContent" Background="{StaticResource Primary}" BorderThickness="1,0,1,1" CornerRadius="0,0,4,4">
+                        <Border x:Name="color_ComboBox_DropdownContent" Background="{DynamicResource Primary}" BorderThickness="1,0,1,1" CornerRadius="0,0,4,4">
                             <Border.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="0"/>
                             </Border.RenderTransform>
@@ -200,10 +199,6 @@
                         </Border>
                     </ContentControl>
                 </Grid>
-
-
-
-
             </StackPanel>
         </Grid>
     </Grid>

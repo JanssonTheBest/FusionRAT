@@ -2,7 +2,7 @@
         xmlns:header="clr-namespace:Server.UI.CustomControls.WindowHeaders"
         xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
         Title="Notes - Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
-        MinHeight="578" MinWidth="515" Height="578" Width="515" Foreground="{StaticResource Text}">
+        MinHeight="578" MinWidth="515" Height="578" Width="515" Foreground="{DynamicResource Text}">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
@@ -13,13 +13,13 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Width" Value="90" />
             <Setter Property="Height" Value="28" />
-            <Setter Property="Foreground" Value="{StaticResource Text}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text}" />
             <Setter Property="FontWeight" Value="Medium" />
             <Setter Property="FontSize" Value="13" />
         </Style>
     </Window.Resources>
     
-    <Border Background="{StaticResource Secondary}" BorderThickness="1" BorderBrush="{StaticResource Border}">
+    <Border Background="{DynamicResource Secondary}" BorderThickness="1" BorderBrush="{DynamicResource Border}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="27"/>
@@ -27,7 +27,7 @@
             </Grid.RowDefinitions>
 
             <!-- TitleBar -->
-            <header:WindowHeader Background="{StaticResource Primary}"/>
+            <header:WindowHeader Background="{DynamicResource Primary}"/>
 
             <!-- Main Content -->
             <Grid Grid.Row="2" Margin="30">
@@ -97,8 +97,8 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <DockPanel LastChildFill="True">
-                                                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource Text}" Margin="14,0,0,0"/>
-                                                    <TextBlock Text="{Binding LastModified}" Foreground="{StaticResource Text}" Margin="0,0,24,0" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                                    <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Text}" Margin="14,0,0,0"/>
+                                                    <TextBlock Text="{Binding LastModified}" Foreground="{DynamicResource Text}" Margin="0,0,24,0" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
                                                 </DockPanel>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
@@ -116,8 +116,8 @@
                             <RowDefinition Height="14"/>
                         </Grid.RowDefinitions>
                         
-                        <RichTextBox Background="Transparent" Foreground="{StaticResource Text}" BorderThickness="0" CaretBrush="{StaticResource Text}"/>
-                        <TextBlock Text="{Binding Hashtags}" Grid.Row="1" Opacity="0.2" Foreground="{StaticResource Text}"/>
+                        <RichTextBox Background="Transparent" Foreground="{DynamicResource Text}" BorderThickness="0" CaretBrush="{DynamicResource Text}"/>
+                        <TextBlock Text="{Binding Hashtags}" Grid.Row="1" Opacity="0.2" Foreground="{DynamicResource Text}"/>
                     </Grid>
                 </Border>
 

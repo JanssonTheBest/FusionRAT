@@ -78,12 +78,12 @@
     <Resource Include="UI\Assets\Other\ChangeLog3.png" />
     <Resource Include="UI\Pages\HomePage\Client.png" />
     <Resource Include="UI\Pages\HomePage\pcHealth.png" />
-    <Resource Include="UI\Assets\Other\Advanced.png" />
-    <Resource Include="UI\Assets\Other\Appear.png" />
-    <Resource Include="UI\Assets\Other\General.png" />
-    <Resource Include="UI\Assets\Other\icons8-admin-settings-male-100.png" />
-    <Resource Include="UI\Assets\Other\Report.png" />
-    <Resource Include="UI\Assets\Other\Security.png" />
+    <Resource Include="UI\Assets\Other\AdvancedSettings.png" />
+    <Resource Include="UI\Assets\Other\AppearanceSettings.png" />
+    <Resource Include="UI\Assets\Other\GeneralSettings.png" />
+    <Resource Include="UI\Assets\Other\AccountSettings.png" />
+    <Resource Include="UI\Assets\Other\ReportSettings.png" />
+    <Resource Include="UI\Assets\Other\SecuritySettings.png" />
   </ItemGroup>
 
 </Project>
