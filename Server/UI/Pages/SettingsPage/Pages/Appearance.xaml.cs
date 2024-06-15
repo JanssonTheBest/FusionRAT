@@ -9,14 +9,14 @@ namespace Server.UI.Pages.SettingsPage.Pages
 
         private readonly List<Theme> _themes =
         [
-            new() { Primary = "#202020", Secondary = "#272727", Border = "#4B4B4B", Accent = "#FF4081", Text = "#FFFFFF", Selected = "#E91E63" },
-            new() { Primary = "#131313", Secondary = "#000000", Border = "#4B4B4B", Accent = "#1E9BFD", Text = "#FFFFFF", Selected = "#E91E63" },
-            new() { Primary = "#16141C", Secondary = "#2B293D", Border = "#4B4B4B", Accent = "#FF4081", Text = "#FFFFFF", Selected = "#E91E63" },
-            new() { Primary = "#372E45", Secondary = "#453C56", Border = "#4B4B4B", Accent = "#FF4081", Text = "#FFFFFF", Selected = "#E91E63" },
-            new() { Primary = "#FFFFFF", Secondary = "#F5F5F5", Border = "#4B4B4B", Accent = "#FF4081", Text = "#000000", Selected = "#E91E63" },
-            new() { Primary = "#535364", Secondary = "#F5F5F5", Border = "#4B4B4B", Accent = "#FF4081", Text = "#000000", Selected = "#E91E63" },
-            new() { Primary = "#282F54", Secondary = "#F5F5F5", Border = "#4B4B4B", Accent = "#FF4081", Text = "#000000", Selected = "#E91E63" },
-            new() { Primary = "#44348C", Secondary = "#F5F5F5", Border = "#4B4B4B", Accent = "#FF4081", Text = "#000000", Selected = "#E91E63" }
+            new() { Primary = "#202020", Secondary = "#272727", Border = "#4B4B4B", Accent = "#1E9BFD", Text = "#FFFFFF", Selected = "#E91E63" },
+            new() { Primary = "#0B0B0B", Secondary = "#0F0F0F", Border = "#1B1B1B", Accent = "#FF0000", Text = "#FFFFFF", Selected = "#E91E63" },
+            new() { Primary = "#16141C", Secondary = "#1A1820", Border = "#4C495B", Accent = "#B7A6FF", Text = "#FFFFFF", Selected = "#E91E63" },
+            new() { Primary = "#011623", Secondary = "#041A2D", Border = "#0E2B44", Accent = "#57BFFF", Text = "#FFFFFF", Selected = "#E91E63" },
+            new() { Primary = "#FFFFFF", Secondary = "#F5F5F5", Border = "#4B4B4B", Accent = "#1E9BFD", Text = "#000000", Selected = "#E91E63" },
+            new() { Primary = "#535364", Secondary = "#F5F5F5", Border = "#4B4B4B", Accent = "#1E9BFD", Text = "#000000", Selected = "#E91E63" },
+            new() { Primary = "#282F54", Secondary = "#F5F5F5", Border = "#4B4B4B", Accent = "#1E9BFD", Text = "#000000", Selected = "#E91E63" },
+            new() { Primary = "#44348C", Secondary = "#F5F5F5", Border = "#4B4B4B", Accent = "#1E9BFD", Text = "#000000", Selected = "#E91E63" }
         ];
 
         public Appearance()
