@@ -68,32 +68,21 @@
     </UserControl.Resources>
 
     <Grid>
-        <DataGrid ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0">
+        <DataGrid x:Name="dataGridPorts" Background="Transparent" BorderThickness="0">
             <DataGrid.Columns>
-
-                <DataGridTemplateColumn Header="IP/DNS" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding DNS}" VerticalAlignment="Center" Foreground="{DynamicResource Text}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTextColumn Header="Port" Binding="{Binding IPAddress}" Width="*">
+                <DataGridTextColumn Header="Port" Binding="{Binding Port}" Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource CenteredTextBlockStyle}" />
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Status" Binding="{Binding Username}" Width="*">
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource CenteredTextBlockStyle}" />
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Name" Binding="{Binding Version}" Width="*">
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource CenteredTextBlockStyle}" />
                     </DataGridTextColumn.ElementStyle>
@@ -110,7 +99,7 @@
                     <CornerRadius BottomLeft="4" BottomRight="4" TopLeft="4" TopRight="4"/>
                 </Button.Tag>
                 <Button.Content>
-                        <TextBlock Text="Listen" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="Listen" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Button.Content>
             </Button>
         </StackPanel>
