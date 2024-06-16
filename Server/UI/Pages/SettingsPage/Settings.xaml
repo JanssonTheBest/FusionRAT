@@ -11,36 +11,31 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="button_BG" Background="{DynamicResource Primary}" CornerRadius="{TemplateBinding Tag}">
-                            <ContentPresenter/>
+                            <Grid>
+                                <Border Background="#26000000" Opacity="0" CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}">
+                                    <Border.Triggers>
+                                        <EventTrigger RoutedEvent="MouseEnter">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.15"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="MouseLeave">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Border.Triggers>
+                                </Border>
+                                <ContentPresenter/>
+                            </Grid>
                         </Border>
+
                         <ControlTemplate.Triggers>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsMouseOver" Value="True"/>
-                                </MultiTrigger.Conditions>
-                                <MultiTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="button_BG"
-                                                                          Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Trigger_Secondary}" />
-                                                <EasingColorKeyFrame KeyTime="0:0:0.15" Value="{StaticResource Trigger_Secondary}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </MultiTrigger.EnterActions>
-                                <MultiTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="button_BG"
-                                                                          Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Trigger_Primary}" />
-                                                <EasingColorKeyFrame KeyTime="0:0:0.15" Value="{StaticResource Trigger_Primary}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </MultiTrigger.ExitActions>
-                            </MultiTrigger>
+                            
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

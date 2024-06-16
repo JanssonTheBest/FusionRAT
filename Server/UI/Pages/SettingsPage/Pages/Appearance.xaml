@@ -108,9 +108,9 @@
                                 <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="themeContent" Opacity="0">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <RadioButton x:Name="ThemeRadioButton1" Style="{StaticResource ThemeRBTN_Style}" Background="#272727" Tag="#202020" IsChecked="True" />
-                                        <RadioButton x:Name="ThemeRadioButton2" Style="{StaticResource ThemeRBTN_Style}" Background="#000000" Tag="#131313" />
+                                        <RadioButton x:Name="ThemeRadioButton2" Style="{StaticResource ThemeRBTN_Style}" Background="#0B0B0B" Tag="#0F0F0F" />
                                         <RadioButton x:Name="ThemeRadioButton3" Style="{StaticResource ThemeRBTN_Style}" Background="#2B293D" Tag="#16141C" />
-                                        <RadioButton x:Name="ThemeRadioButton4" Style="{StaticResource ThemeRBTN_Style}" Background="#453C56" Tag="#372E45" />
+                                        <RadioButton x:Name="ThemeRadioButton4" Style="{StaticResource ThemeRBTN_Style}" Background="#011623" Tag="#041A2D" />
 
                                         <RadioButton x:Name="ThemeRadioButton5" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#FFFFFF"/>
                                         <RadioButton x:Name="ThemeRadioButton6" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#535364" />

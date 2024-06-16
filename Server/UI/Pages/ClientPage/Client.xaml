@@ -68,7 +68,7 @@
         <Style TargetType="DataGridColumnHeader">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0,0,1,1" />
-            <Setter Property="BorderBrush" Value="#1F1F1F" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Border}" />
             <Setter Property="Foreground" Value="{DynamicResource Text}" />
             <Setter Property="FontWeight" Value="Medium" />
             <Setter Property="FontSize" Value="16" />
@@ -98,7 +98,7 @@
             <Setter Property="BorderThickness" Value="0" />
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Selected}" />
+                    <Setter Property="Background" Value="{DynamicResource Selected}" />
                 </Trigger>
             </Style.Triggers>
 
