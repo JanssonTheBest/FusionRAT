@@ -50,6 +50,14 @@
             <Setter Property="Margin" Value="0,0,24,0"/>
             <EventSetter Event="Checked" Handler="ThemeRadioButton_Checked"/>
         </Style>
+
+        <Style x:Key="ShadeRBTN_Style" TargetType="RadioButton" BasedOn="{StaticResource Shade_RadioButton}">
+            <Setter Property="GroupName" Value="Shade"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Margin" Value="0,0,24,0"/>
+            <EventSetter Event="Checked" Handler="ShadeRadioButton_Checked"/>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -143,8 +151,8 @@
                         <!--Content-->
                         <Grid>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="Color" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}" Margin="0,0,0,4"/>
-                                <TextBlock Text="Choose a combonation of colors" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6"/>
+                                <TextBlock Text="Shade" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}" Margin="0,0,0,4"/>
+                                <TextBlock Text="Choose a combonation of shades" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6"/>
                             </StackPanel>
                             <TextBlock Text="Default" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
                         </Grid>
@@ -168,7 +176,7 @@
 
                     <!--Theme ComboBox Item-->
                     <ContentControl x:Name="color_ComboBox_Dropdown"
-                                    Height="85"
+                                    Height="70"
                                     Margin="0,2,0,0"
                                     Opacity="0"
                                     Visibility="Collapsed">
@@ -182,15 +190,13 @@
                             <Border Padding="28,0,20,0">
                                 <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="colorContent" Opacity="0">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#272727" Tag="#202020" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#000" Tag="#131313" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#2B293D" Tag="#16141C" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#453C56" Tag="#372E45" Margin="0,0,48,0"/>
-
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#FFF" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#535364" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#282F54" Margin="0,0,24,0"/>
-                                        <RadioButton GroupName="Theme" Height="55" Width="90" Style="{StaticResource Theme_RadioButton}" Background="#F5F5F5" Tag="#44348C" Margin="0,0,24,0"/>
+                                        <RadioButton IsChecked="True" Style="{StaticResource ShadeRBTN_Style}" Background="#1E9BFD" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#FF0000" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#B7A6FF" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#936DFF" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#FFEC3D" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#6DFF7C" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#fff" Margin="0,0,24,0"/>
                                     </StackPanel>
                                 </ScrollViewer>
                             </Border>
