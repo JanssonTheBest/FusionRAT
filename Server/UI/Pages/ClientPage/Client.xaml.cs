@@ -32,7 +32,19 @@ namespace Server.UI.Pages.ClientPage
                 });
                 return;
             }
+            PreserveAndRefreshSelection();
+        }
+
+        private void PreserveAndRefreshSelection()
+        {
+            var selectedItems = dataGrid.SelectedItems.Cast<ServerSession>().ToList();
+
             MapCollectionToGrid();
+
+            foreach (var item in selectedItems)
+            {
+                dataGrid.SelectedItems.Add(item);
+            }
         }
 
         private void MapCollectionToGrid()
@@ -44,7 +56,6 @@ namespace Server.UI.Pages.ClientPage
             }
         }
 
-        
         private async void dataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.ContextMenu = (ContextMenu)FindResource("utilityContextMenu");

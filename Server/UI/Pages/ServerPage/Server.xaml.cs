@@ -1,37 +1,28 @@
 ﻿using Server.CoreServerFunctionality;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Security;
+using System.Collections.ObjectModel;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Server.UI.Pages.ServerPage
 {
-    /// <summary>
-    /// Interaction logic for Server.xaml
-    /// </summary>
     public partial class Server : UserControl
     {
+        public ObservableCollection<PortStatus> Ports { get; set; } = new ObservableCollection<PortStatus>();
+
         public Server()
         {
             InitializeComponent();
             listener.OnClientConnected += OnClientConnected;
+            dataGridPorts.ItemsSource = Ports;
         }
-        Listener listener = new Listener();
+
+        Listener listener = new();
         private void portStart_Click(object sender, RoutedEventArgs e)
         {
-            listener.AddPortToListener(int.Parse(portInput.Text)).GetAwaiter().GetResult();
+            int port = int.Parse(portInput.Text);
+            listener.AddPortToListener(port).GetAwaiter().GetResult();
+            Ports.Add(new PortStatus { Port = port, Status = "Listening", Name = "Placeholder" });
         }
 
         private void OnClientConnected(object sender, EventArgs e)
@@ -41,5 +32,12 @@ namespace Server.UI.Pages.ServerPage
                 await ClientHandler.HandleClient((TcpClient)sender);
             });
         }
+    }
+
+    public class PortStatus
+    {
+        public int Port { get; set; }
+        public string Status { get; set; }
+        public string Name { get; set; }
     }
 }
