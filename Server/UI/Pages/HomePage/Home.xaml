@@ -12,6 +12,18 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style\ContentControl\ChangeLogStatus.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="ToggleButton" x:Key="ChangeTheme_TBTN">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Grid Background="Transparent">
+                                <ContentPresenter/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -37,7 +49,7 @@
                 <Grid>
                     
                     <!--//Cangelog start//-->
-                    <ToggleButton Style="{StaticResource Common_ToggleButton}" Background="Transparent">
+                    <ToggleButton Style="{StaticResource ChangeTheme_TBTN}" Background="Transparent">
                         <ToggleButton.Triggers>
                             <EventTrigger RoutedEvent="ToggleButton.Checked">
                                 <BeginStoryboard>
@@ -94,8 +106,8 @@
                                 <Grid VerticalAlignment="Top" Height="200">
                                     <StackPanel Margin="70,45,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                                         <TextBlock Text="Welcome User" Foreground="{StaticResource Accent}" FontSize="20" FontWeight="Medium"/>
-                                        <TextBlock Text="Remote Administration Tool" Foreground="{StaticResource Text}" FontSize="17" FontWeight="Medium" Margin="0,3,0,12"/>
-                                        <TextBlock Text="Click to see the newest change logs" Foreground="{StaticResource Text}" FontSize="15"/>
+                                        <TextBlock Text="Remote Administration Tool" Foreground="{DynamicResource Text}" FontSize="17" FontWeight="Medium" Margin="0,3,0,12"/>
+                                        <TextBlock Text="Click to see the newest change logs" Foreground="{DynamicResource Text}" FontSize="15"/>
                                     </StackPanel>
                                 </Grid>
 
@@ -130,7 +142,7 @@
                         </ToggleButton.Content>
                     </ToggleButton>
 
-                    <Grid Background="{StaticResource Secondary}" Margin="0,200,0,0" x:Name="other">
+                    <Grid Background="{DynamicResource Secondary}" Margin="0,200,0,0" x:Name="other">
                         <Grid Margin="0,35,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition MinWidth="210"/>
@@ -151,7 +163,7 @@
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Image Source="/UI/Pages/HomePage/Client.png" Width="70"/>
                                         <StackPanel Margin="15,-3,0,0">
-                                            <TextBlock Text="Clients" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+                                            <TextBlock Text="Clients" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource Text}"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock x:Name="clientOnCount" Text="{Binding}" FontSize="14" Foreground="#A5A5A5"/>
                                                 <TextBlock Text=" | " FontSize="14" Foreground="#A5A5A5"/>
@@ -168,7 +180,7 @@
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Image Width="70" Source="/UI/Pages/HomePage/pcHealth.png"/>
                                         <StackPanel Margin="15,-3,0,0">
-                                            <TextBlock Text="Health" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+                                            <TextBlock Text="Health" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource Text}"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="Memory: " FontSize="14" Foreground="#A5A5A5"/>
                                                 <TextBlock x:Name="userMemory" Text="{Binding}" FontSize="14" Foreground="#A5A5A5"/>
@@ -184,7 +196,7 @@
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Image Source="/UI/Pages/HomePage/Client.png" Width="70"/>
                                         <StackPanel Margin="15,-3,0,0">
-                                            <TextBlock Text="Rank" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+                                            <TextBlock Text="Rank" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource Text}"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock x:Name="userRank" Text="{Binding}" FontSize="14" Foreground="#A5A5A5"/>
                                             </StackPanel>

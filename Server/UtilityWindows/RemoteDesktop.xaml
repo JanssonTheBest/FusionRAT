@@ -2,12 +2,12 @@
         xmlns:header="clr-namespace:Server.UI.CustomControls.WindowHeaders"
         xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
         Title="Remote Desktop - Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
-        MinHeight="270" MinWidth="480" Height="600" Width="1000" Foreground="{StaticResource Text}">
+        MinHeight="270" MinWidth="480" Height="600" Width="1000" Foreground="{DynamicResource Text}">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
 
-    <Border Background="{StaticResource Secondary}" BorderThickness="1" BorderBrush="{StaticResource Border}">
+    <Border Background="{DynamicResource Secondary}" BorderThickness="1" BorderBrush="{DynamicResource Border}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="27"/>
@@ -15,7 +15,7 @@
             </Grid.RowDefinitions>
 
             <!-- TitleBar -->
-            <Grid Background="{StaticResource Primary}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" MouseMove="TitleBar_MouseMove" MouseLeftButtonUp="TitleBar_MouseLeftButtonUp">
+            <Grid Background="{DynamicResource Primary}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" MouseMove="TitleBar_MouseMove" MouseLeftButtonUp="TitleBar_MouseLeftButtonUp">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
@@ -25,7 +25,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/UI/Assets/Icons/Logo.png" Margin="10,5,0,0" Width="18" VerticalAlignment="Top" />
-                    <TextBlock x:Name="fpsTextBlockContent" VerticalAlignment="Top" Margin="5,5,0,0" Foreground="{StaticResource Text}" FontWeight="Bold"/>
+                    <TextBlock x:Name="fpsTextBlockContent" VerticalAlignment="Top" Margin="5,5,0,0" Foreground="{DynamicResource Text}" FontWeight="Bold"/>
                 </StackPanel>
 
                 <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="1" Width="44" VerticalAlignment="Top" Height="27" Click="MinimizeButton_Click">
@@ -54,10 +54,10 @@
             <!-- Main Content -->
             <Grid Grid.Row="2" Margin="0">
                 <Image x:Name="frame" Stretch="Fill" Panel.ZIndex="-1"/>
-                <ComboBox Width="50" Height="20" x:Name="screens" HorizontalAlignment="Right" Visibility="Collapsed" />
+                <ComboBox Width="50" Height="20" x:Name="screens" HorizontalAlignment="Right" />
 
                 <StackPanel VerticalAlignment="Bottom">
-                    <ToggleButton Style="{StaticResource Common_ToggleButton}" Width="36" Height="16" Background="{StaticResource Primary}" BorderThickness="1,1,1,0" BorderBrush="#3A3A3A">
+                    <ToggleButton Style="{StaticResource Common_ToggleButton}" Width="36" Height="16" Background="{DynamicResource Primary}" BorderThickness="1,1,1,0" BorderBrush="#3A3A3A">
                         <ToggleButton.Tag>
                             <CornerRadius TopLeft="2" TopRight="2"/>
                         </ToggleButton.Tag>
@@ -66,7 +66,7 @@
                             <Rectangle Width="20" Height="2" RadiusX="1" RadiusY="1" Fill="#3A3A3A"/>
                         </StackPanel>
                     </ToggleButton>
-                    <Border Width="350" Height="35" Visibility="Collapsed" Background="{StaticResource Primary}">
+                    <Border Width="350" Height="35" Visibility="Collapsed" Background="{DynamicResource Primary}">
                         <Grid>
                             <StackPanel Orientation="Horizontal">
                                 <ToggleButton Width="25" Height="25" Background="#272727"/>

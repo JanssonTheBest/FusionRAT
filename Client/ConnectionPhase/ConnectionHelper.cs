@@ -1,5 +1,5 @@
 ﻿using Client.Communication;
-using Common.Comunication;
+using Common.Communication;
 using System;
 using System.Collections.Generic;
 using System.Linq;

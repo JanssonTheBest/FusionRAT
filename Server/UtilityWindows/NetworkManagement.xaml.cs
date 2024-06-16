@@ -9,10 +9,5 @@ namespace Server.UtilityWindows
         {
             InitializeComponent();
         }
-
-        private void icon_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

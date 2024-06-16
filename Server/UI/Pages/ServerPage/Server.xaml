@@ -12,7 +12,7 @@
             <Setter Property="RowHeight" Value="30" />
             <Setter Property="ColumnHeaderHeight" Value="40" />
             <Setter Property="GridLinesVisibility" Value="None" />
-            <Setter Property="AlternatingRowBackground" Value="{StaticResource Secondary}" />
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource Secondary}" />
             <Setter Property="RowBackground" Value="Transparent" />
             <Setter Property="EnableRowVirtualization" Value="True" />
             <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
@@ -24,7 +24,7 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0,0,1,1" />
             <Setter Property="BorderBrush" Value="#1F1F1F" />
-            <Setter Property="Foreground" Value="{StaticResource Text}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text}" />
             <Setter Property="FontWeight" Value="Medium" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -47,7 +47,7 @@
             <Setter Property="Padding" Value="5" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="{StaticResource Text}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text}" />
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontWeight" Value="Regular" />
             <Setter Property="BorderThickness" Value="0" />
@@ -63,7 +63,7 @@
         <Style x:Key="CenteredTextBlockStyle" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="{StaticResource Text}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text}" />
         </Style>
     </UserControl.Resources>
 
@@ -75,7 +75,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding DNS}" VerticalAlignment="Center" Foreground="{StaticResource Text}"/>
+                                <TextBlock Text="{Binding DNS}" VerticalAlignment="Center" Foreground="{DynamicResource Text}"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

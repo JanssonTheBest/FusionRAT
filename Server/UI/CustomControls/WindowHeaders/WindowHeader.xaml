@@ -13,7 +13,7 @@
 
         <StackPanel Orientation="Horizontal">
             <Image Source="/UI/Assets/Icons/Logo.png" Margin="10,5,0,0" Width="18" VerticalAlignment="Top" />
-            <TextBlock VerticalAlignment="Top" Text="Fusion" Margin="5,5,0,0" Foreground="{StaticResource Text}" FontWeight="Bold"/>
+            <TextBlock VerticalAlignment="Top" Text="Fusion" Margin="5,5,0,0" Foreground="{DynamicResource Text}" FontWeight="Bold"/>
         </StackPanel>
 
         <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="1" Width="44" VerticalAlignment="Top" Height="27" Click="MinimizeButton_Click">

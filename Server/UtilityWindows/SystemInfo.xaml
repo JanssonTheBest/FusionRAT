@@ -7,7 +7,7 @@
         <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
 
-    <Border Background="{StaticResource Secondary}" BorderThickness="1" BorderBrush="{StaticResource Border}">
+    <Border Background="{DynamicResource Secondary}" BorderThickness="1" BorderBrush="{DynamicResource Border}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="27"/>
@@ -16,7 +16,7 @@
             </Grid.RowDefinitions>
 
             <!-- TitleBar -->
-            <header:WindowHeader Background="{StaticResource Primary}"/>
+            <header:WindowHeader Background="{DynamicResource Primary}"/>
 
             <!-- Main Content -->
             <Grid Grid.Row="2" Margin="10">
@@ -35,14 +35,14 @@
                             <GridViewColumn Header="Property" Width="{Binding ElementName=PropertyColumn, Path=ActualWidth}">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Key}" Foreground="{StaticResource Text}" FontSize="14" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Key}" Foreground="{DynamicResource Text}" FontSize="14" Margin="10,0,0,0" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn Header="Value" Width="{Binding ElementName=ValueColumn, Path=ActualWidth}">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Value}" Foreground="{StaticResource Text}" FontSize="14" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Value}" Foreground="{DynamicResource Text}" FontSize="14" Margin="10,0,0,0" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

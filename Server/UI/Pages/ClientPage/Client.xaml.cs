@@ -187,7 +187,7 @@ namespace Server.UI.Pages.ClientPage
 
         private void FileManager_Click(object sender, RoutedEventArgs e)
         {
-
+            serverSession.OpenUtilityWindow(new FileManager());
         }
 
         private void RegistryManager_Click(object sender, RoutedEventArgs e)

@@ -2,12 +2,12 @@
         xmlns:header="clr-namespace:Server.UI.CustomControls.WindowHeaders"
         xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
         Title="Keylogger - Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
-        MinHeight="600" MinWidth="800" Width="1000" Height="800" Foreground="{StaticResource Text}">
+        MinHeight="600" MinWidth="800" Width="1000" Height="800" Foreground="{DynamicResource Text}">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
 
-    <Border Background="{StaticResource Secondary}" BorderThickness="1" BorderBrush="{StaticResource Border}">
+    <Border Background="{DynamicResource Secondary}" BorderThickness="1" BorderBrush="{DynamicResource Border}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="27"/>
@@ -15,7 +15,7 @@
             </Grid.RowDefinitions>
 
             <!-- TitleBar -->
-            <header:WindowHeader Background="{StaticResource Primary}"/>
+            <header:WindowHeader Background="{DynamicResource Primary}"/>
 
             <!-- Main Content -->
             <Grid Grid.Row="2" Margin="30">

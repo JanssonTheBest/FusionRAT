@@ -1,4 +1,4 @@
-﻿using Common.Comunication;
+﻿using Common.Communication;
 using Common.DTOs.MessagePack;
 using System.Collections.Concurrent;
 using System.Drawing.Imaging;
@@ -92,6 +92,10 @@ namespace RemoteDesktopPlugin
                         _oldBitmaps[index]?.Dispose();
                         _oldBitmaps[index] = new Bitmap(bmp);
                         dt.Frame[index] = newBmp;
+                    }
+                    else
+                    {
+                        dt.Frame[index] = null;
                     }
                 }
                 finally
