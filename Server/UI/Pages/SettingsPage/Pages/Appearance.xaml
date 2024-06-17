@@ -24,19 +24,19 @@
         </Storyboard>
 
 
-        <Storyboard x:Key="IconDown">
-            <ThicknessAnimation Storyboard.TargetName="iconBox"
+        <Storyboard x:Key="IconBoxDown">
+            <ThicknessAnimation Storyboard.TargetName="icon_ComboBox"
                                 Storyboard.TargetProperty="Margin"
-                                To="0,78,0,16" Duration="0:0:0.3">
+                                To="0,90,0,0" Duration="0:0:0.25">
                 <ThicknessAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </ThicknessAnimation.EasingFunction>
             </ThicknessAnimation>
         </Storyboard>
-        <Storyboard x:Key="IconDefault">
-            <ThicknessAnimation Storyboard.TargetName="iconBox"
+        <Storyboard x:Key="IconBoxDownDefault">
+            <ThicknessAnimation Storyboard.TargetName="icon_ComboBox"
                                 Storyboard.TargetProperty="Margin"
-                                To="0,0,0,16" Duration="0:0:0.3">
+                                To="0,16,0,0" Duration="0:0:0.25" BeginTime="0:0:0.2">
                 <ThicknessAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </ThicknessAnimation.EasingFunction>
@@ -58,6 +58,7 @@
             <Setter Property="Margin" Value="0,0,24,0"/>
             <EventSetter Event="Checked" Handler="ShadeRadioButton_Checked"/>
         </Style>
+        
     </UserControl.Resources>
 
     <Grid>
@@ -67,7 +68,42 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Right" Background="Red" Click="buttonClick"/>
+        <StackPanel Orientation="Horizontal" Margin="0,-24,0,0">
+            <Button VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource Common_Button}" Click="buttonClick" Background="Transparent" BorderThickness="0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Settings" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}">
+                        <TextBlock.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="0.6" Duration="0:0:0.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="1" Duration="0:0:0.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </TextBlock.Triggers>
+                    </TextBlock>
+                    <TextBlock Text=" > " FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}"/>
+                </StackPanel>
+            </Button>
+            <TextBlock Text="Appearance" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}"/>
+        </StackPanel>
 
         <Grid Grid.Row="2">
             <StackPanel>
@@ -167,9 +203,11 @@
                         <ToggleButton.Triggers>
                             <EventTrigger RoutedEvent="ToggleButton.Checked">
                                 <BeginStoryboard Storyboard="{StaticResource Color_ComboBoxDropdown_Triggerd}"/>
+                                <BeginStoryboard Storyboard="{StaticResource IconBoxDown}"/>
                             </EventTrigger>
                             <EventTrigger RoutedEvent="ToggleButton.Unchecked">
                                 <BeginStoryboard Storyboard="{StaticResource Color_ComboBoxDropdown_Default}"/>
+                                <BeginStoryboard Storyboard="{StaticResource IconBoxDownDefault}"/>
                             </EventTrigger>
                         </ToggleButton.Triggers>
                     </ToggleButton>
@@ -189,6 +227,71 @@
                             </Border.RenderTransform>
                             <Border Padding="28,0,20,0">
                                 <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="colorContent" Opacity="0">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <RadioButton IsChecked="True" Style="{StaticResource ShadeRBTN_Style}" Background="#1E9BFD" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#FF0000" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#B7A6FF" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#936DFF" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#FFEC3D" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#6DFF7C" Margin="0,0,24,0"/>
+                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#fff" Margin="0,0,24,0"/>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Border>
+                        </Border>
+                    </ContentControl>
+                </Grid>
+
+                <!--//Icon ComboBox//-->
+                <Grid Margin="0,16,0,0" x:Name="icon_ComboBox" >
+
+                    <!--ComboBox Body-->
+                    <ToggleButton Height="70"
+                                  BorderThickness="1" 
+                                  Style="{StaticResource ComboBox_Body}"
+                                  VerticalAlignment="Top">
+
+                        <!--Content-->
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Icon" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}" Margin="0,0,0,4"/>
+                                <TextBlock Text="Choose a combonation of icons" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6"/>
+                            </StackPanel>
+                            <TextBlock Text="Default" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                        </Grid>
+
+                        <!--Tag / Pid-->
+                        <ToggleButton.Tag>
+                            <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{DynamicResource Text}" Opacity="0.6"/>
+                        </ToggleButton.Tag>
+
+
+                        <!--Triggers-->
+                        <ToggleButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard Storyboard="{StaticResource Icon_ComboBoxDropdown_Triggerd}"/>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                <BeginStoryboard Storyboard="{StaticResource Icon_ComboBoxDropdown_Default}"/>
+                            </EventTrigger>
+                        </ToggleButton.Triggers>
+                    </ToggleButton>
+
+                    <!--Theme ComboBox Item-->
+                    <ContentControl x:Name="icon_ComboBox_Dropdown"
+                                    Height="70"
+                                    Margin="0,2,0,0"
+                                    Opacity="0"
+                                    Visibility="Collapsed">
+                        <ContentControl.RenderTransform>
+                            <TranslateTransform Y="{Binding ActualHeight, ElementName=theme_ComboBox}"/>
+                        </ContentControl.RenderTransform>
+                        <Border x:Name="icon_ComboBox_DropdownContent" Background="{DynamicResource Primary}" BorderThickness="1,0,1,1" CornerRadius="0,0,4,4">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="0"/>
+                            </Border.RenderTransform>
+                            <Border Padding="28,0,20,0">
+                                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="iconContent" Opacity="0">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <RadioButton IsChecked="True" Style="{StaticResource ShadeRBTN_Style}" Background="#1E9BFD" Margin="0,0,24,0"/>
                                         <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#FF0000" Margin="0,0,24,0"/>

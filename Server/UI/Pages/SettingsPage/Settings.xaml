@@ -130,6 +130,7 @@
 
             <!--//Window Content//-->
             <Grid x:Name="settingsContent" Grid.Row="1" Grid.Column="1">
+                <TextBlock Text="Settings >" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}" Margin="0,-24,0,0"/>
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <Button Style="{StaticResource settingsNavigation}" Width="190" Height="170">

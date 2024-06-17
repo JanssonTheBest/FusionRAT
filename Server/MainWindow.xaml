@@ -6,6 +6,7 @@
         xmlns:SupportPage="clr-namespace:Server.UI.Pages.SupportPage"
         xmlns:SettingsPage="clr-namespace:Server.UI.Pages.SettingsPage"
         mc:Ignorable="d"
+        Icon="\UI\Assets\Icons\Logo.png"
         Title="Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         MinWidth="940" MinHeight="480" d:Width="1450" d:Height="800" Background="Transparent" FontSize="13" Foreground="#fff">
 
