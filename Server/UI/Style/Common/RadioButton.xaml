@@ -129,8 +129,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
-                    <Border Background="{TemplateBinding Background}" Height="40" Width="40" CornerRadius="20">
-                        <Border x:Name="shade_Pid" Opacity="0" Background="{DynamicResource Primary}" Height="20" Width="20" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border Background="{TemplateBinding Background}" Height="30" Width="30" CornerRadius="15">
+                        <Border x:Name="shade_Pid" Opacity="0" Background="{DynamicResource Primary}" Height="16" Width="16" CornerRadius="8" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Border.RenderTransformOrigin>
                                 <Point X="0.5" Y="0.5"/>
                             </Border.RenderTransformOrigin>

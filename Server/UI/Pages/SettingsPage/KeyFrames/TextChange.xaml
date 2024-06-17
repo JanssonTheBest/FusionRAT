@@ -1,4 +1,39 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
+    <Storyboard x:Key="ThemePidText_Default">
+        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pidHeader"
+                                       Storyboard.TargetProperty="Text">
+            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Default"/>
+        </ObjectAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="ThemePidText_Midnight">
+        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pidHeader"
+                                       Storyboard.TargetProperty="Text">
+            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Midnight"/>
+        </ObjectAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="ThemePidText_Dracula">
+        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pidHeader"
+                                       Storyboard.TargetProperty="Text">
+            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Dracula"/>
+        </ObjectAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="ThemePidText_Abyss">
+        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pidHeader"
+                                       Storyboard.TargetProperty="Text">
+            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Abyss"/>
+        </ObjectAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="ThemePidText_Spectra">
+        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pidHeader"
+                                   Storyboard.TargetProperty="Text">
+            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Spectra"/>
+        </ObjectAnimationUsingKeyFrames>
+    </Storyboard>
+
 </ResourceDictionary>

@@ -4,26 +4,6 @@
 
     <UserControl.Resources>
         
-        <Storyboard x:Key="ColorBoxDown">
-            <ThicknessAnimation Storyboard.TargetName="color_ComboBox"
-                                Storyboard.TargetProperty="Margin"
-                                To="0,90,0,0" Duration="0:0:0.25">
-                <ThicknessAnimation.EasingFunction>
-                    <QuadraticEase EasingMode="EaseInOut"/>
-                </ThicknessAnimation.EasingFunction>
-            </ThicknessAnimation>
-        </Storyboard>
-        <Storyboard x:Key="ColorBoxDownDefault">
-            <ThicknessAnimation Storyboard.TargetName="color_ComboBox"
-                                Storyboard.TargetProperty="Margin"
-                                To="0,16,0,0" Duration="0:0:0.25" BeginTime="0:0:0.2">
-                <ThicknessAnimation.EasingFunction>
-                    <QuadraticEase EasingMode="EaseInOut"/>
-                </ThicknessAnimation.EasingFunction>
-            </ThicknessAnimation>
-        </Storyboard>
-
-
         <Storyboard x:Key="IconBoxDown">
             <ThicknessAnimation Storyboard.TargetName="icon_ComboBox"
                                 Storyboard.TargetProperty="Margin"
@@ -53,9 +33,9 @@
 
         <Style x:Key="ShadeRBTN_Style" TargetType="RadioButton" BasedOn="{StaticResource Shade_RadioButton}">
             <Setter Property="GroupName" Value="Shade"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Margin" Value="0,0,24,0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Margin" Value="0,0,9,0"/>
             <EventSetter Event="Checked" Handler="ShadeRadioButton_Checked"/>
         </Style>
         
@@ -110,7 +90,7 @@
                 <Label Content="Appearance" FontSize="17" FontWeight="Medium" Foreground="{DynamicResource Text}"/>
 
                 <!--//Theme ComboBox//-->
-                <Grid Margin="0,16,0,0">
+                <Grid Margin="0,16,0,0" Panel.ZIndex="1">
                     <ToggleButton x:Name="theme_ComboBox" Height="70"
                                   BorderThickness="1"
                                   Style="{StaticResource ComboBox_Body}"
@@ -120,7 +100,7 @@
                                 <TextBlock Text="Theme" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}" Margin="0,0,0,4"/>
                                 <TextBlock Text="Choose a combination of themes" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6"/>
                             </StackPanel>
-                            <TextBlock Text="Default" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                            <TextBlock x:Name="pidHeader" Text="Default" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
                         </Grid>
                         <ToggleButton.Tag>
                             <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{DynamicResource Text}" Opacity="0.6"/>
@@ -128,11 +108,11 @@
                         <ToggleButton.Triggers>
                             <EventTrigger RoutedEvent="ToggleButton.Checked">
                                 <BeginStoryboard Storyboard="{StaticResource Theme_ComboBoxDropdown_Triggerd}"/>
-                                <BeginStoryboard Storyboard="{StaticResource ColorBoxDown}"/>
+                                <BeginStoryboard Storyboard="{StaticResource IconBoxDown}"/>
                             </EventTrigger>
                             <EventTrigger RoutedEvent="ToggleButton.Unchecked">
                                 <BeginStoryboard Storyboard="{StaticResource Theme_ComboBoxDropdown_Default}"/>
-                                <BeginStoryboard Storyboard="{StaticResource ColorBoxDownDefault}"/>
+                                <BeginStoryboard Storyboard="{StaticResource IconBoxDownDefault}"/>
                             </EventTrigger>
                         </ToggleButton.Triggers>
                     </ToggleButton>
@@ -149,97 +129,112 @@
                                 <ScaleTransform ScaleX="1" ScaleY="0"/>
                             </Border.RenderTransform>
                             <Border Padding="28,0,20,0">
-                                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="themeContent" Opacity="0">
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <RadioButton x:Name="ThemeRadioButton1" Style="{StaticResource ThemeRBTN_Style}" Background="#272727" Tag="#202020" IsChecked="True" />
-                                        <RadioButton x:Name="ThemeRadioButton2" Style="{StaticResource ThemeRBTN_Style}" Background="#0B0B0B" Tag="#0F0F0F" />
-                                        <RadioButton x:Name="ThemeRadioButton3" Style="{StaticResource ThemeRBTN_Style}" Background="#2B293D" Tag="#16141C" />
-                                        <RadioButton x:Name="ThemeRadioButton4" Style="{StaticResource ThemeRBTN_Style}" Background="#011623" Tag="#041A2D" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="themeContent" Opacity="0">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <RadioButton x:Name="ThemeRadioButton1" Style="{StaticResource ThemeRBTN_Style}" Background="#272727" Tag="#202020" IsChecked="True">
+                                                <RadioButton.Triggers>
+                                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                                        <BeginStoryboard Storyboard="{StaticResource ThemePidText_Default}"/>
+                                                    </EventTrigger>
+                                                </RadioButton.Triggers>
+                                            </RadioButton>
+                                            <RadioButton x:Name="ThemeRadioButton2" Style="{StaticResource ThemeRBTN_Style}" Background="#0B0B0B" Tag="#0F0F0F" >
+                                                <RadioButton.Triggers>
+                                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                                        <BeginStoryboard Storyboard="{StaticResource ThemePidText_Midnight}"/>
+                                                    </EventTrigger>
+                                                </RadioButton.Triggers>
+                                            </RadioButton>
+                                            <RadioButton x:Name="ThemeRadioButton3" Style="{StaticResource ThemeRBTN_Style}" Background="#2B293D" Tag="#16141C">
+                                                <RadioButton.Triggers>
+                                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                                        <BeginStoryboard Storyboard="{StaticResource ThemePidText_Dracula}"/>
+                                                    </EventTrigger>
+                                                </RadioButton.Triggers>
+                                            </RadioButton>
+                                            <RadioButton x:Name="ThemeRadioButton4" Style="{StaticResource ThemeRBTN_Style}" Background="#011623" Tag="#041A2D">
+                                                <RadioButton.Triggers>
+                                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                                        <BeginStoryboard Storyboard="{StaticResource ThemePidText_Abyss}"/>
+                                                    </EventTrigger>
+                                                </RadioButton.Triggers>
+                                            </RadioButton>
 
-                                        <RadioButton x:Name="ThemeRadioButton5" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#FFFFFF"/>
-                                        <RadioButton x:Name="ThemeRadioButton6" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#535364" />
-                                        <RadioButton x:Name="ThemeRadioButton7" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#282F54" />
-                                        <RadioButton x:Name="ThemeRadioButton8" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#44348C"/>
-                                        <Button Width="90" Height="55" Style="{StaticResource Common_Button}" Background="Transparent" BorderThickness="1" BorderBrush="{StaticResource Border}" Margin="0,0,24,0">
-                                            <Button.Tag>
-                                                <CornerRadius BottomLeft="11" BottomRight="11" TopLeft="11" TopRight="11"/>
-                                            </Button.Tag>
-                                            <Grid>
-                                                <Image Width="20" Height="20" Opacity="0.5" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/UI/Assets/Other/AddThemeIcon.png" />
-                                            </Grid>
-                                        </Button>
-                                    </StackPanel>
-                                </ScrollViewer>
+                                            <RadioButton x:Name="ThemeRadioButton5" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#FFFFFF">
+                                                <RadioButton.Triggers>
+                                                    <EventTrigger RoutedEvent="RadioButton.Checked">
+                                                        <BeginStoryboard Storyboard="{StaticResource ThemePidText_Abyss}"/>
+                                                    </EventTrigger>
+                                                </RadioButton.Triggers>
+                                            </RadioButton>
+                                            <RadioButton x:Name="ThemeRadioButton6" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#535364" />
+                                            <RadioButton x:Name="ThemeRadioButton7" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#282F54" />
+                                            <RadioButton x:Name="ThemeRadioButton8" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#44348C"/>
+                                            <Button Width="90" Height="55" Style="{StaticResource Common_Button}" Background="Transparent" BorderThickness="1" BorderBrush="{StaticResource Border}" Margin="0,0,24,0">
+                                                <Button.Tag>
+                                                    <CornerRadius BottomLeft="11" BottomRight="11" TopLeft="11" TopRight="11"/>
+                                                </Button.Tag>
+                                                <Grid>
+                                                    <Image Width="20" Height="20" Opacity="0.5" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/UI/Assets/Other/AddThemeIcon.png" />
+                                                </Grid>
+                                            </Button>
+                                        </StackPanel>
+                                    </ScrollViewer>
+
+                                    <Grid Grid.Column="1">
+                                        <ToggleButton Style="{StaticResource ComboBox_Body}">
+                                            <TextBlock x:Name="pidHesader" Text="Shade" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                                            <ToggleButton.Tag>
+                                                <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{DynamicResource Text}" Opacity="0.6"/>
+                                            </ToggleButton.Tag>
+                                            <ToggleButton.Triggers>
+                                                <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                                    <BeginStoryboard Storyboard="{StaticResource Color_ComboBoxDropdown_Triggerd}"/>
+                                                </EventTrigger>
+                                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                                    <BeginStoryboard Storyboard="{StaticResource Color_ComboBoxDropdown_Default}"/>
+                                                </EventTrigger>
+                                            </ToggleButton.Triggers>
+                                        </ToggleButton>
+                                    </Grid>
+
+                                    <!--Shade ComboBox Item-->
+                                    <ContentControl x:Name="color_ComboBox_Dropdown" Grid.Column="1"
+                                                    Height="50"
+                                                    Margin="0,2,0,0"
+                                                    Opacity="0"
+                                                    VerticalAlignment="Top"
+                                                    HorizontalAlignment="Right"
+                                                    Visibility="Collapsed">
+                                        <ContentControl.RenderTransform>
+                                            <TranslateTransform Y="{Binding ActualHeight, ElementName=theme_ComboBox_Dropdown}"/>
+                                        </ContentControl.RenderTransform>
+                                        <Border x:Name="color_ComboBox_DropdownContent" Background="{DynamicResource Primary}" BorderBrush="#11FFFFFF" BorderThickness="2" CornerRadius="4,4,4,4">
+                                            <Border.RenderTransform>
+                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                            </Border.RenderTransform>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0" Opacity="0" x:Name="colorContent">
+                                                <RadioButton IsChecked="True" Style="{StaticResource ShadeRBTN_Style}" Background="#1E9BFD" Margin="9,0,9,0"/>
+                                                <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#FF0000"/>
+                                                <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#B7A6FF"/>
+                                                <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#936DFF"/>
+                                                <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#FFEC3D"/>
+                                                <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#6DFF7C"/>
+                                                <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#fff"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </ContentControl>
+                                </Grid>
                             </Border>
                         </Border>
                     </ContentControl>
-                </Grid>
 
-                <!--//Color ComboBox//-->
-                <Grid Margin="0,16,0,0" x:Name="color_ComboBox" >
-
-                    <!--ComboBox Body-->
-                    <ToggleButton Height="70"
-                                  BorderThickness="1" 
-                                  Style="{StaticResource ComboBox_Body}"
-                                  VerticalAlignment="Top">
-
-                        <!--Content-->
-                        <Grid>
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="Shade" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource Text}" Margin="0,0,0,4"/>
-                                <TextBlock Text="Choose a combonation of shades" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6"/>
-                            </StackPanel>
-                            <TextBlock Text="Default" FontSize="15" Foreground="{DynamicResource Text}" Opacity="0.6" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
-                        </Grid>
-
-                        <!--Tag / Pid-->
-                        <ToggleButton.Tag>
-                            <TextBlock Text=">" FontSize="17" FontWeight="Medium" Foreground="{DynamicResource Text}" Opacity="0.6"/>
-                        </ToggleButton.Tag>
-
-
-                        <!--Triggers-->
-                        <ToggleButton.Triggers>
-                            <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                <BeginStoryboard Storyboard="{StaticResource Color_ComboBoxDropdown_Triggerd}"/>
-                                <BeginStoryboard Storyboard="{StaticResource IconBoxDown}"/>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                <BeginStoryboard Storyboard="{StaticResource Color_ComboBoxDropdown_Default}"/>
-                                <BeginStoryboard Storyboard="{StaticResource IconBoxDownDefault}"/>
-                            </EventTrigger>
-                        </ToggleButton.Triggers>
-                    </ToggleButton>
-
-                    <!--Theme ComboBox Item-->
-                    <ContentControl x:Name="color_ComboBox_Dropdown"
-                                    Height="70"
-                                    Margin="0,2,0,0"
-                                    Opacity="0"
-                                    Visibility="Collapsed">
-                        <ContentControl.RenderTransform>
-                            <TranslateTransform Y="{Binding ActualHeight, ElementName=theme_ComboBox}"/>
-                        </ContentControl.RenderTransform>
-                        <Border x:Name="color_ComboBox_DropdownContent" Background="{DynamicResource Primary}" BorderThickness="1,0,1,1" CornerRadius="0,0,4,4">
-                            <Border.RenderTransform>
-                                <ScaleTransform ScaleX="1" ScaleY="0"/>
-                            </Border.RenderTransform>
-                            <Border Padding="28,0,20,0">
-                                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Margin="0,0,0,-15" x:Name="colorContent" Opacity="0">
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <RadioButton IsChecked="True" Style="{StaticResource ShadeRBTN_Style}" Background="#1E9BFD" Margin="0,0,24,0"/>
-                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#FF0000" Margin="0,0,24,0"/>
-                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#B7A6FF" Margin="0,0,24,0"/>
-                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#936DFF" Margin="0,0,24,0"/>
-                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#FFEC3D" Margin="0,0,24,0"/>
-                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#6DFF7C" Margin="0,0,24,0"/>
-                                        <RadioButton Style="{StaticResource ShadeRBTN_Style}" Background="#fff" Margin="0,0,24,0"/>
-                                    </StackPanel>
-                                </ScrollViewer>
-                            </Border>
-                        </Border>
-                    </ContentControl>
                 </Grid>
 
                 <!--//Icon ComboBox//-->
