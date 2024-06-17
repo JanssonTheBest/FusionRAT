@@ -91,15 +91,15 @@
         </DataGrid>
 
         <StackPanel Height="30" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20">
-            <Border BorderThickness="2" BorderBrush="{StaticResource Border}" CornerRadius="3">
-                <TextBox x:Name="portInput" Style="{StaticResource Common_TextBox}" Width="80" />
+            <Border BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="2" Background="{DynamicResource Primary}">
+                <TextBox x:Name="portInput" Style="{StaticResource Common_TextBox}" Width="95" />
             </Border>
-            <Button x:Name="portStart" Style="{StaticResource Common_Button}" Background="Transparent" BorderThickness="1" BorderBrush="{StaticResource Border}" Width="75" Height="27" Margin="20,0,0,0" Click="portStart_Click">
+            <Button x:Name="portStart" Style="{StaticResource Common_Button}" Background="{DynamicResource Primary}" BorderThickness="2" BorderBrush="{DynamicResource Border}" Width="80" Margin="20,0,0,0" Click="portStart_Click">
                 <Button.Tag>
-                    <CornerRadius BottomLeft="4" BottomRight="4" TopLeft="4" TopRight="4"/>
+                    <CornerRadius BottomLeft="2" BottomRight="2" TopLeft="2" TopRight="2"/>
                 </Button.Tag>
                 <Button.Content>
-                    <TextBlock Text="Listen" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="Listen" FontSize="13" FontWeight="Medium" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Button.Content>
             </Button>
         </StackPanel>

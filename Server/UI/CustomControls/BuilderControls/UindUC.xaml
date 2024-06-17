@@ -2,7 +2,7 @@
              xmlns:uc="clr-namespace:Server.UI.CustomControls.BuilderControls.BuilderCommon"
              xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
              FontSize="15" Foreground="{DynamicResource Text}">
-    <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Border Background="{DynamicResource Primary}" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
@@ -29,12 +29,10 @@
                             <TextBlock Text="Fake Error Message" VerticalAlignment="Center"/>
                             <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center"/>
                         </StackPanel>
-                        
-                        <Border Width="140" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Right">
+
+                        <Border Width="140" Height="37" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" HorizontalAlignment="Right">
                             <Button Background="Transparent" BorderThickness="0">
-                                <Button.Content>
-                                    <TextBlock Text="Configure" Foreground="White" FontSize="14" HorizontalAlignment="Center"/>
-                                </Button.Content>
+                                <TextBlock Text="Configure" Foreground="{DynamicResource Text}" FontSize="14" HorizontalAlignment="Center"/>
                             </Button>
                         </Border>
                     </Grid>
@@ -44,22 +42,18 @@
                             <TextBlock Text="Notification Sound" VerticalAlignment="Center"/>
                             <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center"/>
                         </StackPanel>
-                        
-                        <Border Width="140" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Right">
+
+                        <Border Width="140" Height="37" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" HorizontalAlignment="Right">
                             <Button Background="Transparent" BorderThickness="0">
-                                <Button.Content>
-                                    <TextBlock Text="Configure" Foreground="White" FontSize="14" HorizontalAlignment="Center"/>
-                                </Button.Content>
+                                <TextBlock Text="Configure" Foreground="{DynamicResource Text}" FontSize="14" HorizontalAlignment="Center"/>
                             </Button>
                         </Border>
                     </Grid>
 
                     <StackPanel Grid.Row="5">
-                        <Border Width="340" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3">
+                        <Border Width="340" Height="37" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3">
                             <Button Background="Transparent" BorderThickness="0">
-                                <Button.Content>
-                                    <TextBlock Text="Decoy GUI" Foreground="White" FontSize="14" HorizontalAlignment="Center"/>
-                                </Button.Content>
+                                <TextBlock Text="Decoy GUI" Foreground="{DynamicResource Text}" FontSize="14" HorizontalAlignment="Center"/>
                             </Button>
                         </Border>
                     </StackPanel>

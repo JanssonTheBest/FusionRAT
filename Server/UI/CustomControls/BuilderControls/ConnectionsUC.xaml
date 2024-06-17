@@ -5,7 +5,7 @@
     <UserControl.Resources>
         <Style x:Key="ConnectionsGradientBTN" TargetType="Button">
             <Setter Property="Height" Value="35"/>
-            <Setter Property="BorderBrush" Value="#272727"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Foreground" Value="#99FFFFFF"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -14,7 +14,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Border Background="{DynamicResource Primary}" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
@@ -42,39 +42,23 @@
                     <ToggleButton Style="{StaticResource CheckboxToggle}" />
                 </StackPanel>
 
-                <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Grid.Row="3">
+                <Border BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Grid.Row="3">
                     <TextBox Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="Enter DNS..." helpers:TextBoxHelper.CharLimit="311" Foreground="#99FFFFFF" />
                 </Border>
 
-                <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Grid.Row="5">
+                <Border BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Grid.Row="5">
                     <TextBox Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="Enter Port..." helpers:TextBoxHelper.UseChar="False" helpers:TextBoxHelper.ValueLimit="65535" Foreground="#99FFFFFF" />
                 </Border>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="8">
-                    <Border Width="240" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Right">
-                        <Button Style="{StaticResource Common_Button}">
-                            <Button.Content>
-                                <TextBlock Text="Add connection" Foreground="#DBDFE0" Opacity="0.6" FontSize="15"/>
-                            </Button.Content>
-                            <Button.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#202020" Offset="0"/>
-                                    <GradientStop Color="#242424" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Button.Background>
+                    <Border Width="240" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource Common_Button}" Background="{DynamicResource Primary}">
+                            <TextBlock Text="Add connection" Foreground="{DynamicResource Text}" Opacity="0.6" FontSize="15"/>
                         </Button>
                     </Border>
-                    <Border Margin="10,0,0,0" Width="90" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Right">
-                        <Button Style="{StaticResource Common_Button}">
-                            <Button.Content>
-                                <TextBlock Text="Fallback" Foreground="#DBDFE0" Opacity="0.6" FontSize="15"/>
-                            </Button.Content>
-                            <Button.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#202020" Offset="0"/>
-                                    <GradientStop Color="#242424" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Button.Background>
+                    <Border Margin="10,0,0,0" Width="90" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource Common_Button}" Background="{DynamicResource Primary}">
+                            <TextBlock Text="Fallback" Foreground="#DBDFE0" Opacity="0.6" FontSize="15"/>
                         </Button>
                     </Border>
                 </StackPanel>
