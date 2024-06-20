@@ -49,6 +49,12 @@
             </MenuItem>
         </ContextMenu>
 
+        <ContextMenu x:Key="globalContextMenu">
+            <MenuItem Header="Disconnect All" Click="DisconnectAll_Click"/>
+            <MenuItem Header="Hide All" Click="HideAll_Click"/>
+            <MenuItem Header="Update All" Click="UpdateAll_Click"/>
+        </ContextMenu>
+        
         <!-- Style for the DataGrid -->
         <Style TargetType="DataGrid">
             <Setter Property="AutoGenerateColumns" Value="False" />
@@ -114,7 +120,7 @@
 
 
     <Grid>
-        <DataGrid x:Name="dataGrid" ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0" LoadingRow="dataGrid_LoadingRow" PreviewMouseLeftButtonDown="DataGrid_PreviewMouseLeftButtonDown" SelectionMode="Extended">
+        <DataGrid x:Name="dataGrid" ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0" LoadingRow="DataGrid_LoadingRow" PreviewMouseLeftButtonDown="DataGrid_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="DataGrid_PreviewMouseRightButtonDown" SelectionMode="Extended">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Location" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
