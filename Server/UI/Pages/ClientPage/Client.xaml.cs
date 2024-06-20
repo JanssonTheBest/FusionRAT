@@ -250,7 +250,7 @@ namespace Server.UI.Pages.ClientPage
 
         private void SystemOptions_Click(object sender, RoutedEventArgs e)
         {
-            
+            serverSession.OpenUtilityWindow(new SystemOptions());
         }
 
         private void Miscellaneous_Click(object sender, RoutedEventArgs e)
