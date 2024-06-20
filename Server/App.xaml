@@ -27,7 +27,7 @@
                 <ResourceDictionary Source="\UI\Pages\ClientPage\KeyFrames\Page_Show.xaml"/>
                 <ResourceDictionary Source="\UI\Pages\ServerPage\KeyFrames\Page_Show.xaml"/>
                 <ResourceDictionary Source="\UI\Pages\BuilderPage\KeyFrames\Page_Show.xaml"/>
-                <ResourceDictionary Source="\UI\Pages\SupportPage\KeyFrames\Page_Show.xaml"/>
+                <ResourceDictionary Source="\UI\Pages\PluginPage\KeyFrames\Page_Show.xaml"/>
                 <ResourceDictionary Source="\UI\Pages\SettingsPage\KeyFrames\Page_Show.xaml"/>
                 <ResourceDictionary Source="\UI\Pages\SettingsPage\KeyFrames\ComboBox.xaml"/>
                 <ResourceDictionary Source="\UI\Pages\SettingsPage\KeyFrames\TextChange.xaml"/>

@@ -3,7 +3,7 @@
         xmlns:ClientPage="clr-namespace:Server.UI.Pages.ClientPage"
         xmlns:ServerPage="clr-namespace:Server.UI.Pages.ServerPage"
         xmlns:BuilderPage="clr-namespace:Server.UI.Pages.BuilderPage"
-        xmlns:SupportPage="clr-namespace:Server.UI.Pages.SupportPage"
+        xmlns:PluginPage="clr-namespace:Server.UI.Pages.PluginPage"
         xmlns:SettingsPage="clr-namespace:Server.UI.Pages.SettingsPage"
         mc:Ignorable="d"
         Icon="\UI\Assets\Icons\Logo.png"
@@ -93,7 +93,7 @@
                                 <RadioButton.Content>
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="12,0,0,0">
-                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/client.png"/>
+                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/Assets/Windows/MainWindow/MainWindowClientIcon.png" />
                                             <TextBlock Text="Client" FontWeight="Medium" Foreground="{DynamicResource Text}" VerticalAlignment="Center" Margin="10,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
@@ -109,7 +109,7 @@
                                 <RadioButton.Content>
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="12,0,0,0">
-                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/server.png"/>
+                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/Assets/Windows/MainWindow/MainWindowServerIcon.png" />
                                             <TextBlock Text="Server" FontWeight="Medium" Foreground="{DynamicResource Text}" VerticalAlignment="Center" Margin="10,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
@@ -120,12 +120,12 @@
                                     </EventTrigger>
                                 </RadioButton.Triggers>
                             </RadioButton>
-
+    
                             <RadioButton GroupName="navRBTN" x:Name="navBuilder" Style="{StaticResource Common_navRBTN}" HorizontalAlignment="Left" Width="208" Height="38" Margin="6,0,6,2">
                                 <RadioButton.Content>
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="12,0,0,0">
-                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/fileSettings.png"/>
+                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/Assets/Windows/MainWindow/MainWindowBuilderIcon.png" />
                                             <TextBlock Text="Builder" FontWeight="Medium" Foreground="{DynamicResource Text}" VerticalAlignment="Center" Margin="10,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
@@ -138,18 +138,18 @@
                             </RadioButton>
                         </StackPanel>
                         <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,6">
-                            <RadioButton GroupName="navRBTN" x:Name="navSupport" Style="{StaticResource Common_navRBTN}" HorizontalAlignment="Left" Width="208" Height="38" Margin="6,0,6,2" VerticalAlignment="Bottom">
+                            <RadioButton GroupName="navRBTN" x:Name="navPlugin" Style="{StaticResource Common_navRBTN}" HorizontalAlignment="Left" Width="208" Height="38" Margin="6,0,6,2" VerticalAlignment="Bottom">
                                 <RadioButton.Content>
                                     <Grid>
                                         <StackPanel Orientation="Horizontal" Margin="12,0,0,0">
-                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/assets/Other/support.png"/>
+                                            <Image Width="21" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/UI/Assets/Windows/MainWindow/MainWindowPluginIcon.png" />
                                             <TextBlock Text="Plugins" FontWeight="Medium" Foreground="{DynamicResource Text}" VerticalAlignment="Center" Margin="10,-1,0,0" FontSize="14"/>
                                         </StackPanel>
                                     </Grid>
                                 </RadioButton.Content>
                                 <RadioButton.Triggers>
                                     <EventTrigger RoutedEvent="RadioButton.Checked">
-                                        <BeginStoryboard Storyboard="{StaticResource SupportUC-Show}"/>
+                                        <BeginStoryboard Storyboard="{StaticResource PluginUC-Show}"/>
                                     </EventTrigger>
                                 </RadioButton.Triggers>
                             </RadioButton>
@@ -185,7 +185,7 @@
                         <ClientPage:Client x:Name="clientUC" Visibility="Collapsed"/>
                         <ServerPage:Server x:Name="serverUC" Visibility="Collapsed"/>
                         <BuilderPage:Builder x:Name="builderUC" Visibility="Collapsed"/>
-                        <SupportPage:Support x:Name="supportUC" Visibility="Collapsed"/>
+                        <PluginPage:Plugin x:Name="pluginUC" Visibility="Collapsed"/>
                         <SettingsPage:Settings x:Name="settingsUC" Visibility="Collapsed"/>
                     </Grid>
                 </Border>

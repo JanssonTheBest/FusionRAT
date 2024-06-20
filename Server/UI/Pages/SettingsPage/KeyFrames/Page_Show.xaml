@@ -74,15 +74,15 @@
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
 
-            <!--Support page-->
-            <DoubleAnimation Storyboard.TargetName="supportUC"
+            <!--Plugin page-->
+            <DoubleAnimation Storyboard.TargetName="pluginUC"
                          Storyboard.TargetProperty="Opacity"
                          To="0" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="supportUC"
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pluginUC"
                                        Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
