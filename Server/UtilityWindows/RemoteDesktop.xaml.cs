@@ -10,9 +10,12 @@ using System.Windows.Threading;
 using System.Collections.Concurrent;
 using Server.Helper;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
+using System.Windows.Controls.Primitives;
 
 namespace Server.UtilityWindows
 {
+
     public partial class RemoteDesktop : Window, IUtilityWindow
     {
         private readonly ServerSession _serverSession;
@@ -27,6 +30,12 @@ namespace Server.UtilityWindows
         private readonly int _bmpPartSize;
         private readonly int _horizontalAmount;
         private readonly int _verticalAmount;
+
+        private bool isDragging = false;
+        private System.Windows.Point clickPosition;
+        Storyboard triggerd;
+        Storyboard default_Down;
+        Storyboard default_Up;
 
         public RemoteDesktop(ServerSession serverSession)
         {
@@ -47,6 +56,11 @@ namespace Server.UtilityWindows
             _fpsTimer.Elapsed += OnTimerCallBack;
             _fpsTimer.AutoReset = true;
             _fpsTimer.Start();
+
+            triggerd = (FindResource("ControlPanel_Triggered") as Storyboard);
+            default_Down = (FindResource("ControlPanel_Default_Down") as Storyboard);
+            default_Up = (FindResource("ControlPanel_Default_Up") as Storyboard);
+
         }
 
         private async void HandlePacket(object? sender, EventArgs e)
@@ -226,5 +240,96 @@ namespace Server.UtilityWindows
             window?.Close();
         }
         #endregion
+
+        private void controlPanel_TBTN_RightMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                isDragging = true;
+                clickPosition = e.GetPosition(this);
+                (sender as ToggleButton).CaptureMouse();
+            }
+        }
+
+        private void controlPanel_TBTN_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                System.Windows.Point currentPosition = e.GetPosition(this);
+                double deltaY = currentPosition.Y - clickPosition.Y;
+
+                if (currentPosition.Y < this.ActualHeight / 2)
+                {
+                    if (controlPanel_Grid.VerticalAlignment != VerticalAlignment.Top)
+                    {
+                        controlPanel_TBTN.IsChecked = false;
+                        controlPanel_Grid.VerticalAlignment = VerticalAlignment.Top;
+                        BeginStoryboard((Storyboard)this.Resources["up"]);
+                    }
+                }
+                else
+                {
+                    if (controlPanel_Grid.VerticalAlignment != VerticalAlignment.Bottom)
+                    {
+                        controlPanel_TBTN.IsChecked = false;
+                        controlPanel_Grid.VerticalAlignment = VerticalAlignment.Bottom;
+                        BeginStoryboard((Storyboard)this.Resources["down"]);
+                    }
+                }
+            }
+        }
+
+        private void controlPanel_TBTN_RightMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (isDragging)
+            {
+                isDragging = false;
+                (sender as ToggleButton).ReleaseMouseCapture();
+            }
+        }
+
+        private void controlPanel_TBTN_Checked(object sender, RoutedEventArgs e)
+        {
+            triggerd.Begin();
+        }
+
+        private void controlPanel_TBTN_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (controlPanel_Grid.VerticalAlignment == VerticalAlignment.Top)
+            {
+                default_Up.Begin();
+            }
+
+            if (controlPanel_Grid.VerticalAlignment == VerticalAlignment.Bottom)
+            {
+                default_Down.Begin();
+            }
+        }
+
+        private void Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // Kolla om klicket var utanför ToggleButton och Border
+            if (!IsClickInsideElement(screenControl_TBTN, e) && !IsClickInsideElement(screenControl, e))
+            {
+                screenControl_TBTN.IsChecked = false;
+            }
+            if (!IsClickInsideElement(randomControl_TBTN, e) && !IsClickInsideElement(randomControl, e))
+            {
+                randomControl_TBTN.IsChecked = false;
+            }
+        }
+
+        private bool IsClickInsideElement(FrameworkElement element, MouseButtonEventArgs e)
+        {
+            if (element == null)
+            {
+                return false;
+            }
+
+            System.Windows.Point clickPosition = e.GetPosition(element);
+            return clickPosition.X >= 0 && clickPosition.X <= element.ActualWidth &&
+                   clickPosition.Y >= 0 && clickPosition.Y <= element.ActualHeight;
+        }
+
     }
 }

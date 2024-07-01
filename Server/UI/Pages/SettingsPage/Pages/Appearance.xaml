@@ -173,9 +173,7 @@
                                                     </EventTrigger>
                                                 </RadioButton.Triggers>
                                             </RadioButton>
-                                            <RadioButton x:Name="ThemeRadioButton6" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#535364" />
-                                            <RadioButton x:Name="ThemeRadioButton7" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#282F54" />
-                                            <RadioButton x:Name="ThemeRadioButton8" Style="{StaticResource ThemeRBTN_Style}" Background="#F5F5F5" Tag="#44348C"/>
+                                            
                                             <Button Width="90" Height="55" Style="{StaticResource Common_Button}" Background="Transparent" BorderThickness="1" BorderBrush="{StaticResource Border}" Margin="0,0,24,0">
                                                 <Button.Tag>
                                                     <CornerRadius BottomLeft="11" BottomRight="11" TopLeft="11" TopRight="11"/>
