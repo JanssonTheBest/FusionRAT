@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientInfo", "ClientInfo\Cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteDesktopPlugin", "RemoteDesktop\RemoteDesktopPlugin.csproj", "{B1397B9A-997C-4F22-8448-AEA647CA63AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseShellPlugin", "ReverseShellPlugin\ReverseShellPlugin.csproj", "{80711270-E744-4BA8-81DF-8BC3756CAC63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseShellPlugin", "ReverseShellPlugin\ReverseShellPlugin.csproj", "{80711270-E744-4BA8-81DF-8BC3756CAC63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launcher", "Launcher\Launcher.csproj", "{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{80711270-E744-4BA8-81DF-8BC3756CAC63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80711270-E744-4BA8-81DF-8BC3756CAC63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80711270-E744-4BA8-81DF-8BC3756CAC63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
