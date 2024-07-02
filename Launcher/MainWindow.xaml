@@ -8,9 +8,31 @@
         Title="Fusion" Height="475" Width="770"
         Background="Transparent"
         Foreground="#DBDFE0"
-        FontFamily="Inter" ResizeMode="CanResizeWithGrip" >
+        FontFamily="Inter" ResizeMode="CanResizeWithGrip"
+        Deactivated="Window_Deactivated"
+        Activated="Window_Activated" MinWidth="750" MinHeight="450">
 
     <Window.Resources>
+        <Storyboard x:Key="WindowDeactivateStoryboard">
+            <DoubleAnimation Storyboard.TargetName="slide_Show_BG"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0.8" Duration="0:0:3"
+                             RepeatBehavior="Forever" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="WindowActiveteStoryboard">
+            <DoubleAnimation Storyboard.TargetName="slide_Show_BG"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0.4" Duration="0:0:0.5">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
 
         <Style TargetType="{x:Type RadioButton}">
             <Setter Property="Cursor" Value="Hand"/>
@@ -74,7 +96,7 @@
                                 BorderThickness="1"
                                 BorderBrush="#1B1B1B"
                                 Width="106">
-                            
+
                             <TextBlock Text="{TemplateBinding Content}"
                                        x:Name="content"
                                        VerticalAlignment="Center"
@@ -89,7 +111,7 @@
                                 </TextBlock.Style>
                             </TextBlock>
                         </Border>
-                        
+
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Opacity" TargetName="content" Value="1"/>
@@ -151,7 +173,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="TextBlock" x:Key="Header">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="Foreground" Value="#DBDFE0"/>
@@ -201,7 +223,7 @@
 
             <!--//Key Form//-->
             <Grid Grid.Row="1">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="250">
+                <StackPanel VerticalAlignment="Top" Margin="35,0,50,0" MaxWidth="350">
 
                     <StackPanel>
                         <TextBlock Text="Welcome to Fusion" Style="{StaticResource Header}" Margin="0,0,0,10"/>
@@ -216,10 +238,15 @@
 
                     <StackPanel Margin="0,30,0,0">
                         <TextBlock Text="Verify Key" Style="{StaticResource Form_Header}" Margin="0,0,0,10"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="Get key" Margin="0,0,15,0"/>
-                            <Button Content="Continue"/>
-                        </StackPanel>
+                        <Grid Margin="0,0,15,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition MinWidth="5"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="Get key"/>
+                            <Button Content="Continue" Grid.Column="2"/>
+                        </Grid>
                         <TextBlock Text="Need help?" Style="{StaticResource Link}" Margin="0,10,0,0"/>
                     </StackPanel>
 
@@ -229,22 +256,160 @@
             </Grid>
 
             <!--//Slide Show//-->
-            <Grid Grid.Column="1" Grid.RowSpan="2">
-                <Image Source="/bg.png" Stretch="Fill" Opacity="0.4"/>
-            </Grid>
+            <Image x:Name="slide_Show_BG" Grid.Column="1" Grid.RowSpan="2" Source="/bg.png" Stretch="Fill" Opacity="0.4"/>
 
             <StackPanel Grid.Column="1" Grid.Row="2">
                 <StackPanel Margin="0,-30,0,0">
-                    <Image Source="/CMD.png" Width="255" Height="180"/>
-                    <TextBlock Text="CMD"
+                    <Grid>
+                        <Image Width="255" Height="180" Source="/CMD.png"/>
+                        <StackPanel HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Margin="138,44,0,0"
+                                    Orientation="Horizontal">
+                            
+                            <TextBlock Text=">"
+                                       FontSize="16"
+                                       FontWeight="Medium"/>
+
+                            <TextBlock Text=""
+                                       FontSize="12"
+                                       FontWeight="Regular"
+                                       VerticalAlignment="Bottom"
+                                       x:Name="shell_Input"/>
+
+                            <TextBlock Text="_"
+                                       FontSize="16"
+                                       FontWeight="Medium"
+                                       x:Name="caretBrush"/>
+
+                            <StackPanel.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+
+                                    <!--CaretBrush blinking-->
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="caretBrush"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.5" Value=""/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="caretBrush"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:1" Value="_"/>
+                                            </StringAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+
+                                    <!--Text change-->
+                                    <BeginStoryboard>
+                                        <Storyboard BeginTime="0:0:3">
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0" Value=""/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.1" Value=" s "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.15" Value=" st "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.3" Value=" sta "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.45" Value=" star "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.6" Value=" start "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.65" Value=" start s "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.7" Value=" start se "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.75" Value=" start ser "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.8" Value=" start sero "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:0.85" Value=" start serox "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:1.5" Value=" start sero "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:1.7" Value=" start ser "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:1.9" Value=" start se "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:2.1" Value=" start s "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:2.5" Value=" start  "/>
+                                            </StringAnimationUsingKeyFrames>
+
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:2.75" Value=" start f "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:2.8" Value=" start fu "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:2.85" Value=" start fus "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:2.9" Value=" start fusi "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:2.95" Value=" start fusio "/>
+                                            </StringAnimationUsingKeyFrames>
+                                            <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                <DiscreteStringKeyFrame KeyTime="0:0:3" Value=" start fusion "/>
+                                            </StringAnimationUsingKeyFrames>
+
+
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </StackPanel.Triggers>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Text="Remote Shell"
                                HorizontalAlignment="Center"
                                FontSize="17"
                                FontWeight="SemiBold"
                                Foreground="#DBDFE0"
                                FontFamily="Inter"
-                               Margin="0,50,0,0"/>
+                               Margin="0,50,0,0"
+                               x:Name="sideShow_InfoHeader"/>
 
-                    <TextBlock Text="Fusions Remote shell offers a powerful and custom scripts and UI, ensuring that you as a teacher have all the custom tools you need."
+                    <TextBlock Text="Fusions Remote Shell offers a powerful and custom scripts and UI, ensuring that you as a teacher have all the custom tools you need."
                                HorizontalAlignment="Center"
                                FontSize="14"
                                Opacity="0.7"
@@ -253,16 +418,97 @@
                                Margin="0,17,0,0"
                                Width="311"
                                TextWrapping="Wrap"
-                               TextAlignment="Center"/>
+                               TextAlignment="Center"
+                               x:Name="sideShow_InfoTXT"/>
                 </StackPanel>
-
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,40,0,0">
-                    <RadioButton Margin="0,0,13,0" IsChecked="True"/>
-                    <RadioButton Margin="0,0,13,0"/>
-                    <RadioButton Margin="0,0,13,0"/>
-                    <RadioButton Margin="0,0,0,0"/>
-                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,55">
+                <RadioButton Margin="0,0,13,0" x:Name="rbtn1" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked">
+                    <RadioButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoTXT"
+                                                                   Storyboard.TargetProperty="Text">
+                                        <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Fusions Remote Shell offers a powerful and custom scripts and UI, ensuring that you as a teacher have all the custom tools you need." />
+                                    </StringAnimationUsingKeyFrames>
+                                    <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoHeader"
+                                                                    Storyboard.TargetProperty="Text">
+                                        <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Remote Shell" />
+                                    </StringAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </RadioButton.Triggers>
+                </RadioButton>
+                <RadioButton Margin="0,0,13,0" x:Name="rbtn2" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked">
+                    <RadioButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoTXT"
+                                                                   Storyboard.TargetProperty="Text">
+                                        <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Fusions Remote Desktop provides administrators with powerful tools and a user-friendly interface for efficient remote management." />
+                                    </StringAnimationUsingKeyFrames>
+                                    <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoHeader"
+                                                                   Storyboard.TargetProperty="Text">
+                                        <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Remote Desktop" />
+                                    </StringAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </RadioButton.Triggers>
+                </RadioButton>
+                <RadioButton Margin="0,0,13,0" x:Name="rbtn3" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked">
+                    <RadioButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoTXT"
+                                                                   Storyboard.TargetProperty="Text">
+                                        <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Fusions HVNC offers administrators unique tools and a revolutionary interface for exceptional remote management." />
+                                    </StringAnimationUsingKeyFrames>
+                                    <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoHeader"
+                                                                    Storyboard.TargetProperty="Text">
+                                        <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Hidden VNC" />
+                                    </StringAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </RadioButton.Triggers>
+                </RadioButton>
+                <RadioButton Margin="0,0,0,0" x:Name="rbtn4" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked">
+                    <RadioButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoTXT"
+                                                                    Storyboard.TargetProperty="Text">
+                                        <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Fusions Insight tool provides administrators with stunning capabilities and intuitive interface for monitoring student passwords." />
+                                    </StringAnimationUsingKeyFrames>
+                                    <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoHeader"
+                                                                    Storyboard.TargetProperty="Text">
+                                        <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Insight" />
+                                    </StringAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </RadioButton.Triggers>
+                </RadioButton>
             </StackPanel>
         </Grid>
     </Border>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <BooleanAnimationUsingKeyFrames Storyboard.TargetName="rbtn1"
+                                                    Storyboard.TargetProperty="IsChecked">
+                        <DiscreteBooleanKeyFrame KeyTime="0" Value="True"/>
+                    </BooleanAnimationUsingKeyFrames>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
 </Window>
