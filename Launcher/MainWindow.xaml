@@ -137,7 +137,7 @@
                                            FontSize="14"
                                            Foreground="#DBDFE0"
                                            Opacity="0.45"
-                                           Margin="22,0,0,0"
+                                           Margin="22,1,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            IsHitTestVisible="False"
