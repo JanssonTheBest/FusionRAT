@@ -1,27 +1,26 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
+﻿using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace Launcher
 {
     public partial class MainWindow : Window
     {
+        private RadioButton nextRadioButton;
         private DispatcherTimer timer;
         private bool isAnimating;
-        private RadioButton nextRadioButton;
-
+        
         public MainWindow()
         {
             InitializeComponent();
 
-            // Initialize timer
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(10); // Set delay interval to 4 seconds
+            timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(10)
+            };
             timer.Tick += Timer_Tick;
 
-            // Hook into Checked and Unchecked events for all RadioButtons
             rbtn1.Checked += RadioButton_Checked;
             rbtn1.Unchecked += RadioButton_Unchecked;
             rbtn2.Checked += RadioButton_Checked;
@@ -41,7 +40,6 @@ namespace Launcher
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            // Stop animation on window activate
             Storyboard storyboard2 = (Storyboard)this.Resources["WindowActiveteStoryboard"];
             storyboard2.Begin();
 
@@ -61,13 +59,11 @@ namespace Launcher
 
         private void HandleRadioButtonChecked(RadioButton sender)
         {
-            // Reset timer and prepare for animation if another animation is not ongoing
             if (isAnimating || sender == null)
             {
                 return;
             }
 
-            // If there's a next RadioButton in sequence, prepare to activate it
             if (sender == rbtn1)
                 nextRadioButton = rbtn2;
             else if (sender == rbtn2)
@@ -77,7 +73,6 @@ namespace Launcher
             else if (sender == rbtn4)
                 nextRadioButton = rbtn1;
 
-            // Start the timer to delay the activation of the next RadioButton
             isAnimating = true;
             timer.Stop();
             timer.Start();
@@ -85,7 +80,6 @@ namespace Launcher
 
         private void HandleRadioButtonUnchecked(RadioButton sender)
         {
-            // Stop timer and reset animation flag if RadioButton is unchecked
             if (sender == null)
             {
                 return;
@@ -100,7 +94,6 @@ namespace Launcher
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            // Timer tick event: stop timer and activate next RadioButton in sequence
             timer.Stop();
             if (nextRadioButton != null)
             {
