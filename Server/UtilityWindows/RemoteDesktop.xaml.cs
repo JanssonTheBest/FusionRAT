@@ -62,40 +62,33 @@ namespace Server.UtilityWindows
 
         private async Task<Bitmap> ConcatenateBitmap(byte[][] bmpBytes)
         {
-            var tasks = new ConcurrentBag<Task>();
-
-            for (int i = 0; i < _verticalAmount; i++)
+            Parallel.For(0, _verticalAmount, i =>
             {
-                for (int j = 0; j < _horizontalAmount; j++)
+                Parallel.For(0, _horizontalAmount, j =>
                 {
                     int index = j + i * _horizontalAmount;
                     var point = new System.Drawing.Point(j * _bmpPartSize, i * _bmpPartSize);
 
                     if (bmpBytes[index] != null)
                     {
-                        tasks.Add(Task.Run(async () =>
-                        {
-                            using (var ms = new MemoryStream(bmpBytes[index]))
-                            {
-                                var partBmp = new Bitmap(ms);
-                                await _semaphoreSlim.WaitAsync();
-                                try
-                                {
-                                    _graphics.DrawImage(partBmp, point);
-                                }
-                                finally
-                                {
-                                    _semaphoreSlim.Release();
-                                }
-                            }
-                        }));
-                    }
-                }
-            }
 
-            await Task.WhenAll(tasks);
-            return (Bitmap)_bmp.Clone();
+                        using (var ms = new MemoryStream(bmpBytes[index]))
+                        {
+                            var partBmp = new Bitmap(ms);
+
+                            lock (_graphics)
+                            {
+                                _graphics.DrawImage(partBmp, point);
+
+                            }
+                        }
+                    }
+                });
+            });
+
+            return _bmp;
         }
+
 
         private async Task DisplayFrame(byte[][] frameBytes)
         {
@@ -104,31 +97,22 @@ namespace Server.UtilityWindows
             {
                 frame.Source = await ToImageSource(bmp);
                 _frameCounter++;
-            }, DispatcherPriority.Send);
+            }, DispatcherPriority.Render);
         }
 
+        MemoryStream memory = new MemoryStream();
         private async Task<BitmapImage> ToImageSource(Bitmap bmp)
         {
-            using (var memory = new MemoryStream())
-            {
-                await _semaphoreSlim.WaitAsync();
-                try
-                {
-                    bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-                }
-                finally
-                {
-                    _semaphoreSlim.Release();
-                }
+            memory.SetLength(0);
+            bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+            memory.Position = 0;
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.StreamSource = memory;
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.EndInit();
+            return bitmapImage;
 
-                memory.Position = 0;
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                return bitmapImage;
-            }
         }
 
         private void OnTimerCallBack(object? sender, ElapsedEventArgs e)

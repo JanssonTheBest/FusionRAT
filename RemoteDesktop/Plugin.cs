@@ -1,9 +1,11 @@
-﻿using Common.Communication;
+﻿
+using Common.Communication;
 using Common.DTOs.MessagePack;
 using System.Collections.Concurrent;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace RemoteDesktopPlugin
 {
@@ -12,8 +14,7 @@ namespace RemoteDesktopPlugin
         private readonly Session _session;
         private readonly int _bitrate = 6;
         private readonly int[] _screen = { 1920, 1080 };
-        private readonly Bitmap[] _oldBitmaps;
-        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        private readonly ConcurrentDictionary<int, Bitmap> _oldBitmaps = new ConcurrentDictionary<int, Bitmap>();
         private readonly ImageCodecInfo _jpegEncoder;
         private readonly EncoderParameters _encoderParameters;
 
@@ -21,7 +22,6 @@ namespace RemoteDesktopPlugin
         {
             _session = session;
             _session.OnRemoteDesktop += HandlePacket;
-            _oldBitmaps = new Bitmap[CalculateBitmapArraySize()];
             _jpegEncoder = GetEncoder(ImageFormat.Jpeg);
             _encoderParameters = new EncoderParameters(1)
             {
@@ -53,23 +53,23 @@ namespace RemoteDesktopPlugin
 
             while (true)
             {
-                var frameTasks = new ConcurrentBag<Task>();
                 var dt = new RemoteDesktopDTO
                 {
                     Frame = new byte[horizontalAmount * verticalAmount][]
                 };
 
-                for (int i = 0; i < verticalAmount; i++)
-                {
-                    for (int j = 0; j < horizontalAmount; j++)
+              
+                    Parallel.For(0, verticalAmount, i =>
                     {
-                        int index = j + i * horizontalAmount;
-                        var point = new Point(j * bmpPartSize, i * bmpPartSize);
-                        frameTasks.Add(ProcessFramePart(index, point, bmpPartSize, dt));
-                    }
-                }
+                        for (int j = 0; j < horizontalAmount; j++)
+                        {
+                            int index = j + i * horizontalAmount;
+                            var point = new Point(j * bmpPartSize, i * bmpPartSize);
+                            ProcessFramePart(index, point, bmpPartSize, dt).Wait();
+                        }
+                    });
+               
 
-                await Task.WhenAll(frameTasks);
                 await _session.SendPacketAsync(dt);
             }
         }
@@ -84,10 +84,10 @@ namespace RemoteDesktopPlugin
                 bmp.Save(ms, _jpegEncoder, _encoderParameters);
                 byte[] newBmp = ms.ToArray();
 
-                await _semaphore.WaitAsync();
-                try
+                Bitmap oldBitmap;
+                if (_oldBitmaps.TryGetValue(index, out oldBitmap))
                 {
-                    if (_oldBitmaps[index] == null || !CompareBitmaps(_oldBitmaps[index], bmp))
+                    if (!CompareBitmaps(oldBitmap, bmp))
                     {
                         _oldBitmaps[index]?.Dispose();
                         _oldBitmaps[index] = new Bitmap(bmp);
@@ -98,9 +98,10 @@ namespace RemoteDesktopPlugin
                         dt.Frame[index] = null;
                     }
                 }
-                finally
+                else
                 {
-                    _semaphore.Release();
+                    _oldBitmaps[index] = new Bitmap(bmp);
+                    dt.Frame[index] = newBmp;
                 }
             }
         }
