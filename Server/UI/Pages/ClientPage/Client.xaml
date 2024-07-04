@@ -49,6 +49,12 @@
             </MenuItem>
         </ContextMenu>
 
+        <ContextMenu x:Key="globalContextMenu">
+            <MenuItem Header="Disconnect All" Click="DisconnectAll_Click"/>
+            <MenuItem Header="Hide All" Click="HideAll_Click"/>
+            <MenuItem Header="Update All" Click="UpdateAll_Click"/>
+        </ContextMenu>
+        
         <!-- Style for the DataGrid -->
         <Style TargetType="DataGrid">
             <Setter Property="AutoGenerateColumns" Value="False" />
@@ -68,7 +74,7 @@
         <Style TargetType="DataGridColumnHeader">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0,0,1,1" />
-            <Setter Property="BorderBrush" Value="#1F1F1F" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Border}" />
             <Setter Property="Foreground" Value="{DynamicResource Text}" />
             <Setter Property="FontWeight" Value="Medium" />
             <Setter Property="FontSize" Value="16" />
@@ -98,7 +104,7 @@
             <Setter Property="BorderThickness" Value="0" />
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Selected}" />
+                    <Setter Property="Background" Value="{DynamicResource Selected}" />
                 </Trigger>
             </Style.Triggers>
 
@@ -114,7 +120,7 @@
 
 
     <Grid>
-        <DataGrid x:Name="dataGrid" ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0" LoadingRow="dataGrid_LoadingRow" PreviewMouseLeftButtonDown="DataGrid_PreviewMouseLeftButtonDown" SelectionMode="Extended">
+        <DataGrid x:Name="dataGrid" ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0" LoadingRow="DataGrid_LoadingRow" PreviewMouseLeftButtonDown="DataGrid_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="DataGrid_PreviewMouseRightButtonDown" SelectionMode="Extended">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Location" Width="*">
                     <DataGridTemplateColumn.CellTemplate>

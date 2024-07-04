@@ -2,7 +2,7 @@
              xmlns:uc="clr-namespace:Server.UI.CustomControls.BuilderControls.BuilderCommon"
              xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
              FontSize="15" Foreground="{DynamicResource Text}">
-    <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Border Background="{DynamicResource Primary}" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
@@ -51,11 +51,11 @@
                     </StackPanel>
 
                     <StackPanel Grid.Row="5">
-                        <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Height="37" >
+                        <Border BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Width="340" Height="37" >
                             <TextBox Style="{StaticResource Common_TextBox}"/>
                         </Border>
 
-                        <Border x:Name="TextBoxBorder1" Opacity="0.6" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="340" Height="37" Margin="0,16,0,0">
+                        <Border x:Name="TextBoxBorder1" Opacity="0.6" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Width="340" Height="37" Margin="0,16,0,0">
                             <TextBox Name="TextBox1" Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="Enter a Parent Process Name..." helpers:TextBoxHelper.CharLimit="255" IsReadOnly="True" IsEnabled="False"/>
                         </Border>
                     </StackPanel>

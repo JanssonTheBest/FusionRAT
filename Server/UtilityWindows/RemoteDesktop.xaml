@@ -2,10 +2,334 @@
         xmlns:header="clr-namespace:Server.UI.CustomControls.WindowHeaders"
         xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
         Title="Remote Desktop - Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
-        MinHeight="270" MinWidth="480" Height="600" Width="1000" Foreground="{DynamicResource Text}">
+        MinHeight="270" MinWidth="480" Height="600" Width="1000" Foreground="{DynamicResource Text}" PreviewMouseDown="Window_PreviewMouseDown">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style x:Key="Display" TargetType="RadioButton">
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid Background="Transparent" Height="{TemplateBinding Height}" Margin="{TemplateBinding Margin}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Border x:Name="pid" Height="{Binding ElementName=header, Path=Height}" Width="2" CornerRadius="1" Background="{DynamicResource Accent}" Margin="6,0,6,0" Opacity="0"/>
+                                <TextBlock x:Name="header" Text="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Grid VerticalAlignment="Center" Margin="0,0,10,0">
+                                    <Border x:Name="recordPid_Hover" Height="12" Width="12" Background="Red" CornerRadius="6" Opacity="0"/>
+                                    <ToggleButton Background="Transparent" BorderThickness="0">
+                                        <Border x:Name="recordPid_Checked" Height="12" Width="12" Background="Red" CornerRadius="6" Opacity="0"/>
+                                        <ToggleButton.Triggers>
+                                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="recordPid_Checked"
+                                                                         Storyboard.TargetProperty="Opacity"
+                                                                         To="1" Duration="0:0:0.15">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="recordPid_Checked"
+                                                                         Storyboard.TargetProperty="Opacity"
+                                                                         To="0" Duration="0:0:0.15">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </ToggleButton.Triggers>
+                                    </ToggleButton>
+                                </Grid>
+                                <ToggleButton Height="17" Width="17" Margin="0,0,8,0" Background="Transparent" BorderThickness="0" Opacity="0.6 ">
+                                    <Path Fill="#fff" Stretch="Uniform" Data="M 31.20 50.00 A 12.45 12.45 0.0 0 1 18.75 62.45 A 12.45 12.45 0.0 0 1 6.30 50.00 A 12.45 12.45 0.0 0 1 18.75 37.55 A 12.45 12.45 0.0 0 1 31.20 50.00 Z M 62.45 50.00 A 12.45 12.45 0.0 0 1 50.00 62.45 A 12.45 12.45 0.0 0 1 37.55 50.00 A 12.45 12.45 0.0 0 1 50.00 37.55 A 12.45 12.45 0.0 0 1 62.45 50.00 Z M 93.70 50.00 A 12.45 12.45 0.0 0 1 81.25 62.45 A 12.45 12.45 0.0 0 1 68.80 50.00 A 12.45 12.45 0.0 0 1 81.25 37.55 A 12.45 12.45 0.0 0 1 93.70 50.00 Z"/>
+                                </ToggleButton>
+                            </StackPanel>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="pid"
+                                                      Storyboard.TargetProperty="Opacity"
+                                                      To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                                <MultiTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="pid"
+                                                      Storyboard.TargetProperty="Opacity"
+                                                      To="0" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.ExitActions>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="recordPid_Hover"
+                                                      Storyboard.TargetProperty="Opacity"
+                                                      To="0.2" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                                <MultiTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="recordPid_Hover"
+                                                      Storyboard.TargetProperty="Opacity"
+                                                      To="0" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.ExitActions>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ToggleButton">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border CornerRadius="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <Border x:Name="bg" Opacity="0" CornerRadius="2" Background="{TemplateBinding Tag}"/>
+                                <ContentPresenter/>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bg" Property="Opacity" Value="1"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Opacity" Value="0.5" TargetName="bg"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ControlPanel_TBTN" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}" 
+                                Width="{TemplateBinding Width}" 
+                                Height="{TemplateBinding Height}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <Grid>
+                                <Border x:Name="bg" Background="#0FFFFFFF" CornerRadius="4" Opacity="0"/>
+                                <Path Margin="-1,0,0,0" Width="21" Height="21" Fill="#fff" Stretch="Uniform" Data="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="bg"
+                                                              Storyboard.TargetProperty="Opacity"
+                                                              To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                                <MultiTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="bg"
+                                                              Storyboard.TargetProperty="Opacity"
+                                                              To="0" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.ExitActions>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+        <Storyboard x:Key="ControlPanel_Triggered">
+            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+                         Storyboard.TargetProperty="Margin"
+                         To="0" Duration="0:0:0.15">
+                <ThicknessAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+
+            <DoubleAnimation Storyboard.TargetName="controlPanel"
+                      Storyboard.TargetProperty="Opacity"
+                      To="1" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel" 
+                        Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ControlPanel_Default_Down">
+            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+                         Storyboard.TargetProperty="Margin"
+                         To="0,0,0,-51" Duration="0:0:0.15">
+                <ThicknessAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+
+            <DoubleAnimation Storyboard.TargetName="controlPanel"
+                      Storyboard.TargetProperty="Opacity"
+                      To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel" 
+                                    Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ControlPanel_Default_Up">
+            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+                         Storyboard.TargetProperty="Margin"
+                         To="0,-51,0,0" Duration="0:0:0.15">
+                <ThicknessAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+
+            <DoubleAnimation Storyboard.TargetName="controlPanel"
+                      Storyboard.TargetProperty="Opacity"
+                      To="0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel" 
+                                    Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+        <Storyboard x:Key="down">
+            <DoubleAnimation Storyboard.TargetName="controlPanel_Grid"
+                      Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                      To="0" Duration="0"/>
+            <DoubleAnimation Storyboard.TargetName="controlPanel"
+                      Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                      To="0" Duration="0"/>
+            <ThicknessAnimation Storyboard.TargetName="controlPanel"
+                         Storyboard.TargetProperty="BorderThickness"
+                         To="0,1,0,0"/>
+            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+                         Storyboard.TargetProperty="Margin"
+                         To="0,0,0,-51" Duration="0">
+            </ThicknessAnimation>
+            <ThicknessAnimation Storyboard.TargetName="screenControl"
+                         Storyboard.TargetProperty="Margin"
+                         To="0,-69,-139,60" Duration="0">
+            </ThicknessAnimation>
+            <ThicknessAnimation Storyboard.TargetName="randomControl"
+                         Storyboard.TargetProperty="Margin"
+                         To="0,-57,-147,60" Duration="0">
+            </ThicknessAnimation>
+        </Storyboard>
+        <Storyboard x:Key="up">
+            <DoubleAnimation Storyboard.TargetName="controlPanel_Grid"
+                      Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                      To="180" Duration="0"/>
+            <DoubleAnimation Storyboard.TargetName="controlPanel"
+                      Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                      To="180" Duration="0"/>
+            <ThicknessAnimation Storyboard.TargetName="controlPanel"
+                         Storyboard.TargetProperty="BorderThickness"
+                         To="0,0,0,1"/>
+            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+                         Storyboard.TargetProperty="Margin"
+                         To="0,-50,0,0" Duration="0">
+            </ThicknessAnimation>
+            <ThicknessAnimation Storyboard.TargetName="screenControl"
+                         Storyboard.TargetProperty="Margin"
+                         To="0,60,-139,-68" Duration="0">
+            </ThicknessAnimation>
+            <ThicknessAnimation Storyboard.TargetName="randomControl"
+                         Storyboard.TargetProperty="Margin"
+                         To="0,60,-147,-57" Duration="0">
+            </ThicknessAnimation>
+        </Storyboard>
+    </Window.Resources>
 
     <Border Background="{DynamicResource Secondary}" BorderThickness="1" BorderBrush="{DynamicResource Border}">
         <Grid>
@@ -15,7 +339,7 @@
             </Grid.RowDefinitions>
 
             <!-- TitleBar -->
-            <Grid Background="{DynamicResource Primary}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" MouseMove="TitleBar_MouseMove" MouseLeftButtonUp="TitleBar_MouseLeftButtonUp">
+            <Grid Panel.ZIndex="2" Background="{DynamicResource Primary}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" MouseMove="TitleBar_MouseMove" MouseLeftButtonUp="TitleBar_MouseLeftButtonUp">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
@@ -52,32 +376,164 @@
             </Grid>
 
             <!-- Main Content -->
-            <Grid Grid.Row="2" Margin="0">
+            <Grid Grid.Row="2">
                 <Image x:Name="frame" Stretch="Fill" Panel.ZIndex="-1"/>
-                <ComboBox Width="50" Height="20" x:Name="screens" HorizontalAlignment="Right" />
+                <ComboBox x:Name="screens" Width="50" Height="20"  HorizontalAlignment="Right" />
+            </Grid>
 
-                <StackPanel VerticalAlignment="Bottom">
-                    <ToggleButton Style="{StaticResource Common_ToggleButton}" Width="36" Height="16" Background="{DynamicResource Primary}" BorderThickness="1,1,1,0" BorderBrush="#3A3A3A">
-                        <ToggleButton.Tag>
-                            <CornerRadius TopLeft="2" TopRight="2"/>
-                        </ToggleButton.Tag>
-                        <StackPanel>
-                            <Rectangle Width="20" Height="2" RadiusX="1" RadiusY="1" Fill="#3A3A3A" Margin="0,0,0,4"/>
-                            <Rectangle Width="20" Height="2" RadiusX="1" RadiusY="1" Fill="#3A3A3A"/>
-                        </StackPanel>
-                    </ToggleButton>
-                    <Border Width="350" Height="35" Visibility="Collapsed" Background="{DynamicResource Primary}">
+            <Grid x:Name="controlPanel_Grid" Height="71" VerticalAlignment="Bottom" Margin="0,0,0,-51" Grid.Row="1">
+                <Grid.RenderTransform>
+                    <RotateTransform Angle="0"/>
+                </Grid.RenderTransform>
+                <Grid.RenderTransformOrigin>
+                    <Point X="0.5" Y="0.5"/>
+                </Grid.RenderTransformOrigin>
+                <ToggleButton x:Name="controlPanel_TBTN" Background="{DynamicResource Primary}" Height="21" Width="40" VerticalAlignment="Top" BorderBrush="{DynamicResource Border}"
+                              MouseRightButtonDown="controlPanel_TBTN_RightMouseDown" PreviewMouseMove="controlPanel_TBTN_MouseMove" MouseRightButtonUp="controlPanel_TBTN_RightMouseUp"
+                              Checked="controlPanel_TBTN_Checked" Unchecked="controlPanel_TBTN_Unchecked">
+                    <ToggleButton.Tag>
+                        <SolidColorBrush Color="#0FFFFFFF"/>
+                    </ToggleButton.Tag>
+                </ToggleButton>
+
+                <Border x:Name="controlPanel" Opacity="1" Visibility="Visible" Background="{DynamicResource Primary}" Margin="0,20,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Border}">
+                    <Border.RenderTransform>
+                        <RotateTransform Angle="0"/>
+                    </Border.RenderTransform>
+                    <Border.RenderTransformOrigin>
+                        <Point X="0.5" Y="0.5"/>
+                    </Border.RenderTransformOrigin>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
                         <Grid>
-                            <StackPanel Orientation="Horizontal">
-                                <ToggleButton Width="25" Height="25" Background="#272727"/>
-                                <ToggleButton Width="25" Height="25" Background="#272727"/>
-                                <ToggleButton Width="25" Height="25" Background="#272727"/>
-                                <ToggleButton Width="25" Height="25" Background="#272727"/>
-                            </StackPanel>
-                            <Slider Width="150" Height="6"/>
+                            <Border x:Name="screenControl" Opacity="0" Visibility="Collapsed" Background="{DynamicResource Primary}" Margin="0,-69,-139,60" BorderThickness="1" BorderBrush="{DynamicResource Border}" CornerRadius="2">
+                                <Border.Effect>
+                                    <DropShadowEffect Opacity="0.1"/>
+                                </Border.Effect>
+                                <StackPanel Margin="0,4,0,4">
+                                    <RadioButton Style="{StaticResource Display}" Content="Display 1" IsChecked="True"/>
+                                    <RadioButton Style="{StaticResource Display}" Content="Display 2"/>
+                                </StackPanel>
+                            </Border>
+                            <RadioButton GroupName="Popup" x:Name="screenControl_TBTN" Style="{StaticResource ControlPanel_TBTN}" Tag="M 65.35 85.45 C 69.65 85.05 70.01 91.67 65.50 91.67 Q 50.10 91.66 34.19 91.66 A 2.42 2.42 0.0 0 1 32.69 91.14 C 30.02 89.07 31.37 85.13 34.67 85.45 A 0.68 0.67 2.7 0 0 35.41 84.78 L 35.41 75.69 Q 35.42 75.04 34.76 75.03 Q 26.26 74.90 16.37 75.07 C 8.86 75.20 4.06 72.12 4.11 64.25 Q 4.24 43.37 4.13 23.21 C 4.09 16.70 7.85 12.56 14.12 12.55 Q 51.69 12.52 86.48 12.55 C 92.33 12.55 95.89 17.31 95.87 22.82 Q 95.79 43.80 95.86 64.37 C 95.89 71.28 91.70 75.09 85.17 75.04 Q 74.17 74.96 65.23 75.03 Q 64.58 75.04 64.58 75.68 L 64.59 84.76 A 0.70 0.69 -2.6 0 0 65.35 85.45 Z M 89.59 21.95 A 3.22 3.22 0.0 0 0 86.37 18.73 L 13.63 18.73 A 3.22 3.22 0.0 0 0 10.41 21.95 L 10.41 65.51 A 3.22 3.22 0.0 0 0 13.63 68.73 L 86.37 68.73 A 3.22 3.22 0.0 0 0 89.59 65.51 L 89.59 21.95 Z M 53.25 75.46 C 51.43 77.80 48.43 77.42 46.62 75.30 A 0.88 0.87 -20.3 0 0 45.96 75.00 L 42.27 75.00 Q 41.65 75.00 41.66 75.62 L 41.66 84.82 Q 41.67 85.40 42.25 85.40 L 57.70 85.40 Q 58.34 85.40 58.34 84.75 L 58.34 75.67 Q 58.34 75.00 57.67 75.00 L 54.24 74.99 Q 53.63 74.98 53.25 75.46 Z">
+                                <RadioButton.Triggers>
+                                    <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="screenControl"
+                                                                 Storyboard.TargetProperty="Opacity"
+                                                                 To="1" Duration="0:0:0.15">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="screenControl"
+                                                                   Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+
+                                                <DoubleAnimation Storyboard.TargetName="controlPanel_TBTN"
+                                                                 Storyboard.TargetProperty="Opacity"
+                                                                 To="0" Duration="0:0:0.15">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel_TBTN"
+                                                                   Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="screenControl"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="0" Duration="0:0:0.15">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="screenControl"
+                                                                   Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+
+                                                <DoubleAnimation Storyboard.TargetName="controlPanel_TBTN"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="1" Duration="0:0:0.15">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel_TBTN"
+                                                                   Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </RadioButton.Triggers>
+                            </RadioButton>
                         </Grid>
-                    </Border>
-                </StackPanel>
+                        <ToggleButton Margin="13,0,0,0" Style="{StaticResource ControlPanel_TBTN}" Tag="M 25.00 13.57 C 21.53 17.32 19.03 21.75 17.67 26.67 C 16.54 30.78 10.31 29.20 11.77 24.49 Q 14.59 15.38 20.45 9.34 Q 22.54 7.18 24.89 9.06 Q 25.93 9.90 25.68 12.09 A 2.64 2.64 0.0 0 1 25.00 13.57 Z M 79.1256 65.6418 A 26.10 26.10 0.0 0 1 52.9346 91.6505 L 46.7747 91.6290 A 26.10 26.10 0.0 0 1 20.7659 65.4380 L 20.8744 34.3582 A 26.10 26.10 0.0 0 1 47.0654 8.3495 L 53.2253 8.3710 A 26.10 26.10 0.0 0 1 79.2341 34.5620 L 79.1256 65.6418 Z M 56.19 41.26 C 61.59 40.60 69.32 38.07 72.61 33.55 Q 72.93 33.11 72.86 32.58 C 71.32 21.46 63.60 15.01 52.66 14.58 Q 45.93 14.32 43.03 15.00 Q 29.36 18.25 27.13 32.42 A 1.81 1.81 0.0 0 0 27.63 33.97 C 34.63 41.13 46.20 42.47 56.19 41.26 Z M 72.42 41.98 C 59.66 49.91 40.40 50.00 27.80 42.16 Q 27.08 41.72 27.08 42.56 Q 27.10 53.88 27.07 64.56 C 27.04 75.96 34.63 84.71 46.02 85.37 C 57.08 86.01 66.51 84.39 71.45 73.02 Q 73.11 69.19 72.99 62.64 Q 72.80 52.09 72.92 42.26 A 0.33 0.33 0.0 0 0 72.42 41.98 Z M 46.90 20.87 H 50.15 A 2.95 2.95 0 0 1 53.10 23.82 V 32.44 A 2.95 2.95 0 0 1 50.15 35.39 H 46.90 A 2.95 2.95 0 0 1 43.95 32.44 V 23.82 A 2.95 2.95 0 0 1 46.90 20.87 Z"/>
+                        <ToggleButton Margin="13,0" Style="{StaticResource ControlPanel_TBTN}" Tag="M 29.91 33.35 Q 58.70 33.32 81.47 33.35 C 90.08 33.36 93.94 39.28 93.83 47.21 Q 93.65 60.05 93.79 72.75 C 93.88 81.29 88.27 85.48 80.24 85.45 Q 51.22 85.34 18.84 85.44 C 13.45 85.45 8.64 82.89 6.98 77.71 Q 6.10 74.99 6.18 71.04 Q 6.40 59.43 6.18 47.61 Q 6.08 42.08 7.54 39.54 C 11.10 33.34 16.03 33.25 22.32 33.37 Q 22.88 33.39 22.90 32.82 C 23.00 30.56 22.71 28.11 23.16 25.94 C 25.23 15.95 34.11 12.94 43.20 15.53 Q 47.64 16.79 51.72 18.41 C 62.17 22.56 72.74 20.93 82.58 15.16 Q 84.80 13.86 86.69 15.59 Q 86.93 15.81 87.07 16.10 Q 88.41 18.87 85.78 20.49 C 76.51 26.22 64.59 28.75 54.47 25.78 Q 49.09 24.21 43.26 22.06 C 38.85 20.44 31.36 19.66 29.64 25.71 Q 28.86 28.43 29.20 32.69 Q 29.25 33.35 29.91 33.35 Z M 87.4745 44.7646 A 5.23 5.23 0.0 0 0 82.2354 39.5437 L 17.6955 39.6564 A 5.23 5.23 0.0 0 0 12.4746 44.8955 L 12.5255 74.0154 A 5.23 5.23 0.0 0 0 17.7646 79.2363 L 82.3045 79.1236 A 5.23 5.23 0.0 0 0 87.5254 73.8845 L 87.4745 44.7646 Z M 27.08 49.89 A 2.18 2.18 0.0 0 1 24.90 52.07 L 23.02 52.07 A 2.18 2.18 0.0 0 1 20.84 49.89 L 20.84 48.01 A 2.18 2.18 0.0 0 1 23.02 45.83 L 24.90 45.83 A 2.18 2.18 0.0 0 1 27.08 48.01 L 27.08 49.89 Z M 37.50 49.91 A 2.16 2.16 0.0 0 1 35.34 52.07 L 33.42 52.07 A 2.16 2.16 0.0 0 1 31.26 49.91 L 31.26 47.99 A 2.16 2.16 0.0 0 1 33.42 45.83 L 35.34 45.83 A 2.16 2.16 0.0 0 1 37.50 47.99 L 37.50 49.91 Z M 47.9015 49.9372 A 2.16 2.16 0.0 0 1 45.7227 52.0783 L 43.8028 52.0615 A 2.16 2.16 0.0 0 1 41.6617 49.8827 L 41.6785 47.9628 A 2.16 2.16 0.0 0 1 43.8573 45.8217 L 45.7772 45.8385 A 2.16 2.16 0.0 0 1 47.9183 48.0173 L 47.9015 49.9372 Z M 58.3382 49.8727 A 2.17 2.17 0.0 0 1 56.1872 52.0616 L 54.2873 52.0782 A 2.17 2.17 0.0 0 1 52.0984 49.9272 L 52.0818 48.0273 A 2.17 2.17 0.0 0 1 54.2328 45.8384 L 56.1327 45.8218 A 2.17 2.17 0.0 0 1 58.3216 47.9728 L 58.3382 49.8727 Z M 68.7517 49.9045 A 2.16 2.16 0.0 0 1 66.5954 52.0683 L 64.6554 52.0717 A 2.16 2.16 0.0 0 1 62.4917 49.9155 L 62.4883 47.9955 A 2.16 2.16 0.0 0 1 64.6446 45.8317 L 66.5846 45.8283 A 2.16 2.16 0.0 0 1 68.7483 47.9845 L 68.7517 49.9045 Z M 79.1583 49.9054 A 2.17 2.17 0.0 0 1 76.9846 52.0717 L 75.0846 52.0683 A 2.17 2.17 0.0 0 1 72.9183 49.8946 L 72.9217 47.9946 A 2.17 2.17 0.0 0 1 75.0954 45.8283 L 76.9954 45.8317 A 2.17 2.17 0.0 0 1 79.1617 48.0054 L 79.1583 49.9054 Z M 27.0817 60.3446 A 2.16 2.16 0.0 0 1 24.9255 62.5083 L 23.0055 62.5117 A 2.16 2.16 0.0 0 1 20.8417 60.3554 L 20.8383 58.4154 A 2.16 2.16 0.0 0 1 22.9945 56.2517 L 24.9145 56.2483 A 2.16 2.16 0.0 0 1 27.0783 58.4046 L 27.0817 60.3446 Z M 37.5082 60.3001 A 2.14 2.14 0.0 0 1 35.4097 62.4808 L 33.4701 62.5180 A 2.14 2.14 0.0 0 1 31.2894 60.4195 L 31.2518 58.4599 A 2.14 2.14 0.0 0 1 33.3503 56.2792 L 35.2899 56.2420 A 2.14 2.14 0.0 0 1 37.4706 58.3405 L 37.5082 60.3001 Z M 47.90 60.36 A 2.14 2.14 0.0 0 1 45.76 62.50 L 43.82 62.50 A 2.14 2.14 0.0 0 1 41.68 60.36 L 41.68 58.40 A 2.14 2.14 0.0 0 1 43.82 56.26 L 45.76 56.26 A 2.14 2.14 0.0 0 1 47.90 58.40 L 47.90 60.36 Z M 58.3117 60.3646 A 2.14 2.14 0.0 0 1 56.1755 62.5083 L 54.2355 62.5117 A 2.14 2.14 0.0 0 1 52.0917 60.3754 L 52.0883 58.3954 A 2.14 2.14 0.0 0 1 54.2245 56.2517 L 56.1645 56.2483 A 2.14 2.14 0.0 0 1 58.3083 58.3846 L 58.3117 60.3646 Z M 68.7226 60.3943 A 2.15 2.15 0.0 0 1 66.5354 62.5065 L 64.5957 62.4726 A 2.15 2.15 0.0 0 1 62.4835 60.2854 L 62.5174 58.3457 A 2.15 2.15 0.0 0 1 64.7046 56.2335 L 66.6443 56.2674 A 2.15 2.15 0.0 0 1 68.7565 58.4546 L 68.7226 60.3943 Z M 79.1583 60.3554 A 2.16 2.16 0.0 0 1 76.9945 62.5117 L 75.0745 62.5083 A 2.16 2.16 0.0 0 1 72.9183 60.3446 L 72.9217 58.4046 A 2.16 2.16 0.0 0 1 75.0855 56.2483 L 77.0055 56.2517 A 2.16 2.16 0.0 0 1 79.1617 58.4154 L 79.1583 60.3554 Z M 27.0697 70.7926 A 2.16 2.16 0.0 0 1 24.8872 72.9299 L 22.9673 72.9098 A 2.16 2.16 0.0 0 1 20.8300 70.7273 L 20.8503 68.7874 A 2.16 2.16 0.0 0 1 23.0328 66.6501 L 24.9527 66.6702 A 2.16 2.16 0.0 0 1 27.0900 68.8527 L 27.0697 70.7926 Z M 68.76 69.86 A 3.05 3.05 0.0 0 1 65.71 72.91 L 34.29 72.91 A 3.05 3.05 0.0 0 1 31.24 69.86 L 31.24 69.72 A 3.05 3.05 0.0 0 1 34.29 66.67 L 65.71 66.67 A 3.05 3.05 0.0 0 1 68.76 69.72 L 68.76 69.86 Z M 79.1700 70.7273 A 2.16 2.16 0.0 0 1 77.0327 72.9098 L 75.1128 72.9299 A 2.16 2.16 0.0 0 1 72.9303 70.7926 L 72.9100 68.8527 A 2.16 2.16 0.0 0 1 75.0473 66.6702 L 76.9672 66.6501 A 2.16 2.16 0.0 0 1 79.1497 68.7874 L 79.1700 70.7273 Z"/>
+
+                        <Grid Width="36">
+                            <Border x:Name="randomControl" Opacity="0" Visibility="Collapsed" Background="{DynamicResource Primary}" Margin="0,-57,-147,60" BorderThickness="1" BorderBrush="{DynamicResource Border}" CornerRadius="2">
+                                <Border.Effect>
+                                    <DropShadowEffect Opacity="0.1"/>
+                                </Border.Effect>
+                                <StackPanel Orientation="Horizontal" Margin="8,0,8,0">
+                                    <ToggleButton Style="{StaticResource ControlPanel_TBTN}" Tag="M 25.00 13.57 C 21.53 17.32 19.03 21.75 17.67 26.67 C 16.54 30.78 10.31 29.20 11.77 24.49 Q 14.59 15.38 20.45 9.34 Q 22.54 7.18 24.89 9.06 Q 25.93 9.90 25.68 12.09 A 2.64 2.64 0.0 0 1 25.00 13.57 Z M 79.1256 65.6418 A 26.10 26.10 0.0 0 1 52.9346 91.6505 L 46.7747 91.6290 A 26.10 26.10 0.0 0 1 20.7659 65.4380 L 20.8744 34.3582 A 26.10 26.10 0.0 0 1 47.0654 8.3495 L 53.2253 8.3710 A 26.10 26.10 0.0 0 1 79.2341 34.5620 L 79.1256 65.6418 Z M 56.19 41.26 C 61.59 40.60 69.32 38.07 72.61 33.55 Q 72.93 33.11 72.86 32.58 C 71.32 21.46 63.60 15.01 52.66 14.58 Q 45.93 14.32 43.03 15.00 Q 29.36 18.25 27.13 32.42 A 1.81 1.81 0.0 0 0 27.63 33.97 C 34.63 41.13 46.20 42.47 56.19 41.26 Z M 72.42 41.98 C 59.66 49.91 40.40 50.00 27.80 42.16 Q 27.08 41.72 27.08 42.56 Q 27.10 53.88 27.07 64.56 C 27.04 75.96 34.63 84.71 46.02 85.37 C 57.08 86.01 66.51 84.39 71.45 73.02 Q 73.11 69.19 72.99 62.64 Q 72.80 52.09 72.92 42.26 A 0.33 0.33 0.0 0 0 72.42 41.98 Z M 46.90 20.87 H 50.15 A 2.95 2.95 0 0 1 53.10 23.82 V 32.44 A 2.95 2.95 0 0 1 50.15 35.39 H 46.90 A 2.95 2.95 0 0 1 43.95 32.44 V 23.82 A 2.95 2.95 0 0 1 46.90 20.87 Z"/>
+                                    <ToggleButton Margin="7,0,0,0" Style="{StaticResource ControlPanel_TBTN}" Tag="M 25.00 13.57 C 21.53 17.32 19.03 21.75 17.67 26.67 C 16.54 30.78 10.31 29.20 11.77 24.49 Q 14.59 15.38 20.45 9.34 Q 22.54 7.18 24.89 9.06 Q 25.93 9.90 25.68 12.09 A 2.64 2.64 0.0 0 1 25.00 13.57 Z M 79.1256 65.6418 A 26.10 26.10 0.0 0 1 52.9346 91.6505 L 46.7747 91.6290 A 26.10 26.10 0.0 0 1 20.7659 65.4380 L 20.8744 34.3582 A 26.10 26.10 0.0 0 1 47.0654 8.3495 L 53.2253 8.3710 A 26.10 26.10 0.0 0 1 79.2341 34.5620 L 79.1256 65.6418 Z M 56.19 41.26 C 61.59 40.60 69.32 38.07 72.61 33.55 Q 72.93 33.11 72.86 32.58 C 71.32 21.46 63.60 15.01 52.66 14.58 Q 45.93 14.32 43.03 15.00 Q 29.36 18.25 27.13 32.42 A 1.81 1.81 0.0 0 0 27.63 33.97 C 34.63 41.13 46.20 42.47 56.19 41.26 Z M 72.42 41.98 C 59.66 49.91 40.40 50.00 27.80 42.16 Q 27.08 41.72 27.08 42.56 Q 27.10 53.88 27.07 64.56 C 27.04 75.96 34.63 84.71 46.02 85.37 C 57.08 86.01 66.51 84.39 71.45 73.02 Q 73.11 69.19 72.99 62.64 Q 72.80 52.09 72.92 42.26 A 0.33 0.33 0.0 0 0 72.42 41.98 Z M 46.90 20.87 H 50.15 A 2.95 2.95 0 0 1 53.10 23.82 V 32.44 A 2.95 2.95 0 0 1 50.15 35.39 H 46.90 A 2.95 2.95 0 0 1 43.95 32.44 V 23.82 A 2.95 2.95 0 0 1 46.90 20.87 Z"/>
+                                    <ToggleButton Margin="7,0,7,0" Style="{StaticResource ControlPanel_TBTN}" Tag="M 25.00 13.57 C 21.53 17.32 19.03 21.75 17.67 26.67 C 16.54 30.78 10.31 29.20 11.77 24.49 Q 14.59 15.38 20.45 9.34 Q 22.54 7.18 24.89 9.06 Q 25.93 9.90 25.68 12.09 A 2.64 2.64 0.0 0 1 25.00 13.57 Z M 79.1256 65.6418 A 26.10 26.10 0.0 0 1 52.9346 91.6505 L 46.7747 91.6290 A 26.10 26.10 0.0 0 1 20.7659 65.4380 L 20.8744 34.3582 A 26.10 26.10 0.0 0 1 47.0654 8.3495 L 53.2253 8.3710 A 26.10 26.10 0.0 0 1 79.2341 34.5620 L 79.1256 65.6418 Z M 56.19 41.26 C 61.59 40.60 69.32 38.07 72.61 33.55 Q 72.93 33.11 72.86 32.58 C 71.32 21.46 63.60 15.01 52.66 14.58 Q 45.93 14.32 43.03 15.00 Q 29.36 18.25 27.13 32.42 A 1.81 1.81 0.0 0 0 27.63 33.97 C 34.63 41.13 46.20 42.47 56.19 41.26 Z M 72.42 41.98 C 59.66 49.91 40.40 50.00 27.80 42.16 Q 27.08 41.72 27.08 42.56 Q 27.10 53.88 27.07 64.56 C 27.04 75.96 34.63 84.71 46.02 85.37 C 57.08 86.01 66.51 84.39 71.45 73.02 Q 73.11 69.19 72.99 62.64 Q 72.80 52.09 72.92 42.26 A 0.33 0.33 0.0 0 0 72.42 41.98 Z M 46.90 20.87 H 50.15 A 2.95 2.95 0 0 1 53.10 23.82 V 32.44 A 2.95 2.95 0 0 1 50.15 35.39 H 46.90 A 2.95 2.95 0 0 1 43.95 32.44 V 23.82 A 2.95 2.95 0 0 1 46.90 20.87 Z"/>
+                                    <ToggleButton Style="{StaticResource ControlPanel_TBTN}" Tag="M 25.00 13.57 C 21.53 17.32 19.03 21.75 17.67 26.67 C 16.54 30.78 10.31 29.20 11.77 24.49 Q 14.59 15.38 20.45 9.34 Q 22.54 7.18 24.89 9.06 Q 25.93 9.90 25.68 12.09 A 2.64 2.64 0.0 0 1 25.00 13.57 Z M 79.1256 65.6418 A 26.10 26.10 0.0 0 1 52.9346 91.6505 L 46.7747 91.6290 A 26.10 26.10 0.0 0 1 20.7659 65.4380 L 20.8744 34.3582 A 26.10 26.10 0.0 0 1 47.0654 8.3495 L 53.2253 8.3710 A 26.10 26.10 0.0 0 1 79.2341 34.5620 L 79.1256 65.6418 Z M 56.19 41.26 C 61.59 40.60 69.32 38.07 72.61 33.55 Q 72.93 33.11 72.86 32.58 C 71.32 21.46 63.60 15.01 52.66 14.58 Q 45.93 14.32 43.03 15.00 Q 29.36 18.25 27.13 32.42 A 1.81 1.81 0.0 0 0 27.63 33.97 C 34.63 41.13 46.20 42.47 56.19 41.26 Z M 72.42 41.98 C 59.66 49.91 40.40 50.00 27.80 42.16 Q 27.08 41.72 27.08 42.56 Q 27.10 53.88 27.07 64.56 C 27.04 75.96 34.63 84.71 46.02 85.37 C 57.08 86.01 66.51 84.39 71.45 73.02 Q 73.11 69.19 72.99 62.64 Q 72.80 52.09 72.92 42.26 A 0.33 0.33 0.0 0 0 72.42 41.98 Z M 46.90 20.87 H 50.15 A 2.95 2.95 0 0 1 53.10 23.82 V 32.44 A 2.95 2.95 0 0 1 50.15 35.39 H 46.90 A 2.95 2.95 0 0 1 43.95 32.44 V 23.82 A 2.95 2.95 0 0 1 46.90 20.87 Z"/>
+                                </StackPanel>
+                            </Border>
+                            <RadioButton x:Name="randomControl_TBTN" GroupName="Popup" Style="{StaticResource ControlPanel_TBTN}" Tag="M 18.61 21.91 C 25.98 18.21 33.49 14.28 41.01 10.50 C 48.42 6.77 55.00 8.17 62.39 12.13 Q 72.99 17.81 82.78 22.70 Q 89.68 26.15 89.62 34.18 Q 89.52 49.63 89.62 65.81 C 89.65 70.54 87.56 74.88 83.33 77.02 Q 72.15 82.67 62.54 87.75 C 54.85 91.83 48.30 93.28 40.78 89.42 Q 29.11 83.42 16.75 76.99 Q 10.41 73.69 10.41 66.04 Q 10.40 48.96 10.46 33.17 C 10.48 27.72 13.66 24.40 18.61 21.91 Z M 77.22 73.13 C 80.58 71.38 83.37 70.54 83.36 66.04 Q 83.30 49.13 83.36 33.80 Q 83.37 30.00 80.01 28.31 Q 69.81 23.17 58.00 16.90 C 52.78 14.13 48.32 13.70 43.03 16.44 Q 29.98 23.20 19.84 28.38 Q 16.69 29.98 16.68 33.63 Q 16.66 50.05 16.65 66.56 C 16.65 68.73 17.85 70.58 19.74 71.54 Q 30.95 77.25 42.26 83.21 C 46.22 85.30 51.02 86.40 55.07 84.39 Q 66.36 78.79 77.22 73.13 Z M 55.20 28.12 A 5.20 3.07 0.0 0 1 50.00 31.19 A 5.20 3.07 0.0 0 1 44.80 28.12 A 5.20 3.07 0.0 0 1 50.00 25.05 A 5.20 3.07 0.0 0 1 55.20 28.12 Z M 46.17 47.40 C 44.50 47.14 42.80 46.57 41.27 45.80 Q 31.40 40.80 22.65 36.13 Q 20.09 34.77 21.12 32.06 Q 21.56 30.89 23.05 30.31 A 2.56 2.55 48.1 0 1 25.18 30.43 Q 35.04 35.62 44.05 40.21 C 49.13 42.79 53.86 41.51 58.70 38.90 Q 66.91 34.45 74.45 30.68 Q 76.62 29.59 78.36 31.28 Q 78.66 31.57 78.81 31.95 Q 79.92 34.79 77.23 36.21 Q 68.42 40.88 59.58 45.36 Q 56.91 46.71 53.63 47.55 Q 53.11 47.68 53.11 48.22 L 53.10 77.83 Q 53.10 80.38 50.68 81.20 Q 50.26 81.35 49.82 81.27 Q 46.85 80.75 46.85 77.73 L 46.86 48.20 Q 46.86 47.50 46.17 47.40 Z M 23.9500 52.0600 A 5.19 3.08 90.0 0 1 20.8700 46.8700 A 5.19 3.08 90.0 0 1 23.9500 41.6800 A 5.19 3.08 90.0 0 1 27.0300 46.8700 A 5.19 3.08 90.0 0 1 23.9500 52.0600 Z M 73.9500 54.1600 A 5.18 3.08 90.0 0 1 70.8700 48.9800 A 5.18 3.08 90.0 0 1 73.9500 43.8000 A 5.18 3.08 90.0 0 1 77.0300 48.9800 A 5.18 3.08 90.0 0 1 73.9500 54.1600 Z M 32.3000 64.5600 A 5.19 3.08 90.0 0 1 29.2200 59.3700 A 5.19 3.08 90.0 0 1 32.3000 54.1800 A 5.19 3.08 90.0 0 1 35.3800 59.3700 A 5.19 3.08 90.0 0 1 32.3000 64.5600 Z  M 63.5309 72.9100 A 5.19 3.08 90.1 0 1 60.4600 67.7146 A 5.19 3.08 90.1 0 1 63.5491 62.5300 A 5.19 3.08 90.1 0 1 66.6200 67.7254 A 5.19 3.08 90.1 0 1 63.5309 72.9100 Z M 40.6200 77.0600 A 5.19 3.07 90.0 0 1 37.5500 71.8700 A 5.19 3.07 90.0 0 1 40.6200 66.6800 A 5.19 3.07 90.0 0 1 43.6900 71.8700 A 5.19 3.07 90.0 0 1 40.6200 77.0600 Z">
+                                <RadioButton.Triggers>
+                                    <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="randomControl"
+                                                                 Storyboard.TargetProperty="Opacity"
+                                                                 To="1" Duration="0:0:0.15">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="randomControl"
+                                                               Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="randomControl"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 To="0" Duration="0:0:0.15">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="randomControl"
+                                                               Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </RadioButton.Triggers>
+                            </RadioButton>
+                        </Grid>
+                    </StackPanel>
+                </Border>
             </Grid>
         </Grid>
     </Border>

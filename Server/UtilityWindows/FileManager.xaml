@@ -95,7 +95,7 @@
                 <GridSplitter Grid.Column="1" Width="5" Margin="0,8,0,0" Background="Transparent" Cursor="SizeWE" />
 
                 <!-- Main Content -->
-                <Border CornerRadius="8,0,0,0" Background="{DynamicResource Secondary}" BorderThickness="1,1,0,0" BorderBrush="{StaticResource Border}" Grid.Column="2">
+                <Border CornerRadius="8,0,0,0" Background="{DynamicResource Secondary}" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource Border}" Grid.Column="2">
                     <Grid Margin="30,18,30,0">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -117,11 +117,11 @@
                                 <Rectangle Fill="White" Width="15" Height="15"/>
                                 <Rectangle Fill="White" Width="15" Height="15" Grid.Column="2"/>
 
-                                <Border Background="{StaticResource Primary}" Height="30" BorderThickness="1" BorderBrush="{StaticResource Border}" CornerRadius="2" Grid.Column="4">
+                                <Border Background="{DynamicResource Primary}" Height="30" BorderThickness="1" BorderBrush="{DynamicResource Border}" CornerRadius="2" Grid.Column="4">
                                     <TextBlock Text="{Binding CurrentPath}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                 </Border>
 
-                                <Border Background="{StaticResource Primary}" Height="30" BorderThickness="1" BorderBrush="{StaticResource Border}" Width="160" CornerRadius="2" Grid.Column="6">
+                                <Border Background="{DynamicResource Primary}" Height="30" BorderThickness="1" BorderBrush="{DynamicResource Border}" Width="160" CornerRadius="2" Grid.Column="6">
                                     <StackPanel Orientation="Horizontal" Background="Transparent">
                                         <Image Source="/UI/Assets/Other/Search.png" Height="19" Width="19" Margin="5" HorizontalAlignment="Left" Opacity="0.6" />
                                         <TextBox Background="Transparent" BorderThickness="0" VerticalAlignment="Center" helpers:TextBoxHelper.Placeholder="Search"/>
@@ -139,8 +139,8 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="31"/>
                                 </Grid.RowDefinitions>
-                                
-                                <Label Content="Commonly Used" Padding="0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Text}" />
+
+                                <Label Content="Commonly Used" Padding="0" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource Text}" />
 
                                 <Grid Grid.Row="2">
                                     <Grid.RowDefinitions>

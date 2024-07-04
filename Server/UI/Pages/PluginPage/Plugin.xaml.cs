@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Server.UI.Pages.SupportPage
+namespace Server.UI.Pages.PluginPage
 {
     /// <summary>
-    /// Interaction logic for Support.xaml
+    /// Interaction logic for Plugin.xaml
     /// </summary>
-    public partial class Support : UserControl
+    public partial class Plugin : UserControl
     {
-        public Support()
+        public Plugin()
         {
             InitializeComponent();
         }

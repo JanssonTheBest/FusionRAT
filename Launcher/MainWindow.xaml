@@ -1,0 +1,644 @@
+﻿<Window x:Class="Launcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
+        Title="Fusion" Height="475" Width="770" MinWidth="750" MinHeight="450"
+        Background="Transparent" Foreground="#DBDFE0" FontFamily="Inter"
+        Deactivated="Window_Deactivated" Activated="Window_Activated">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+
+        <Storyboard x:Key="WindowDeactivateStoryboard">
+            <DoubleAnimation Storyboard.TargetName="slide_Show_BG"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0.8" Duration="0:0:3"
+                             RepeatBehavior="Forever" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="WindowActiveteStoryboard">
+            <DoubleAnimation Storyboard.TargetName="slide_Show_BG"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0.4" Duration="0:0:0.5">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Style TargetType="{x:Type RadioButton}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Border Height="10"
+                                Width="10"
+                                CornerRadius="5"
+                                Background="#9179FF"
+                                Opacity="0.2"
+                                x:Name="bg"/>
+
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="bg"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                                <MultiTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="bg"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.2" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseInOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.ExitActions>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="bg"
+                                CornerRadius="8"
+                                Height="32"
+                                Background="Transparent"
+                                BorderThickness="1"
+                                BorderBrush="#1B1B1B"
+                                Width="106">
+
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       x:Name="content"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="Foreground" Value="#DBDFE0"/>
+                                        <Setter Property="Opacity" Value="0.7"/>
+                                        <Setter Property="FontFamily" Value="Inter"/>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" TargetName="content" Value="1"/>
+                                <Setter Property="Background" TargetName="bg" Value="#6456A6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}" x:Key="test">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Height="32"
+                                CornerRadius="8"
+                                BorderThickness="1"
+                                BorderBrush="#1B1B1B">
+
+                            <Grid>
+                                <TextBlock Text="Enter Key"
+                                           FontSize="14"
+                                           Foreground="#DBDFE0"
+                                           Opacity="0.45"
+                                           Margin="22,1,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           IsHitTestVisible="False"
+                                           FontFamily="Inter">
+
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, ElementName=input}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <TextBox Text="{TemplateBinding Text}"
+                                         FontSize="14"
+                                         Opacity="0.7"
+                                         Foreground="#DBDFE0"
+                                         Padding="10,5,10,5"
+                                         x:Name="input"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Cursor="IBeam"
+                                         CaretBrush="#fff"
+                                         VerticalAlignment="Center"
+                                         FontFamily="Inter"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Rectangle}">
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Fill" Value="#D9D9D9"/>
+            <Setter Property="Margin" Value="0,0,1,0"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="Header">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="Semi_Header">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Opacity" Value="0.7"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="Form_Header">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Opacity" Value="0.7"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="Link">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Opacity" Value="0.4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#927BF9"/>
+                    <Setter Property="Opacity" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#0B0B0B" BorderBrush="#1B1B1B" BorderThickness="1" CornerRadius="4">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="430"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="83"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--//Key Form//-->
+            <Grid Grid.Row="1">
+                <StackPanel VerticalAlignment="Top" Margin="35,0,50,0" MaxWidth="350">
+
+                    <StackPanel>
+                        <TextBlock Text="Welcome to Fusion" Style="{StaticResource Header}" Margin="0,0,0,6"/>
+                        <TextBlock Style="{StaticResource Semi_Header}" TextWrapping="Wrap"
+                                   LineHeight="24" LineStackingStrategy="BlockLineHeight">
+                            <Run Text="Complete a few steps to continue"/>
+                            <LineBreak/>
+                            <Run Text="to Fusion"/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,40,0,0">
+                        <TextBlock Text="Key" Style="{StaticResource Form_Header}" Margin="0,0,0,10"/>
+                        <TextBox Style="{StaticResource test}"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,30,0,0">
+                        <TextBlock Text="Verify Key" Style="{StaticResource Form_Header}" Margin="0,0,0,10"/>
+                        <Grid Margin="0,0,15,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition MinWidth="5"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="Get key"/>
+                            <Button Content="Continue" Grid.Column="2"/>
+                        </Grid>
+                        <TextBlock Text="Need help?" Style="{StaticResource Link}" Margin="0,10,0,0"/>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <ToggleButton x:Name="version" VerticalAlignment="Bottom" Margin="15,0,0,10" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0">
+                    <ToggleButton.Style>
+                        <Style TargetType="{x:Type ToggleButton}">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <TextBlock Text="Version: 0.0.0.00.0"
+                                                   FontSize="13"
+                                                   FontFamily="Inter"
+                                                   Foreground="#DBDFE0"
+                                                   Opacity="0.4"
+                                                   x:Name="versionText"/>
+
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" TargetName="versionText" Value="#927BF9"/>
+                                                <Setter Property="Opacity" TargetName="versionText" Value="1"/>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Foreground" TargetName="versionText" Value="#927BF9"/>
+                                                <Setter Property="Opacity" TargetName="versionText" Value="1"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ToggleButton.Style>
+
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="slide_Show_Content"
+                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="0" Duration="0:0:0.1">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation Storyboard.TargetName="change_Log"
+                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1" Duration="0:0:0.1" BeginTime="0:0:0.25">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="slide_Show_Content"
+                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1" Duration="0:0:0.1" BeginTime="0:0:0.25">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <DoubleAnimation Storyboard.TargetName="change_Log"
+                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="0" Duration="0:0:0.1">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
+                </ToggleButton>
+            </Grid>
+
+            <!--//Slide Show//-->
+            <Image x:Name="slide_Show_BG" Grid.Column="1" Grid.RowSpan="2" Source="/bg.png" Stretch="Fill" Opacity="0.4"/>
+
+            <Grid Background="Transparent" Grid.Column="1" Grid.RowSpan="2" x:Name="change_Log">
+                <Grid.RenderTransformOrigin>
+                    <Point X="1"/>
+                </Grid.RenderTransformOrigin>
+                <Grid.RenderTransform>
+                    <ScaleTransform ScaleX="0" ScaleY="1"/>
+                </Grid.RenderTransform>
+
+                <Rectangle Width="3" Margin="45,0,0,0">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="Transparent" Offset="0"/>
+                            <GradientStop Color="#19FFFFFF" Offset="0.25"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <Grid VerticalAlignment="Top" Margin="22,40,12,0">
+                        <StackPanel>
+                            <ContentControl Style="{StaticResource new_ChangeLog_Version}" 
+                                            Content="Release 7.2" 
+                                            HorizontalAlignment="Left"/>
+                            
+                            <ContentControl Style="{StaticResource new_ChangeLog_Date}"
+                                            Content="06/26/2024"
+                                            HorizontalAlignment="Left"/>
+                            
+                            <!--//Items//-->
+                            <StackPanel Margin="40,20,0,0">
+                                <ContentControl Style="{StaticResource ChangeLog_Item}"
+                                                Content="Updated some theme colors"
+                                                Tag="#28C960"/>
+                                <ContentControl Style="{StaticResource ChangeLog_Item}"
+                                                Content="Updated some theme colors"
+                                                Tag="#2280EA"/>
+                                <ContentControl Style="{StaticResource ChangeLog_Item}"
+                                                Content="Updated some theme colors"
+                                                Tag="#F5AF00"/>
+                                <ContentControl Style="{StaticResource ChangeLog_Item}"
+                                                Content="Updated some theme colors"
+                                                Tag="#E54756"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+                </ScrollViewer>
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.Row="2" x:Name="slide_Show_Content">
+                <Grid.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Grid.RenderTransform>
+                <StackPanel>
+                    <StackPanel Margin="0,-30,0,0">
+                        <Grid>
+                            <Image Width="255" Height="180" Source="/CMD.png"/>
+                            <StackPanel HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Margin="135,44,0,0"
+                                        Orientation="Horizontal">
+
+                                <TextBlock Text=">"
+                                           FontSize="16"
+                                           FontWeight="Medium"/>
+
+                                <TextBlock Text=""
+                                           FontSize="12"
+                                           FontWeight="Regular"
+                                           VerticalAlignment="Bottom"
+                                           x:Name="shell_Input"/>
+
+                                <TextBlock Text="_"
+                                           FontSize="16"
+                                           FontWeight="Medium"
+                                           x:Name="caretBrush"/>
+
+                                <StackPanel.Triggers>
+                                    <EventTrigger RoutedEvent="Loaded">
+
+                                        <!--CaretBrush blinking-->
+                                        <BeginStoryboard>
+                                            <Storyboard RepeatBehavior="Forever">
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="caretBrush"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.5" Value=""/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="caretBrush"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:1" Value="_"/>
+                                                </StringAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+
+                                        <!--Text change-->
+                                        <BeginStoryboard>
+                                            <Storyboard BeginTime="0:0:3">
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0" Value=""/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.1" Value=" s "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.15" Value=" st "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.3" Value=" sta "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.45" Value=" star "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.6" Value=" start "/>
+                                                </StringAnimationUsingKeyFrames>
+
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.65" Value=" start s "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.7" Value=" start se "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.75" Value=" start ser "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.8" Value=" start sero "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:0.85" Value=" start serox "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:1.5" Value=" start sero "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:1.7" Value=" start ser "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:1.9" Value=" start se "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:2.1" Value=" start s "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:2.5" Value=" start  "/>
+                                                </StringAnimationUsingKeyFrames>
+
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:2.75" Value=" start f "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:2.8" Value=" start fu "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:2.85" Value=" start fus "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:2.9" Value=" start fusi "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:2.95" Value=" start fusio "/>
+                                                </StringAnimationUsingKeyFrames>
+                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="shell_Input"
+                                                                           Storyboard.TargetProperty="Text">
+                                                    <DiscreteStringKeyFrame KeyTime="0:0:3" Value=" start fusion "/>
+                                                </StringAnimationUsingKeyFrames>
+
+
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </StackPanel.Triggers>
+                            </StackPanel>
+
+                        </Grid>
+                        <TextBlock Text="Remote Shell"
+                                   HorizontalAlignment="Center"
+                                   FontSize="17"
+                                   FontWeight="SemiBold"
+                                   Foreground="#DBDFE0"
+                                   FontFamily="Inter"
+                                   Margin="0,50,0,0"
+                                   x:Name="sideShow_InfoHeader"/>
+
+                        <TextBlock Text="Fusions Remote Shell offers a powerful and custom scripts and UI, ensuring that you as a teacher have all the custom tools you need."
+                                   HorizontalAlignment="Center"
+                                   FontSize="14"
+                                   Opacity="0.7"
+                                   Foreground="#DBDFE0"
+                                   FontFamily="Inter"
+                                   Margin="0,17,0,0"
+                                   Width="311"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   x:Name="sideShow_InfoTXT"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,55">
+                    <RadioButton Margin="0,0,13,0" x:Name="rbtn1" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked">
+                        <RadioButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoTXT"
+                                                                   Storyboard.TargetProperty="Text">
+                                            <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Fusions Remote Shell offers a powerful and custom scripts and UI, ensuring that you as a teacher have all the custom tools you need." />
+                                        </StringAnimationUsingKeyFrames>
+                                        <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoHeader"
+                                                                    Storyboard.TargetProperty="Text">
+                                            <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Remote Shell" />
+                                        </StringAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </RadioButton.Triggers>
+                    </RadioButton>
+                    <RadioButton Margin="0,0,13,0" x:Name="rbtn2" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked">
+                        <RadioButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoTXT"
+                                                                   Storyboard.TargetProperty="Text">
+                                            <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Fusions Remote Desktop provides administrators with powerful tools and a user-friendly interface for efficient remote management." />
+                                        </StringAnimationUsingKeyFrames>
+                                        <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoHeader"
+                                                                   Storyboard.TargetProperty="Text">
+                                            <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Remote Desktop" />
+                                        </StringAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </RadioButton.Triggers>
+                    </RadioButton>
+                    <RadioButton Margin="0,0,13,0" x:Name="rbtn3" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked">
+                        <RadioButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoTXT"
+                                                                   Storyboard.TargetProperty="Text">
+                                            <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Fusions HVNC offers administrators unique tools and a revolutionary interface for exceptional remote management." />
+                                        </StringAnimationUsingKeyFrames>
+                                        <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoHeader"
+                                                                    Storyboard.TargetProperty="Text">
+                                            <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Hidden VNC" />
+                                        </StringAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </RadioButton.Triggers>
+                    </RadioButton>
+                    <RadioButton Margin="0,0,0,0" x:Name="rbtn4" Checked="RadioButton_Checked" Unchecked="RadioButton_Unchecked">
+                        <RadioButton.Triggers>
+                            <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoTXT"
+                                                                    Storyboard.TargetProperty="Text">
+                                            <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Fusions Insight tool provides administrators with stunning capabilities and intuitive interface for monitoring student passwords." />
+                                        </StringAnimationUsingKeyFrames>
+                                        <StringAnimationUsingKeyFrames Storyboard.TargetName="sideShow_InfoHeader"
+                                                                    Storyboard.TargetProperty="Text">
+                                            <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Insight" />
+                                        </StringAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </RadioButton.Triggers>
+                    </RadioButton>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <BooleanAnimationUsingKeyFrames Storyboard.TargetName="rbtn1"
+                                                    Storyboard.TargetProperty="IsChecked">
+                        <DiscreteBooleanKeyFrame KeyTime="0" Value="True"/>
+                    </BooleanAnimationUsingKeyFrames>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+</Window>

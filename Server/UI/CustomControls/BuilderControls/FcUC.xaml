@@ -2,7 +2,7 @@
              xmlns:uc="clr-namespace:Server.UI.CustomControls.BuilderControls.BuilderCommon"
              xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
              FontSize="15" Foreground="{DynamicResource Text}">
-    <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Border Background="{DynamicResource Primary}" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
@@ -35,35 +35,29 @@
 
                     <StackPanel Orientation="Horizontal" Grid.Row="3">
 
-                        <Border x:Name="TextBoxBorder1" Width="160" BorderThickness="2" BorderBrush="#272727" CornerRadius="3">
+                        <Border x:Name="TextBoxBorder1" Width="160" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3">
                             <TextBox Name="TextBox1" Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="svhost.exe" helpers:TextBoxHelper.CharLimit="259" IsReadOnly="True" IsEnabled="False"/>
                         </Border>
 
-                        <Border Width="160" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Margin="17,0,0,0" >
+                        <Border Width="160" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Margin="17,0,0,0" >
                             <Button Background="Transparent" BorderThickness="0">
-                                <Button.Content>
-                                    <TextBlock Text="File Properties" Foreground="White" Opacity="0.3" FontSize="14" HorizontalAlignment="Center"/>
-                                </Button.Content>
+                                <TextBlock Text="File Properties" Foreground="{DynamicResource Text}" Opacity="0.3" FontSize="14" HorizontalAlignment="Center"/>
                             </Button>
                         </Border>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="5">
                         <TextBlock Text="Icon" VerticalAlignment="Center" Opacity="0.6" />
-                        <Border Width="34" Height="18" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Margin="10,0,0,0">
+                        <Border Width="34" Height="18" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Margin="10,0,0,0">
                             <Button Background="Transparent" BorderThickness="0">
-                                <Button.Content>
-                                    <TextBlock Text="..." Foreground="White" FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,0,0,7" Opacity="0.6"/>
-                                </Button.Content>
+                                <TextBlock Text="..." Foreground="{DynamicResource Text}" FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,0,0,7" Opacity="0.6"/>
                             </Button>
                         </Border>
                     </StackPanel>
 
-                    <Border BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Margin="0,0,0,0" Grid.Row="7" >
+                    <Border BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Margin="0,0,0,0" Grid.Row="7" >
                         <Button Background="Transparent" BorderThickness="0">
-                            <Button.Content>
-                                <TextBlock Text="Build" Foreground="White" Opacity="0.6" FontSize="14" HorizontalAlignment="Center"/>
-                            </Button.Content>
+                            <TextBlock Text="Build" Foreground="{DynamicResource Text}" Opacity="0.6" FontSize="14" HorizontalAlignment="Center"/>
                         </Button>
                     </Border>
                 </Grid>

@@ -2,7 +2,7 @@
              xmlns:uc="clr-namespace:Server.UI.CustomControls.BuilderControls.BuilderCommon"
              xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
              FontSize="15" Foreground="{DynamicResource Text}">
-    <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Border Background="{DynamicResource Primary}" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
@@ -31,7 +31,7 @@
                         <ToggleButton Style="{StaticResource CheckboxToggle}" VerticalAlignment="Center"
                                       helpers:ToggleTextBoxBehavior.TargetTextBox1="{Binding ElementName=TextBox1}"
                                       helpers:ToggleTextBoxBehavior.TargetBorder="{Binding ElementName=TextBoxBorder1}"/>
-                        <Border x:Name="TextBoxBorder1" Opacity="0.6" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="150" Height="35" Margin="16,0,0,0" >
+                        <Border x:Name="TextBoxBorder1" Opacity="0.6" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Width="150" Height="35" Margin="16,0,0,0" >
                             <TextBox Name="TextBox1" Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="Minutes" helpers:TextBoxHelper.UseChar="False" helpers:TextBoxHelper.ValueLimit="4321" IsReadOnly="True" IsEnabled="False" />
                         </Border>
                     </StackPanel>
@@ -55,11 +55,9 @@
                     
                     <StackPanel Orientation="Horizontal" Grid.Row="7">
                         <TextBlock Text="Auto Execution" VerticalAlignment="Center" Opacity="0.6" />
-                        <Border Width="34" Height="18" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Margin="10,0,0,0">
+                        <Border Width="34" Height="18" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Margin="10,0,0,0">
                             <Button Background="Transparent" BorderThickness="0">
-                                <Button.Content>
-                                    <TextBlock Text="..." Foreground="White" FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,0,0,7" Opacity="0.6"/>
-                                </Button.Content>
+                                <TextBlock Text="..." Foreground="{DynamicResource Text}" FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,0,0,7" Opacity="0.6"/>
                             </Button>
                         </Border>
                     </StackPanel>

@@ -4,7 +4,7 @@
              xmlns:uc="clr-namespace:Server.UI.CustomControls.BuilderControls.BuilderCommon"
              xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
              FontSize="15" Foreground="{DynamicResource Text}">
-    <Border Background="#202020" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Border Background="{DynamicResource Primary}" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="64"/>
@@ -49,7 +49,7 @@
 
                     <StackPanel Orientation="Horizontal" Grid.Row="3">
 
-                        <Border x:Name="ButtonBorder1" Width="160" BorderThickness="2" BorderBrush="#272727" CornerRadius="3">
+                        <Border x:Name="ButtonBorder1" Width="160" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3">
                             <Button Name="ActionButton1" IsEnabled="False" Style="{StaticResource Common_Button}">
                                 <Button.Content>
                                     <TextBlock Text="Configure" Foreground="White" FontSize="14"/>
@@ -57,7 +57,7 @@
                             </Button>
                         </Border>
 
-                        <Border x:Name="ButtonBorder2" Width="160" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Margin="17,0,0,0" >
+                        <Border x:Name="ButtonBorder2" Width="160" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Margin="17,0,0,0" >
                             <Button Name="ActionButton2" IsEnabled="False" Style="{StaticResource Common_Button}">
                                 <Button.Content>
                                     <TextBlock Text="Configure" Foreground="White" FontSize="14"/>
@@ -74,7 +74,7 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="7">
-                        <Border x:Name="TextBoxBorder1" Opacity="0.6" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Width="140">
+                        <Border x:Name="TextBoxBorder1" Opacity="0.6" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Width="140">
                             <TextBox Name="TextBox1" Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="Enter in MB" helpers:TextBoxHelper.UseChar="False" helpers:TextBoxHelper.ValueLimit="2148" IsReadOnly="True" IsEnabled="False" />
                         </Border>
                         <StackPanel Orientation="Horizontal" Margin="44,2,0,0" VerticalAlignment="Top">
@@ -90,7 +90,7 @@
                                       helpers:ToggleTextBoxBehavior.TargetBorder="{Binding ElementName=TextBoxBorder2}"/>
                     </StackPanel>
 
-                    <Border x:Name="TextBoxBorder2" Opacity="0.6" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" Grid.Row="11">
+                    <Border x:Name="TextBoxBorder2" Opacity="0.6" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" Grid.Row="11">
                         <TextBox Name="TextBox2" Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="discord.gg/api/webhook/placeholder" helpers:TextBoxHelper.CharLimit="121" IsReadOnly="True" IsEnabled="False" />
                     </Border>
 
@@ -101,10 +101,10 @@
                                       helpers:ToggleTextBoxBehavior.TargetBorder="{Binding ElementName=ButtonBorder3}"/>
                     </StackPanel>
 
-                    <Border x:Name="ButtonBorder3" Width="160" Height="37" BorderThickness="2" BorderBrush="#272727" CornerRadius="3" HorizontalAlignment="Left" Grid.Row="15">
+                    <Border x:Name="ButtonBorder3" Width="160" Height="37" BorderThickness="2" BorderBrush="{DynamicResource Border}" CornerRadius="3" HorizontalAlignment="Left" Grid.Row="15">
                         <Button Name="ActionButton" IsEnabled="False" Style="{StaticResource Common_Button}" >
                             <Button.Content>
-                                <TextBlock Text="Configure" Foreground="White" FontSize="14"/>
+                                <TextBlock Text="Configure" Foreground="{DynamicResource Text}" FontSize="14"/>
                             </Button.Content>
                         </Button>
                     </Border>

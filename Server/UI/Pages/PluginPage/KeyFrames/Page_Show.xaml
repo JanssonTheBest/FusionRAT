@@ -1,18 +1,18 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Storyboard x:Key="SupportUC-Show">
+    <Storyboard x:Key="PluginUC-Show">
 
-        <!--Support page show-->
+        <!--Plugin page show-->
         <Storyboard BeginTime="0:0:0.15">
-            <DoubleAnimation Storyboard.TargetName="supportUC"
+            <DoubleAnimation Storyboard.TargetName="pluginUC"
                          Storyboard.TargetProperty="Opacity"
                          To="1" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="supportUC"
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pluginUC"
                                        Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>

@@ -101,7 +101,7 @@
                 <QuadraticEase EasingMode="EaseInOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="navSupport"
+        <DoubleAnimation Storyboard.TargetName="navPlugin"
                          Storyboard.TargetProperty="Width"
                          To="39" Duration="0"
                          BeginTime="0:0:0">
@@ -168,7 +168,7 @@
                 <QuadraticEase EasingMode="EaseInOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="navSupport"
+        <DoubleAnimation Storyboard.TargetName="navPlugin"
                          Storyboard.TargetProperty="Width"
                          To="208" Duration="0"
                          BeginTime="0:0:0">

@@ -161,7 +161,8 @@
                             <Border Background="#07FFFFFF" Grid.Column="0" CornerRadius="6">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="/UI/Pages/HomePage/Client.png" Width="70"/>
+                                        <Image Width="70" Source="/UI/Assets/Windows/Home/HomeClientIcon.png" />
+
                                         <StackPanel Margin="15,-3,0,0">
                                             <TextBlock Text="Clients" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource Text}"/>
                                             <StackPanel Orientation="Horizontal">
@@ -178,7 +179,8 @@
                             <Border Background="#07FFFFFF" Grid.Column="2" CornerRadius="6">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Width="70" Source="/UI/Pages/HomePage/pcHealth.png"/>
+                                        <Image Width="70" Source="/UI/Assets/Windows/Home/HomeHealthIcon.png" />
+
                                         <StackPanel Margin="15,-3,0,0">
                                             <TextBlock Text="Health" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource Text}"/>
                                             <StackPanel Orientation="Horizontal">
@@ -194,7 +196,8 @@
                             <Border Background="#07FFFFFF" Grid.Column="4" CornerRadius="6">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="/UI/Pages/HomePage/Client.png" Width="70"/>
+                                        <Image Width="70" Source="/UI/Assets/Windows/Home/HomeClientIcon.png" />
+
                                         <StackPanel Margin="15,-3,0,0">
                                             <TextBlock Text="Rank" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource Text}"/>
                                             <StackPanel Orientation="Horizontal">
