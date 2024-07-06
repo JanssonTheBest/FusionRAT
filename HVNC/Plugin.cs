@@ -63,6 +63,14 @@ namespace HiddenVNC
                     xFactor = dto.xFactor,
                     yFactor = dto.yFactor,
                 });
+            }else if (dto.scrollDelta != 0)
+            {
+                HandleMouseInput(new MouseInput
+                {
+                    scrollDelta=dto.scrollDelta,
+                    xFactor = dto.xFactor,
+                    yFactor = dto.yFactor,
+                });
             }
             else
             {
