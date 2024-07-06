@@ -55,6 +55,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ClientInfo\ClientInfo.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\HVNC\HiddenVNC.csproj" />
     <ProjectReference Include="..\RemoteDesktop\RemoteDesktopPlugin.csproj" />
   </ItemGroup>
 

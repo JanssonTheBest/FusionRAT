@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteDesktopPlugin", "Remo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseShellPlugin", "ReverseShellPlugin\ReverseShellPlugin.csproj", "{80711270-E744-4BA8-81DF-8BC3756CAC63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launcher", "Launcher\Launcher.csproj", "{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Launcher", "Launcher\Launcher.csproj", "{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiddenVNC", "HVNC\HiddenVNC.csproj", "{2135B8A7-8F1D-4BCD-9D3B-77E6BFEA4AD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2135B8A7-8F1D-4BCD-9D3B-77E6BFEA4AD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2135B8A7-8F1D-4BCD-9D3B-77E6BFEA4AD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2135B8A7-8F1D-4BCD-9D3B-77E6BFEA4AD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2135B8A7-8F1D-4BCD-9D3B-77E6BFEA4AD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{682EA71F-543F-48A3-A6B7-4AAA558B7EBE} = {6B58EA7E-4C4B-4B6D-B267-AAC502766BAF}
 		{B1397B9A-997C-4F22-8448-AEA647CA63AC} = {6B58EA7E-4C4B-4B6D-B267-AAC502766BAF}
 		{80711270-E744-4BA8-81DF-8BC3756CAC63} = {6B58EA7E-4C4B-4B6D-B267-AAC502766BAF}
+		{2135B8A7-8F1D-4BCD-9D3B-77E6BFEA4AD9} = {6B58EA7E-4C4B-4B6D-B267-AAC502766BAF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B6F0414A-176C-43B3-81AD-2A4094440D7F}

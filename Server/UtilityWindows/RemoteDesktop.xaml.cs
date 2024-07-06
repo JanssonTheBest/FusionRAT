@@ -68,7 +68,7 @@ namespace Server.UtilityWindows
             var dto = sender as RemoteDesktopDTO;
             if (dto?.Screen != null)
             {
-                await Application.Current.Dispatcher.InvokeAsync(() => screens.Items.Add(string.Join("|", dto.Screen)));
+                //await Application.Current.Dispatcher.InvokeAsync(() => screens.Items.Add(string.Join("|", dto.Screen)));
                 return;
             }
             await DisplayFrame(dto?.Frame);
@@ -139,13 +139,13 @@ namespace Server.UtilityWindows
             });
         }
 
-        private async void screens_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            await _serverSession.SendPacketAsync(new RemoteDesktopDTO
-            {
-                Screen = new[] { "dd" }
-            });
-        }
+        //private async void screens_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        //{
+        //    await _serverSession.SendPacketAsync(new RemoteDesktopDTO
+        //    {
+        //        Screen = new[] { "dd" }
+        //    });
+        //}
 
         #region TitleBar
         private bool isDraggingFromMaximized = false;

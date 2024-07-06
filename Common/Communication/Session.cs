@@ -34,6 +34,7 @@ namespace Common.Communication
         public EventHandler OnPing;
         public EventHandler OnClientInfo;
         public EventHandler OnRemoteDesktop;
+        public EventHandler OnHVNC;
 
 
         public Session(IConnectionProperties connectionProperties)
