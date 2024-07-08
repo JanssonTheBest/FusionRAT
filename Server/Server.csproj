@@ -19,7 +19,6 @@
     <None Remove="UI\Assets\Other\FileManagerHardDriveIcon.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerDefaultFolderIcon.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerDocumentsFolderIcon.png" />
-    <None Remove="UI\Assets\Windows\FileManager\FileManagerDownloadIcon.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerDownloadsFolderIcon.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerPicturesFolderIcon.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerVideosFolderIcon.png" />
@@ -30,12 +29,6 @@
     <None Remove="UI\CustomControls\BuilderControls\BuilderOneIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderPersistenceIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderUInDIcon.png" />
-    <None Remove="UI\Pages\SettingsPage\Advanced.png" />
-    <None Remove="UI\Pages\SettingsPage\Appear.png" />
-    <None Remove="UI\Pages\SettingsPage\General.png" />
-    <None Remove="UI\Pages\SettingsPage\icons8-admin-settings-male-100.png" />
-    <None Remove="UI\Pages\SettingsPage\Report.png" />
-    <None Remove="UI\Pages\SettingsPage\Security.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,7 +64,6 @@
     <Resource Include="UI\Assets\Windows\FileManager\FileManagerDownloadsFolderIcon.png" />
     <Resource Include="UI\Assets\Windows\FileManager\FileManagerHardDriveIcon.png" />
     <Resource Include="UI\Assets\Other\Light.png" />
-    <Resource Include="UI\Assets\Other\location.png" />
     <Resource Include="UI\Assets\Other\os.png" />
     <Resource Include="UI\Assets\Icons\Logo.png" />
     <Resource Include="UI\Assets\Other\ChangeLog2.jpg" />
