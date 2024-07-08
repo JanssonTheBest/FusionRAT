@@ -178,8 +178,8 @@
                                                 <Button.Tag>
                                                     <CornerRadius BottomLeft="11" BottomRight="11" TopLeft="11" TopRight="11"/>
                                                 </Button.Tag>
-                                                <Grid>
-                                                    <Image Width="20" Height="20" Opacity="0.5" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/UI/Assets/Other/AddThemeIcon.png" />
+                                                <Grid Width="20" Height="20">
+                                                    <Path Fill="#FFFFFF" Stretch="Uniform" Opacity="0.5" VerticalAlignment="Center" HorizontalAlignment="Center" Data="M 24.02 5.11 Q 25.42 5.11 25.43 6.18 Q 25.54 14.22 25.47 22.27 Q 25.47 22.29 25.62 22.44 Q 25.77 22.59 25.79 22.59 Q 33.84 22.52 41.88 22.63 Q 42.95 22.64 42.95 24.04 Q 42.95 25.44 41.88 25.45 Q 33.84 25.56 25.79 25.49 Q 25.77 25.49 25.62 25.64 Q 25.47 25.79 25.47 25.81 Q 25.54 33.86 25.43 41.90 Q 25.42 42.97 24.02 42.97 Q 22.62 42.97 22.61 41.90 Q 22.50 33.86 22.57 25.81 Q 22.57 25.79 22.42 25.64 Q 22.27 25.49 22.25 25.49 Q 14.20 25.56 6.16 25.45 Q 5.09 25.44 5.09 24.04 Q 5.09 22.64 6.16 22.63 Q 14.20 22.52 22.25 22.59 Q 22.27 22.59 22.42 22.44 Q 22.57 22.29 22.57 22.27 Q 22.50 14.22 22.61 6.18 Q 22.62 5.11 24.02 5.11 Z" />
                                                 </Grid>
                                             </Button>
                                         </StackPanel>
