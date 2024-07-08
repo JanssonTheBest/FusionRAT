@@ -33,7 +33,6 @@ namespace Launcher
 
         private void Window_Deactivated(object sender, EventArgs e)
         {
-            // Start animation on window deactivate
             Storyboard storyboard1 = (Storyboard)this.Resources["WindowDeactivateStoryboard"];
             storyboard1.Begin();
         }
