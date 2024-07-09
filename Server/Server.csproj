@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog" Version="5.3.2" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
   </ItemGroup>
 
@@ -72,6 +73,12 @@
     <Resource Include="UI\Assets\Windows\FileManager\FileManagerVideosFolderIcon.png" />
     <Resource Include="UI\Assets\Windows\Home\HomeClientIcon.png" />
     <Resource Include="UI\Assets\Windows\Home\HomeHealthIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
