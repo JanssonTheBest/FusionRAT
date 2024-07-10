@@ -122,10 +122,10 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Grid Width="15" Height="15">
-                                    <Path Fill="White" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M9.929 12L14.5 7.429 13 5.929 6.929 12 13 18.071 14.5 16.571z"/>
+                                    <Path Fill="{DynamicResource Icon}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M9.929 12L14.5 7.429 13 5.929 6.929 12 13 18.071 14.5 16.571z"/>
                                 </Grid>
                                 <Grid Width="15" Height="15" Grid.Column="2">
-                                    <Path Fill="White" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M13.071 12L8.5 7.429 10 5.929 16.071 12 10 18.071 8.5 16.571z"/>
+                                    <Path Fill="{DynamicResource Icon}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M13.071 12L8.5 7.429 10 5.929 16.071 12 10 18.071 8.5 16.571z"/>
                                 </Grid>
 
                                 <Border Background="{DynamicResource Primary}" Height="30" BorderThickness="1" BorderBrush="{DynamicResource Border}" CornerRadius="2" Grid.Column="4">
@@ -135,7 +135,7 @@
                                 <Border Background="{DynamicResource Primary}" Height="30" BorderThickness="1" BorderBrush="{DynamicResource Border}" Width="160" CornerRadius="2" Grid.Column="6">
                                     <StackPanel Orientation="Horizontal" Background="Transparent">
                                         <Grid Height="21" Width="21">
-                                            <Path Fill="#FFFFFF" Stretch="Uniform" Margin="5" HorizontalAlignment="Left" Opacity="0.6" Data="M 41.53 41.51 C 40.84 42.20 40.01 42.06 39.36 41.43 Q 37.13 39.27 30.09 32.16 Q 29.72 31.79 29.28 32.08 Q 21.14 37.34 13.41 33.06 C 4.99 28.40 3.64 16.91 10.27 10.27 C 16.90 3.64 28.39 4.99 33.06 13.40 Q 37.34 21.13 32.08 29.27 Q 31.80 29.71 32.17 30.08 Q 39.28 37.12 41.44 39.35 C 42.07 40.00 42.21 40.83 41.53 41.51 Z M 31.97 20.50 A 11.47 11.47 0.0 0 0 20.50 9.03 A 11.47 11.47 0.0 0 0 9.03 20.50 A 11.47 11.47 0.0 0 0 20.50 31.97 A 11.47 11.47 0.0 0 0 31.97 20.50 Z" />
+                                            <Path Fill="{DynamicResource Icon}" Stretch="Uniform" Margin="5" HorizontalAlignment="Left" Opacity="0.6" Data="M 41.53 41.51 C 40.84 42.20 40.01 42.06 39.36 41.43 Q 37.13 39.27 30.09 32.16 Q 29.72 31.79 29.28 32.08 Q 21.14 37.34 13.41 33.06 C 4.99 28.40 3.64 16.91 10.27 10.27 C 16.90 3.64 28.39 4.99 33.06 13.40 Q 37.34 21.13 32.08 29.27 Q 31.80 29.71 32.17 30.08 Q 39.28 37.12 41.44 39.35 C 42.07 40.00 42.21 40.83 41.53 41.51 Z M 31.97 20.50 A 11.47 11.47 0.0 0 0 20.50 9.03 A 11.47 11.47 0.0 0 0 9.03 20.50 A 11.47 11.47 0.0 0 0 20.50 31.97 A 11.47 11.47 0.0 0 0 31.97 20.50 Z" />
                                         </Grid>
                                         <TextBox Background="Transparent" BorderThickness="0" VerticalAlignment="Center" helpers:TextBoxHelper.Placeholder="Search"/>
                                     </StackPanel>

@@ -19,21 +19,21 @@
         <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="1" Width="44" VerticalAlignment="Top" Height="27" Click="MinimizeButton_Click">
             <Button.Content>
                 <Border x:Name="minimizeBG" Background="Transparent">
-                    <Path VerticalAlignment="Center" Height="2" Width="13" Fill="#DBDFE0" Stretch="Uniform" Data="m90.625 53.125h-81.25c-1.7188 0-3.125-1.4062-3.125-3.125s1.4062-3.125 3.125-3.125h81.25c1.7188 0 3.125 1.4062 3.125 3.125s-1.4062 3.125-3.125 3.125z"/>
+                    <Path VerticalAlignment="Center" Height="2" Width="13" Fill="{DynamicResource Icon}" Stretch="Uniform" Data="m90.625 53.125h-81.25c-1.7188 0-3.125-1.4062-3.125-3.125s1.4062-3.125 3.125-3.125h81.25c1.7188 0 3.125 1.4062 3.125 3.125s-1.4062 3.125-3.125 3.125z"/>
                 </Border>
             </Button.Content>
         </Button>
         <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="2" Width="44" VerticalAlignment="Top" Height="27" Click="MaximizeButton_Click">
             <Button.Content>
                 <Border x:Name="maximizeBG" Background="Transparent">
-                    <Path VerticalAlignment="Center" Width="11" Fill="#DBDFE0" Stretch="Uniform" Data="m 607.00069,453.00215 a 1.0001,1.0001 0 0 0 -1,1 v 38 a 1.0001,1.0001 0 0 0 1,1 h 38 a 1.0001,1.0001 0 0 0 1,-1 v -38 a 1.0001,1.0001 0 0 0 -1,-1 z m 1,2 h 36 v 36 h -36 z"/>
+                    <Path VerticalAlignment="Center" Width="11" Fill="{DynamicResource Icon}" Stretch="Uniform" Data="m 607.00069,453.00215 a 1.0001,1.0001 0 0 0 -1,1 v 38 a 1.0001,1.0001 0 0 0 1,1 h 38 a 1.0001,1.0001 0 0 0 1,-1 v -38 a 1.0001,1.0001 0 0 0 -1,-1 z m 1,2 h 36 v 36 h -36 z"/>
                 </Border>
             </Button.Content>
         </Button>
         <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="3" Width="44" VerticalAlignment="Top" Height="27" Click="CloseButton_Click">
             <Button.Content>
                 <Border x:Name="closeBG" Background="Transparent">
-                    <Path VerticalAlignment="Center" Width="11" Fill="#DBDFE0" Stretch="Uniform" Data="M 39.486328 6.9785156 A 1.50015 1.50015 0 0 0 38.439453 7.4394531 L 24 21.878906 L 9.5605469 7.4394531 A 1.50015 1.50015 0 0 0 8.484375 6.984375 A 1.50015 1.50015 0 0 0 7.4394531 9.5605469 L 21.878906 24 L 7.4394531 38.439453 A 1.50015 1.50015 0 1 0 9.5605469 40.560547 L 24 26.121094 L 38.439453 40.560547 A 1.50015 1.50015 0 1 0 40.560547 38.439453 L 26.121094 24 L 40.560547 9.5605469 A 1.50015 1.50015 0 0 0 39.486328 6.9785156 z"/>
+                    <Path VerticalAlignment="Center" Width="11" Fill="{DynamicResource Icon}" Stretch="Uniform" Data="M 39.486328 6.9785156 A 1.50015 1.50015 0 0 0 38.439453 7.4394531 L 24 21.878906 L 9.5605469 7.4394531 A 1.50015 1.50015 0 0 0 8.484375 6.984375 A 1.50015 1.50015 0 0 0 7.4394531 9.5605469 L 21.878906 24 L 7.4394531 38.439453 A 1.50015 1.50015 0 1 0 9.5605469 40.560547 L 24 26.121094 L 38.439453 40.560547 A 1.50015 1.50015 0 1 0 40.560547 38.439453 L 26.121094 24 L 40.560547 9.5605469 A 1.50015 1.50015 0 0 0 39.486328 6.9785156 z"/>
                 </Border>
             </Button.Content>
         </Button>
