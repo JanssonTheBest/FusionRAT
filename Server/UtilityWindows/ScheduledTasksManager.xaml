@@ -1,8 +1,8 @@
-﻿<Window x:Class="Server.UtilityWindows.Keylogger" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+﻿<Window x:Class="Server.UtilityWindows.ScheduledTasksManager" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:header="clr-namespace:Server.UI.CustomControls.WindowHeaders"
         xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
-        Title="Keylogger - Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
-        MinWidth="400" MinHeight="300" Width="750" Height="542" Foreground="{DynamicResource Text}">
+        Title="Scheduled Tasks Manager - Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
+        MinHeight="600" MinWidth="800" Width="1000" Height="800" Foreground="{DynamicResource Text}">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>

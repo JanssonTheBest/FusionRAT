@@ -6,11 +6,11 @@ namespace Server.UtilityWindows
 {
     public partial class AudioManager : Window, IUtilityWindow
     {
-        ServerSession _session;
-        public AudioManager(ServerSession session)
+        private readonly ServerSession _serverSession;
+        public AudioManager(ServerSession serverSession)
         {
             InitializeComponent();
-            _session = session;
+            _serverSession = serverSession;
         }
     }
 }

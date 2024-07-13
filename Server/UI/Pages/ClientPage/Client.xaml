@@ -8,32 +8,38 @@
              d:DesignHeight="748" d:DesignWidth="1230">
 
     <UserControl.Resources>
-        <ContextMenu x:Key="utilityContextMenu" Opened="ContextMenu_Opened">
+        <ContextMenu x:Key="utilityContextMenu">
             <MenuItem Header="System Info" Click="SystemInfo_Click"/>
             <MenuItem Header="Notes" Click="Notes_Click"/>
             <MenuItem Header="Reverse Shell" Click="ReverseShell_Click"/>
+            <Separator/>
+            <MenuItem Header="UAC Bypass" Click="UacBypass_Click"/>
             <Separator/>
             <MenuItem Header="Control">
                 <MenuItem Header="Remote Desktop" Click="RemoteDesktop_Click"/>
                 <MenuItem Header="Webcam Control" Click="WebcamControl_Click"/>
                 <MenuItem Header="Audio Manager" Click="AudioManager_Click"/>
                 <MenuItem Header="HVNC" Click="HVNC_Click"/>
-                <MenuItem Header="Keylogger">
-                    <MenuItem Header="Offline" Click="KeyloggerOffline_Click" />
-                    <MenuItem Header="Online" Click="KeyloggerOnline_Click" />
-                </MenuItem>
+                <MenuItem Header="Keylogger" Click="Keylogger_Click"/>
             </MenuItem>
             <MenuItem Header="Management">
-                <MenuItem Header="System Management" Click="SystemManagement_Click"/>
-                <MenuItem Header="Network Management" Click="NetworkManagement_Click"/>
                 <MenuItem Header="File Manager" Click="FileManager_Click"/>
                 <MenuItem Header="Registry Manager" Click="RegistryManager_Click"/>
                 <MenuItem Header="Clipboard Manager" Click="ClipboardManager_Click"/>
+                <MenuItem Header="Task Manager" Click="TaskManager_Click"/>
+                <MenuItem Header="Scheduled Tasks Manager" Click="ScheduledTasksManager_Click"/>
+                <MenuItem Header="Network Management" Click="NetworkManagement_Click"/>
+                <MenuItem Header="Start-up Manager" Click="StartUpManager_Click"/>
             </MenuItem>
             <Separator/>
             <MenuItem Header="Recovery" Click="Recovery_Click"/>
             <MenuItem Header="System Options" Click="SystemOptions_Click"/>
-            <MenuItem Header="Miscellaneous" Click="Miscellaneous_Click"/>
+            <MenuItem Header="Miscellaneous">
+                <MenuItem Header="Open Url" Click="OpenUrl_Click"/>
+                <MenuItem Header="Client Chat" Click="ClientChat_Click"/>
+                <MenuItem Header="Report Window" Click="ReportWindow_Click"/>
+                <MenuItem Header="IP Geolocation" Click="IPGeoLocation_Click"/>
+            </MenuItem>
             <Separator/>
             <MenuItem Header="System Controls">
                 <MenuItem Header="Reconnect" Click="Reconnect_Click"/>
@@ -120,7 +126,7 @@
 
 
     <Grid>
-        <DataGrid x:Name="dataGrid" ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0" LoadingRow="DataGrid_LoadingRow" PreviewMouseLeftButtonDown="DataGrid_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="DataGrid_PreviewMouseRightButtonDown" SelectionMode="Extended">
+        <DataGrid x:Name="dataGrid" ItemsSource="{Binding Clients}" Background="Transparent" BorderThickness="0" PreviewMouseLeftButtonDown="DataGrid_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="DataGrid_PreviewMouseRightButtonDown" SelectionMode="Extended">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Location" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
