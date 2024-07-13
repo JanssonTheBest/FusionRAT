@@ -41,7 +41,7 @@
 
         <Border Grid.Column="1" Grid.Row="1">
             <Border.Background>
-                <ImageBrush ImageSource="\UI\Assets\Other\bgBlured.png"/>
+                <ImageBrush ImageSource="pack://application:,,,/Server;component/UI/Assets/Other/bgBlured.png"/>
             </Border.Background>
             <ScrollViewer x:Name="OuterScrollViewer" VerticalScrollBarVisibility="Visible" Margin="0,0,-17,0">
                 <Grid>
