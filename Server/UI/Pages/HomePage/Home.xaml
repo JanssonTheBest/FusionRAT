@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:Server.UI.Pages.HomePage"
              mc:Ignorable="d" 
              d:DesignHeight="748" d:DesignWidth="1230">
-
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style\ContentControl\ChangeLogStatus.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <local:SubtractValueConverter x:Key="SubtractValueConverter"/>
             <Style TargetType="ToggleButton" x:Key="ChangeTheme_TBTN">
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="Template">
@@ -38,16 +38,14 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="42"/>
         </Grid.RowDefinitions>
-        
-        
 
         <Border Grid.Column="1" Grid.Row="1">
             <Border.Background>
-                <ImageBrush ImageSource="\UI\Assets\Other\bgBlured.png"/>
+                <ImageBrush ImageSource="pack://application:,,,/Server;component/UI/Assets/Other/bgBlured.png"/>
             </Border.Background>
-            <ScrollViewer VerticalScrollBarVisibility="Visible" Margin="0,0,-17,0">
+            <ScrollViewer x:Name="OuterScrollViewer" VerticalScrollBarVisibility="Visible" Margin="0,0,-17,0">
                 <Grid>
-                    
+
                     <!--//Cangelog start//-->
                     <ToggleButton Style="{StaticResource ChangeTheme_TBTN}" Background="Transparent">
                         <ToggleButton.Triggers>
@@ -143,7 +141,12 @@
                     </ToggleButton>
 
                     <Grid Background="{DynamicResource Secondary}" Margin="0,200,0,0" x:Name="other">
-                        <Grid Margin="0,35,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="270"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Margin="0,35,0,0" Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition MinWidth="210"/>
                                 <ColumnDefinition Width="25"/>
@@ -154,11 +157,10 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="90"/>
                                 <RowDefinition Height="35"/>
-                                <RowDefinition MinHeight="240"/>
                             </Grid.RowDefinitions>
 
                             <!--//Clients count//-->
-                            <Border Background="#07FFFFFF" Grid.Column="0" CornerRadius="6">
+                            <Border Background="#07FFFFFF" Grid.Column="0" Grid.Row="0" CornerRadius="6">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Image Width="70" Source="/UI/Assets/Windows/Home/HomeClientIcon.png" />
@@ -176,7 +178,7 @@
                             </Border>
 
                             <!--//Health//-->
-                            <Border Background="#07FFFFFF" Grid.Column="2" CornerRadius="6">
+                            <Border Background="#07FFFFFF" Grid.Column="2" Grid.Row="0" CornerRadius="6">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Image Width="70" Source="/UI/Assets/Windows/Home/HomeHealthIcon.png" />
@@ -193,7 +195,7 @@
                             </Border>
 
                             <!--//Rank//-->
-                            <Border Background="#07FFFFFF" Grid.Column="4" CornerRadius="6">
+                            <Border Background="#07FFFFFF" Grid.Column="4" Grid.Row="0" CornerRadius="6">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Image Width="70" Source="/UI/Assets/Windows/Home/HomeClientIcon.png" />
@@ -207,17 +209,55 @@
                                     </StackPanel>
                                 </Grid>
                             </Border>
-
-
-                            <!--//Logs//-->
-                            <Border Background="#07FFFFFF" Grid.Row="2" Grid.ColumnSpan="5" CornerRadius="6">
-                                
-                            </Border>
                         </Grid>
+
+                        <!--//Logs//-->
+                        <Border Background="#07FFFFFF" Grid.Row="1" CornerRadius="6" x:Name="AnimatedBorder" 
+                                Height="{Binding ActualHeight, ElementName=OuterScrollViewer, Converter={StaticResource SubtractValueConverter}, ConverterParameter=360}">
+                            <Grid>
+                                <ScrollViewer x:Name="InnerScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                                              PreviewMouseWheel="InnerScrollViewer_PreviewMouseWheel">
+                                    <ItemsControl Name="LogsItemsControl" Margin="10,20,10,20">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Vertical"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Foreground="{DynamicResource Text}" Background="Transparent" Margin="5" TextWrapping="Wrap"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                                <Button x:Name="ClearLogsButton" Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0" Style="{StaticResource Common_Button}" Click="ClearLogs_Click" Background="Transparent" BorderThickness="0">
+                                    <Path x:Name="AnimatedPath" Width="18" Height="18" Stretch="Uniform" Fill="{DynamicResource Icon}" Opacity="0" Data="M 24 4 C 20.704135 4 18 6.7041348 18 10 L 11.746094 10 A 1.50015 1.50015 0 0 0 11.476562 9.9785156 A 1.50015 1.50015 0 0 0 11.259766 10 L 7.5 10 A 1.50015 1.50015 0 1 0 7.5 13 L 10 13 L 10 38.5 C 10 41.519774 12.480226 44 15.5 44 L 32.5 44 C 35.519774 44 38 41.519774 38 38.5 L 38 13 L 40.5 13 A 1.50015 1.50015 0 1 0 40.5 10 L 36.746094 10 A 1.50015 1.50015 0 0 0 36.259766 10 L 30 10 C 30 6.7041348 27.295865 4 24 4 z M 24 7 C 25.674135 7 27 8.3258652 27 10 L 21 10 C 21 8.3258652 22.325865 7 24 7 z M 13 13 L 35 13 L 35 38.5 C 35 39.898226 33.898226 41 32.5 41 L 15.5 41 C 14.101774 41 13 39.898226 13 38.5 L 13 13 z M 20.476562 17.978516 A 1.50015 1.50015 0 0 0 19 19.5 L 19 34.5 A 1.50015 1.50015 0 1 0 22 34.5 L 22 19.5 A 1.50015 1.50015 0 0 0 20.476562 17.978516 z M 27.476562 17.978516 A 1.50015 1.50015 0 0 0 26 19.5 L 26 34.5 A 1.50015 1.50015 0 1 0 29 34.5 L 29 19.5 A 1.50015 1.50015 0 0 0 27.476562 17.978516 z"/>
+                                </Button>
+                            </Grid>
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="AnimatedPath"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0.1" Duration="0:0:0.3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="AnimatedPath"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0" Duration="0:0:0.3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+                        </Border>
                     </Grid>
                 </Grid>
             </ScrollViewer>
         </Border>
-
     </Grid>
 </UserControl>

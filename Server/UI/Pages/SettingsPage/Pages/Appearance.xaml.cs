@@ -6,22 +6,22 @@ namespace Server.UI.Pages.SettingsPage.Pages
 {
     public partial class Appearance : UserControl
     {
-        private readonly List<Theme> _themes = new List<Theme>
-        {
-            new() { Primary = "#202020", Secondary = "#272727", Border = "#4B4B4B", Text = "#FFFFFF", Selected = "#E91E63" },
-            new() { Primary = "#0B0B0B", Secondary = "#0F0F0F", Border = "#1B1B1B", Text = "#FFFFFF", Selected = "#E91E63" },
-            new() { Primary = "#16141C", Secondary = "#1A1820", Border = "#4C495B", Text = "#FFFFFF", Selected = "#E91E63" },
-            new() { Primary = "#011623", Secondary = "#041A2D", Border = "#0E2B44", Text = "#FFFFFF", Selected = "#E91E63" },
-            new() { Primary = "#FFFFFF", Secondary = "#F5F5F5", Border = "#4B4B4B", Text = "#000000", Selected = "#E91E63" },
-            new() { Primary = "#535364", Secondary = "#F5F5F5", Border = "#4B4B4B", Text = "#000000", Selected = "#E91E63" },
-            new() { Primary = "#282F54", Secondary = "#F5F5F5", Border = "#4B4B4B", Text = "#000000", Selected = "#E91E63" },
-            new() { Primary = "#44348C", Secondary = "#F5F5F5", Border = "#4B4B4B", Text = "#000000", Selected = "#E91E63" }
-        };
+        private readonly List<Theme> _themes =
+        [
+            new() { Primary = "#202020", Secondary = "#272727", Border = "#4B4B4B", Text = "#FFFFFF", Selected = "#E91E63", Icon = "#FFFFFF" },
+            new() { Primary = "#0B0B0B", Secondary = "#0F0F0F", Border = "#1B1B1B", Text = "#FFFFFF", Selected = "#E91E63", Icon = "#FFFFFF" },
+            new() { Primary = "#16141C", Secondary = "#1A1820", Border = "#4C495B", Text = "#FFFFFF", Selected = "#E91E63", Icon = "#FFFFFF" },
+            new() { Primary = "#011623", Secondary = "#041A2D", Border = "#0E2B44", Text = "#FFFFFF", Selected = "#E91E63", Icon = "#FFFFFF" },
+            new() { Primary = "#FFFFFF", Secondary = "#F5F5F5", Border = "#4B4B4B", Text = "#000000", Selected = "#E91E63", Icon = "#000000" },
+            new() { Primary = "#535364", Secondary = "#F5F5F5", Border = "#4B4B4B", Text = "#000000", Selected = "#E91E63", Icon = "#000000" },
+            new() { Primary = "#282F54", Secondary = "#F5F5F5", Border = "#4B4B4B", Text = "#000000", Selected = "#E91E63", Icon = "#000000" },
+            new() { Primary = "#44348C", Secondary = "#F5F5F5", Border = "#4B4B4B", Text = "#000000", Selected = "#E91E63", Icon = "#000000" }
+        ];
 
-        private readonly List<string> _shades = new List<string>
-        {
+        private readonly List<string> _shades =
+        [
             "#1E9BFD", "#FF0000", "#B7A6FF", "#936DFF", "#FFEC3D", "#6DFF7C", "#FFFFFF"
-        };
+        ];
 
         public Appearance()
         {
@@ -44,6 +44,7 @@ namespace Server.UI.Pages.SettingsPage.Pages
             Application.Current.Resources["Border"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(theme.Border));
             Application.Current.Resources["Text"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(theme.Text));
             Application.Current.Resources["Selected"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(theme.Selected));
+            Application.Current.Resources["Icon"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(theme.Icon));
         }
 
         private void ShadeRadioButton_Checked(object sender, RoutedEventArgs e)
@@ -80,5 +81,6 @@ namespace Server.UI.Pages.SettingsPage.Pages
         public string Border { get; set; }
         public string Text { get; set; }
         public string Selected { get; set; }
+        public string Icon { get; set; }
     }
 }

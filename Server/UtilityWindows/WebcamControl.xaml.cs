@@ -1,17 +1,17 @@
-﻿using Server.UtilityWindows.Interface;
+﻿using Server.CoreServerFunctionality;
+using Server.UtilityWindows.Interface;
 using System.Windows;
 
 namespace Server.UtilityWindows
 {
     public partial class WebcamControl : Window, IUtilityWindow
     {
-        public WebcamControl()
+        private readonly ServerSession _serverSession;
+
+        public WebcamControl(ServerSession serverSession)
         {
             InitializeComponent();
-        }
-        private void icon_Loaded(object sender, RoutedEventArgs e)
-        {
-
+            _serverSession = serverSession;
         }
     }
 }

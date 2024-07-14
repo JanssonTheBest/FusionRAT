@@ -56,7 +56,7 @@
                                     </ToggleButton>
                                 </Grid>
                                 <ToggleButton Height="17" Width="17" Margin="0,0,8,0" Background="Transparent" BorderThickness="0" Opacity="0.6 ">
-                                    <Path Fill="#fff" Stretch="Uniform" Data="M 31.20 50.00 A 12.45 12.45 0.0 0 1 18.75 62.45 A 12.45 12.45 0.0 0 1 6.30 50.00 A 12.45 12.45 0.0 0 1 18.75 37.55 A 12.45 12.45 0.0 0 1 31.20 50.00 Z M 62.45 50.00 A 12.45 12.45 0.0 0 1 50.00 62.45 A 12.45 12.45 0.0 0 1 37.55 50.00 A 12.45 12.45 0.0 0 1 50.00 37.55 A 12.45 12.45 0.0 0 1 62.45 50.00 Z M 93.70 50.00 A 12.45 12.45 0.0 0 1 81.25 62.45 A 12.45 12.45 0.0 0 1 68.80 50.00 A 12.45 12.45 0.0 0 1 81.25 37.55 A 12.45 12.45 0.0 0 1 93.70 50.00 Z"/>
+                                    <Path Fill="{DynamicResource Icon}" Stretch="Uniform" Data="M 31.20 50.00 A 12.45 12.45 0.0 0 1 18.75 62.45 A 12.45 12.45 0.0 0 1 6.30 50.00 A 12.45 12.45 0.0 0 1 18.75 37.55 A 12.45 12.45 0.0 0 1 31.20 50.00 Z M 62.45 50.00 A 12.45 12.45 0.0 0 1 50.00 62.45 A 12.45 12.45 0.0 0 1 37.55 50.00 A 12.45 12.45 0.0 0 1 50.00 37.55 A 12.45 12.45 0.0 0 1 62.45 50.00 Z M 93.70 50.00 A 12.45 12.45 0.0 0 1 81.25 62.45 A 12.45 12.45 0.0 0 1 68.80 50.00 A 12.45 12.45 0.0 0 1 81.25 37.55 A 12.45 12.45 0.0 0 1 93.70 50.00 Z"/>
                                 </ToggleButton>
                             </StackPanel>
                         </Grid>
@@ -128,6 +128,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
         <Style TargetType="ToggleButton">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
@@ -174,7 +175,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}">
                             <Grid>
                                 <Border x:Name="bg" Background="#0FFFFFFF" CornerRadius="4" Opacity="0"/>
-                                <Path Margin="-1,0,0,0" Width="21" Height="21" Fill="#fff" Stretch="Uniform" Data="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <Path Margin="-1,0,0,0" Width="21" Height="21" Fill="{DynamicResource Icon}" Stretch="Uniform" Data="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
                             </Grid>
                         </Border>
 
@@ -216,10 +217,8 @@
             </Setter>
         </Style>
 
-
-
         <Storyboard x:Key="ControlPanel_Triggered">
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0" Duration="0:0:0.15">
                 <ThicknessAnimation.EasingFunction>
@@ -227,20 +226,20 @@
                 </ThicknessAnimation.EasingFunction>
             </ThicknessAnimation>
 
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="Opacity"
                       To="1" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel" 
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel" 
                         Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ControlPanel_Default_Down">
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0,0,0,-51" Duration="0:0:0.15">
                 <ThicknessAnimation.EasingFunction>
@@ -248,20 +247,20 @@
                 </ThicknessAnimation.EasingFunction>
             </ThicknessAnimation>
 
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="Opacity"
                       To="0" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel" 
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel" 
                                     Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ControlPanel_Default_Up">
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0,-51,0,0" Duration="0:0:0.15">
                 <ThicknessAnimation.EasingFunction>
@@ -269,31 +268,30 @@
                 </ThicknessAnimation.EasingFunction>
             </ThicknessAnimation>
 
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="Opacity"
                       To="0" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel" 
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel" 
                                     Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
 
-
         <Storyboard x:Key="down">
-            <DoubleAnimation Storyboard.TargetName="controlPanel_Grid"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel_Grid"
                       Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                       To="0" Duration="0"/>
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                       To="0" Duration="0"/>
-            <ThicknessAnimation Storyboard.TargetName="controlPanel"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel"
                          Storyboard.TargetProperty="BorderThickness"
                          To="0,1,0,0"/>
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0,0,0,-51" Duration="0">
             </ThicknessAnimation>
@@ -307,16 +305,16 @@
             </ThicknessAnimation>
         </Storyboard>
         <Storyboard x:Key="up">
-            <DoubleAnimation Storyboard.TargetName="controlPanel_Grid"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel_Grid"
                       Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                       To="180" Duration="0"/>
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                       To="180" Duration="0"/>
-            <ThicknessAnimation Storyboard.TargetName="controlPanel"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel"
                          Storyboard.TargetProperty="BorderThickness"
                          To="0,0,0,1"/>
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0,-50,0,0" Duration="0">
             </ThicknessAnimation>
@@ -355,21 +353,21 @@
                 <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="1" Width="44" VerticalAlignment="Top" Height="27" Click="MinimizeButton_Click">
                     <Button.Content>
                         <Border x:Name="minimizeBG" Background="Transparent">
-                            <Path VerticalAlignment="Center" Height="2" Width="13" Fill="#DBDFE0" Stretch="Uniform" Data="m90.625 53.125h-81.25c-1.7188 0-3.125-1.4062-3.125-3.125s1.4062-3.125 3.125-3.125h81.25c1.7188 0 3.125 1.4062 3.125 3.125s-1.4062 3.125-3.125 3.125z"/>
+                            <Path VerticalAlignment="Center" Height="2" Width="13" Fill="{DynamicResource Icon}" Stretch="Uniform" Data="m90.625 53.125h-81.25c-1.7188 0-3.125-1.4062-3.125-3.125s1.4062-3.125 3.125-3.125h81.25c1.7188 0 3.125 1.4062 3.125 3.125s-1.4062 3.125-3.125 3.125z"/>
                         </Border>
                     </Button.Content>
                 </Button>
                 <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="2" Width="44" VerticalAlignment="Top" Height="27" Click="MaximizeButton_Click">
                     <Button.Content>
                         <Border x:Name="maximizeBG" Background="Transparent">
-                            <Path VerticalAlignment="Center" Width="11" Fill="#DBDFE0" Stretch="Uniform" Data="m 607.00069,453.00215 a 1.0001,1.0001 0 0 0 -1,1 v 38 a 1.0001,1.0001 0 0 0 1,1 h 38 a 1.0001,1.0001 0 0 0 1,-1 v -38 a 1.0001,1.0001 0 0 0 -1,-1 z m 1,2 h 36 v 36 h -36 z"/>
+                            <Path VerticalAlignment="Center" Width="11" Fill="{DynamicResource Icon}" Stretch="Uniform" Data="m 607.00069,453.00215 a 1.0001,1.0001 0 0 0 -1,1 v 38 a 1.0001,1.0001 0 0 0 1,1 h 38 a 1.0001,1.0001 0 0 0 1,-1 v -38 a 1.0001,1.0001 0 0 0 -1,-1 z m 1,2 h 36 v 36 h -36 z"/>
                         </Border>
                     </Button.Content>
                 </Button>
                 <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="3" Width="44" VerticalAlignment="Top" Height="27" Click="CloseButton_Click">
                     <Button.Content>
                         <Border x:Name="closeBG" Background="Transparent">
-                            <Path VerticalAlignment="Center" Width="11" Fill="#DBDFE0" Stretch="Uniform" Data="M 39.486328 6.9785156 A 1.50015 1.50015 0 0 0 38.439453 7.4394531 L 24 21.878906 L 9.5605469 7.4394531 A 1.50015 1.50015 0 0 0 8.484375 6.984375 A 1.50015 1.50015 0 0 0 7.4394531 9.5605469 L 21.878906 24 L 7.4394531 38.439453 A 1.50015 1.50015 0 1 0 9.5605469 40.560547 L 24 26.121094 L 38.439453 40.560547 A 1.50015 1.50015 0 1 0 40.560547 38.439453 L 26.121094 24 L 40.560547 9.5605469 A 1.50015 1.50015 0 0 0 39.486328 6.9785156 z"/>
+                            <Path VerticalAlignment="Center" Width="11" Fill="{DynamicResource Icon}" Stretch="Uniform" Data="M 39.486328 6.9785156 A 1.50015 1.50015 0 0 0 38.439453 7.4394531 L 24 21.878906 L 9.5605469 7.4394531 A 1.50015 1.50015 0 0 0 8.484375 6.984375 A 1.50015 1.50015 0 0 0 7.4394531 9.5605469 L 21.878906 24 L 7.4394531 38.439453 A 1.50015 1.50015 0 1 0 9.5605469 40.560547 L 24 26.121094 L 38.439453 40.560547 A 1.50015 1.50015 0 1 0 40.560547 38.439453 L 26.121094 24 L 40.560547 9.5605469 A 1.50015 1.50015 0 0 0 39.486328 6.9785156 z"/>
                         </Border>
                     </Button.Content>
                 </Button>
@@ -380,22 +378,22 @@
                 <Image x:Name="frame" Stretch="Fill" Panel.ZIndex="-1"/>
             </Grid>
 
-            <Grid x:Name="controlPanel_Grid" Height="71" VerticalAlignment="Bottom" Margin="0,0,0,-51" Grid.Row="1">
+            <Grid x:Name="ControlPanel_Grid" Height="71" VerticalAlignment="Bottom" Margin="0,0,0,-51" Grid.Row="1">
                 <Grid.RenderTransform>
                     <RotateTransform Angle="0"/>
                 </Grid.RenderTransform>
                 <Grid.RenderTransformOrigin>
                     <Point X="0.5" Y="0.5"/>
                 </Grid.RenderTransformOrigin>
-                <ToggleButton x:Name="controlPanel_TBTN" Background="{DynamicResource Primary}" Height="21" Width="40" VerticalAlignment="Top" BorderBrush="{DynamicResource Border}"
-                              MouseRightButtonDown="controlPanel_TBTN_RightMouseDown" PreviewMouseMove="controlPanel_TBTN_MouseMove" MouseRightButtonUp="controlPanel_TBTN_RightMouseUp"
-                              Checked="controlPanel_TBTN_Checked" Unchecked="controlPanel_TBTN_Unchecked">
+                <ToggleButton x:Name="ControlPanel_TBTN" Background="{DynamicResource Primary}" Height="21" Width="40" VerticalAlignment="Top" BorderBrush="{DynamicResource Border}"
+                              MouseRightButtonDown="ControlPanel_TBTN_RightMouseDown" PreviewMouseMove="ControlPanel_TBTN_MouseMove" MouseRightButtonUp="ControlPanel_TBTN_RightMouseUp"
+                              Checked="ControlPanel_TBTN_Checked" Unchecked="ControlPanel_TBTN_Unchecked">
                     <ToggleButton.Tag>
                         <SolidColorBrush Color="#0FFFFFFF"/>
                     </ToggleButton.Tag>
                 </ToggleButton>
 
-                <Border x:Name="controlPanel" Opacity="1" Visibility="Visible" Background="{DynamicResource Primary}" Margin="0,20,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Border}">
+                <Border x:Name="ControlPanel" Opacity="1" Visibility="Visible" Background="{DynamicResource Primary}" Margin="0,20,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Border}">
                     <Border.RenderTransform>
                         <RotateTransform Angle="0"/>
                     </Border.RenderTransform>
@@ -403,15 +401,13 @@
                         <Point X="0.5" Y="0.5"/>
                     </Border.RenderTransformOrigin>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-
                         <Grid>
                             <Border x:Name="screenControl" Opacity="0" Visibility="Collapsed" Background="{DynamicResource Primary}" Margin="0,-69,-139,60" BorderThickness="1" BorderBrush="{DynamicResource Border}" CornerRadius="2">
                                 <Border.Effect>
                                     <DropShadowEffect Opacity="0.1"/>
                                 </Border.Effect>
-                                <StackPanel Margin="0,4,0,4">
-                                    <RadioButton Style="{StaticResource Display}" Content="Display 1" IsChecked="True"/>
-                                    <RadioButton Style="{StaticResource Display}" Content="Display 2"/>
+                                <StackPanel x:Name="screenControlPanel" Margin="0,4,0,4">
+                                    
                                 </StackPanel>
                             </Border>
                             <RadioButton GroupName="Popup" x:Name="screenControl_TBTN" Style="{StaticResource ControlPanel_TBTN}" Tag="M 65.35 85.45 C 69.65 85.05 70.01 91.67 65.50 91.67 Q 50.10 91.66 34.19 91.66 A 2.42 2.42 0.0 0 1 32.69 91.14 C 30.02 89.07 31.37 85.13 34.67 85.45 A 0.68 0.67 2.7 0 0 35.41 84.78 L 35.41 75.69 Q 35.42 75.04 34.76 75.03 Q 26.26 74.90 16.37 75.07 C 8.86 75.20 4.06 72.12 4.11 64.25 Q 4.24 43.37 4.13 23.21 C 4.09 16.70 7.85 12.56 14.12 12.55 Q 51.69 12.52 86.48 12.55 C 92.33 12.55 95.89 17.31 95.87 22.82 Q 95.79 43.80 95.86 64.37 C 95.89 71.28 91.70 75.09 85.17 75.04 Q 74.17 74.96 65.23 75.03 Q 64.58 75.04 64.58 75.68 L 64.59 84.76 A 0.70 0.69 -2.6 0 0 65.35 85.45 Z M 89.59 21.95 A 3.22 3.22 0.0 0 0 86.37 18.73 L 13.63 18.73 A 3.22 3.22 0.0 0 0 10.41 21.95 L 10.41 65.51 A 3.22 3.22 0.0 0 0 13.63 68.73 L 86.37 68.73 A 3.22 3.22 0.0 0 0 89.59 65.51 L 89.59 21.95 Z M 53.25 75.46 C 51.43 77.80 48.43 77.42 46.62 75.30 A 0.88 0.87 -20.3 0 0 45.96 75.00 L 42.27 75.00 Q 41.65 75.00 41.66 75.62 L 41.66 84.82 Q 41.67 85.40 42.25 85.40 L 57.70 85.40 Q 58.34 85.40 58.34 84.75 L 58.34 75.67 Q 58.34 75.00 57.67 75.00 L 54.24 74.99 Q 53.63 74.98 53.25 75.46 Z">
@@ -431,14 +427,14 @@
                                                     <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
                                                 </ObjectAnimationUsingKeyFrames>
 
-                                                <DoubleAnimation Storyboard.TargetName="controlPanel_TBTN"
+                                                <DoubleAnimation Storyboard.TargetName="ControlPanel_TBTN"
                                                                  Storyboard.TargetProperty="Opacity"
                                                                  To="0" Duration="0:0:0.15">
                                                     <DoubleAnimation.EasingFunction>
                                                         <QuadraticEase EasingMode="EaseInOut"/>
                                                     </DoubleAnimation.EasingFunction>
                                                 </DoubleAnimation>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel_TBTN"
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel_TBTN"
                                                                    Storyboard.TargetProperty="Visibility">
                                                     <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
                                                 </ObjectAnimationUsingKeyFrames>
@@ -460,14 +456,14 @@
                                                     <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
                                                 </ObjectAnimationUsingKeyFrames>
 
-                                                <DoubleAnimation Storyboard.TargetName="controlPanel_TBTN"
+                                                <DoubleAnimation Storyboard.TargetName="ControlPanel_TBTN"
                                                      Storyboard.TargetProperty="Opacity"
                                                      To="1" Duration="0:0:0.15">
                                                     <DoubleAnimation.EasingFunction>
                                                         <QuadraticEase EasingMode="EaseInOut"/>
                                                     </DoubleAnimation.EasingFunction>
                                                 </DoubleAnimation>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel_TBTN"
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel_TBTN"
                                                                    Storyboard.TargetProperty="Visibility">
                                                     <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
                                                 </ObjectAnimationUsingKeyFrames>

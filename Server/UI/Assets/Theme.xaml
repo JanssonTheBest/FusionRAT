@@ -8,6 +8,7 @@
     <SolidColorBrush x:Key="Accent" Color="#1E9BFD"/>
     <SolidColorBrush x:Key="Text" Color="#DEDEE0"/>
     <SolidColorBrush x:Key="Selected" Color="#4B4990"/>
+    <SolidColorBrush x:Key="Icon" Color="#FFFFFF"/>
 
     <!--To triggers works all triggers-->
     <Color x:Key="Trigger_Primary">#202020</Color>
@@ -16,4 +17,5 @@
     <Color x:Key="Trigger_Accent">#1E9BFD</Color>
     <Color x:Key="Trigger_Text">#DEDEE0</Color>
     <Color x:Key="Trigger_Selected">#4B4990</Color>
+    <Color x:Key="Trigger_Icon">#FFFFFF</Color>
 </ResourceDictionary>

@@ -16,16 +16,12 @@
     <None Remove="UI\Assets\Icons\BuilderOneIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderPersistenceIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderUInDIcon.png" />
-    <None Remove="UI\Assets\Other\AddThemeIcon.png" />
     <None Remove="UI\Assets\Other\FileManagerHardDriveIcon.png" />
-    <None Remove="UI\Assets\Other\Search.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerDefaultFolderIcon.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerDocumentsFolderIcon.png" />
-    <None Remove="UI\Assets\Windows\FileManager\FileManagerDownloadIcon.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerDownloadsFolderIcon.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerPicturesFolderIcon.png" />
     <None Remove="UI\Assets\Windows\FileManager\FileManagerVideosFolderIcon.png" />
-    <None Remove="UI\Assets\Windows\MainWindow\MainWindowPluginIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderConnectionsIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderEnPIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderFileConfigurationIcon.png" />
@@ -33,12 +29,6 @@
     <None Remove="UI\CustomControls\BuilderControls\BuilderOneIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderPersistenceIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderUInDIcon.png" />
-    <None Remove="UI\Pages\SettingsPage\Advanced.png" />
-    <None Remove="UI\Pages\SettingsPage\Appear.png" />
-    <None Remove="UI\Pages\SettingsPage\General.png" />
-    <None Remove="UI\Pages\SettingsPage\icons8-admin-settings-male-100.png" />
-    <None Remove="UI\Pages\SettingsPage\Report.png" />
-    <None Remove="UI\Pages\SettingsPage\Security.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,7 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
+    <PackageReference Include="NLog" Version="5.3.2" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,27 +58,16 @@
     <Resource Include="UI\Assets\Icons\BuilderOneIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderPersistenceIcon.png" />
     <Resource Include="UI\Assets\Icons\BuilderUInDIcon.png" />
-    <Resource Include="UI\Assets\Other\AddThemeIcon.png" />
-    <Resource Include="UI\Assets\Other\bgBlured.png" />
-    <Resource Include="UI\Assets\Windows\MainWindow\MainWindowClientIcon.png" />
-    <Resource Include="UI\Assets\Other\close.png" />
+    <Resource Include="UI\Assets\Other\bgBlured.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="UI\Assets\Other\Dark.png" />
     <Resource Include="UI\Assets\Windows\FileManager\FileManagerDefaultFolderIcon.png" />
     <Resource Include="UI\Assets\Windows\FileManager\FileManagerDocumentsFolderIcon.png" />
-    <Resource Include="UI\Assets\Windows\FileManager\FileManagerDownloadIcon.png" />
     <Resource Include="UI\Assets\Windows\FileManager\FileManagerDownloadsFolderIcon.png" />
     <Resource Include="UI\Assets\Windows\FileManager\FileManagerHardDriveIcon.png" />
-    <Resource Include="UI\Assets\Windows\MainWindow\MainWindowBuilderIcon.png" />
-    <Resource Include="UI\Assets\Other\ISmaximized.png" />
     <Resource Include="UI\Assets\Other\Light.png" />
-    <Resource Include="UI\Assets\Other\location.png" />
-    <Resource Include="UI\Assets\Other\maximizedNot.png" />
-    <Resource Include="UI\Assets\Other\minimize.png" />
     <Resource Include="UI\Assets\Other\os.png" />
-    <Resource Include="UI\Assets\Other\Search.png" />
-    <Resource Include="UI\Assets\Windows\MainWindow\MainWindowPluginIcon.png" />
-    <Resource Include="UI\Assets\Windows\MainWindow\MainWindowServerIcon.png" />
-    <Resource Include="UI\Assets\Other\settings.png" />
     <Resource Include="UI\Assets\Icons\Logo.png" />
     <Resource Include="UI\Assets\Other\ChangeLog2.jpg" />
     <Resource Include="UI\Assets\Other\ChangeLog3.png" />
@@ -95,12 +75,12 @@
     <Resource Include="UI\Assets\Windows\FileManager\FileManagerVideosFolderIcon.png" />
     <Resource Include="UI\Assets\Windows\Home\HomeClientIcon.png" />
     <Resource Include="UI\Assets\Windows\Home\HomeHealthIcon.png" />
-    <Resource Include="UI\Assets\Other\AdvancedSettings.png" />
-    <Resource Include="UI\Assets\Other\AppearanceSettings.png" />
-    <Resource Include="UI\Assets\Other\GeneralSettings.png" />
-    <Resource Include="UI\Assets\Other\AccountSettings.png" />
-    <Resource Include="UI\Assets\Other\ReportSettings.png" />
-    <Resource Include="UI\Assets\Other\SecuritySettings.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

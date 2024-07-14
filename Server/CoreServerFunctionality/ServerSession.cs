@@ -1,9 +1,8 @@
-﻿using ClientInfo;
-using Common.Communication;
+﻿using System.Windows.Media.Imaging;
 using Common.DTOs.MessagePack;
-using System.IO;
+using Common.Communication;
 using System.Windows;
-using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace Server.CoreServerFunctionality
 {
@@ -78,7 +77,7 @@ namespace Server.CoreServerFunctionality
             Application.Current.Dispatcher.Invoke(() => Flag = new BitmapImage(new Uri($"https://flagsapi.com/{clientInfoDTO.Country}/flat/64.png")));
             ClientHandler.UpdateClients(this).GetAwaiter().GetResult();
         }
-        List<Window> windows = new List<Window>();
+        List<Window> windows = [];
         public void OpenUtilityWindow(Window utilityWindow)
         {
             utilityWindow.Closed += ((sender, e) =>

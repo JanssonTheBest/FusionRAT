@@ -1,27 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Server.CoreServerFunctionality;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Server.UtilityWindows
 {
-    /// <summary>
-    /// Interaction logic for Keylogger.xaml
-    /// </summary>
     public partial class Keylogger : Window
     {
-        public Keylogger()
+        private readonly ServerSession _serverSession;
+
+        public Keylogger(ServerSession serverSession)
         {
             InitializeComponent();
+            _serverSession = serverSession;
         }
     }
 }

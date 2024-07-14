@@ -1,18 +1,17 @@
-﻿using Server.UtilityWindows.Interface;
+﻿using Server.CoreServerFunctionality;
+using Server.UtilityWindows.Interface;
 using System.Windows;
 
 namespace Server.UtilityWindows
 {
     public partial class RegistryManager : Window, IUtilityWindow
     {
-        public RegistryManager()
+        private readonly ServerSession _serverSession;
+
+        public RegistryManager(ServerSession serverSession)
         {
             InitializeComponent();
-        }
-
-        private void icon_Loaded(object sender, RoutedEventArgs e)
-        {
-
+            _serverSession = serverSession;
         }
     }
 }
