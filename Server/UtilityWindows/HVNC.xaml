@@ -217,7 +217,7 @@
 
 
         <Storyboard x:Key="ControlPanel_Triggered">
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0" Duration="0:0:0.15">
                 <ThicknessAnimation.EasingFunction>
@@ -225,20 +225,20 @@
                 </ThicknessAnimation.EasingFunction>
             </ThicknessAnimation>
 
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="Opacity"
                       To="1" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel" 
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel" 
                         Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ControlPanel_Default_Down">
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0,0,0,-51" Duration="0:0:0.15">
                 <ThicknessAnimation.EasingFunction>
@@ -246,20 +246,20 @@
                 </ThicknessAnimation.EasingFunction>
             </ThicknessAnimation>
 
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="Opacity"
                       To="0" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel" 
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel" 
                                     Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ControlPanel_Default_Up">
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0,-51,0,0" Duration="0:0:0.15">
                 <ThicknessAnimation.EasingFunction>
@@ -267,14 +267,14 @@
                 </ThicknessAnimation.EasingFunction>
             </ThicknessAnimation>
 
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="Opacity"
                       To="0" Duration="0:0:0.15">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel" 
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel" 
                                     Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
@@ -282,16 +282,16 @@
 
 
         <Storyboard x:Key="down">
-            <DoubleAnimation Storyboard.TargetName="controlPanel_Grid"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel_Grid"
                       Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                       To="0" Duration="0"/>
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                       To="0" Duration="0"/>
-            <ThicknessAnimation Storyboard.TargetName="controlPanel"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel"
                          Storyboard.TargetProperty="BorderThickness"
                          To="0,1,0,0"/>
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0,0,0,-51" Duration="0">
             </ThicknessAnimation>
@@ -305,16 +305,16 @@
             </ThicknessAnimation>
         </Storyboard>
         <Storyboard x:Key="up">
-            <DoubleAnimation Storyboard.TargetName="controlPanel_Grid"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel_Grid"
                       Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                       To="180" Duration="0"/>
-            <DoubleAnimation Storyboard.TargetName="controlPanel"
+            <DoubleAnimation Storyboard.TargetName="ControlPanel"
                       Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                       To="180" Duration="0"/>
-            <ThicknessAnimation Storyboard.TargetName="controlPanel"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel"
                          Storyboard.TargetProperty="BorderThickness"
                          To="0,0,0,1"/>
-            <ThicknessAnimation Storyboard.TargetName="controlPanel_Grid"
+            <ThicknessAnimation Storyboard.TargetName="ControlPanel_Grid"
                          Storyboard.TargetProperty="Margin"
                          To="0,-50,0,0" Duration="0">
             </ThicknessAnimation>
@@ -378,22 +378,22 @@
                 <Image x:Name="frame" Stretch="Fill" Panel.ZIndex="-1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
             </Grid>
 
-            <Grid x:Name="controlPanel_Grid" Height="71" VerticalAlignment="Bottom" Margin="0,0,0,-51" Grid.Row="1">
+            <Grid x:Name="ControlPanel_Grid" Height="71" VerticalAlignment="Bottom" Margin="0,0,0,-51" Grid.Row="1">
                 <Grid.RenderTransform>
                     <RotateTransform Angle="0"/>
                 </Grid.RenderTransform>
                 <Grid.RenderTransformOrigin>
                     <Point X="0.5" Y="0.5"/>
                 </Grid.RenderTransformOrigin>
-                <ToggleButton x:Name="controlPanel_TBTN" Background="{DynamicResource Primary}" Height="21" Width="40" VerticalAlignment="Top" BorderBrush="{DynamicResource Border}"
-                              MouseRightButtonDown="controlPanel_TBTN_RightMouseDown" PreviewMouseMove="controlPanel_TBTN_MouseMove" MouseRightButtonUp="controlPanel_TBTN_RightMouseUp"
-                              Checked="controlPanel_TBTN_Checked" Unchecked="controlPanel_TBTN_Unchecked">
+                <ToggleButton x:Name="ControlPanel_TBTN" Background="{DynamicResource Primary}" Height="21" Width="40" VerticalAlignment="Top" BorderBrush="{DynamicResource Border}"
+                              MouseRightButtonDown="ControlPanel_TBTN_RightMouseDown" PreviewMouseMove="ControlPanel_TBTN_MouseMove" MouseRightButtonUp="ControlPanel_TBTN_RightMouseUp"
+                              Checked="ControlPanel_TBTN_Checked" Unchecked="ControlPanel_TBTN_Unchecked">
                     <ToggleButton.Tag>
                         <SolidColorBrush Color="#0FFFFFFF"/>
                     </ToggleButton.Tag>
                 </ToggleButton>
 
-                <Border x:Name="controlPanel" Opacity="1" Visibility="Visible" Background="{DynamicResource Primary}" Margin="0,20,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Border}">
+                <Border x:Name="ControlPanel" Opacity="1" Visibility="Visible" Background="{DynamicResource Primary}" Margin="0,20,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Border}">
                     <Border.RenderTransform>
                         <RotateTransform Angle="0"/>
                     </Border.RenderTransform>
@@ -429,14 +429,14 @@
                                                     <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
                                                 </ObjectAnimationUsingKeyFrames>
 
-                                                <DoubleAnimation Storyboard.TargetName="controlPanel_TBTN"
+                                                <DoubleAnimation Storyboard.TargetName="ControlPanel_TBTN"
                                                                  Storyboard.TargetProperty="Opacity"
                                                                  To="0" Duration="0:0:0.15">
                                                     <DoubleAnimation.EasingFunction>
                                                         <QuadraticEase EasingMode="EaseInOut"/>
                                                     </DoubleAnimation.EasingFunction>
                                                 </DoubleAnimation>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel_TBTN"
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel_TBTN"
                                                                    Storyboard.TargetProperty="Visibility">
                                                     <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
                                                 </ObjectAnimationUsingKeyFrames>
@@ -458,14 +458,14 @@
                                                     <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
                                                 </ObjectAnimationUsingKeyFrames>
 
-                                                <DoubleAnimation Storyboard.TargetName="controlPanel_TBTN"
+                                                <DoubleAnimation Storyboard.TargetName="ControlPanel_TBTN"
                                                      Storyboard.TargetProperty="Opacity"
                                                      To="1" Duration="0:0:0.15">
                                                     <DoubleAnimation.EasingFunction>
                                                         <QuadraticEase EasingMode="EaseInOut"/>
                                                     </DoubleAnimation.EasingFunction>
                                                 </DoubleAnimation>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="controlPanel_TBTN"
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ControlPanel_TBTN"
                                                                    Storyboard.TargetProperty="Visibility">
                                                     <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
                                                 </ObjectAnimationUsingKeyFrames>

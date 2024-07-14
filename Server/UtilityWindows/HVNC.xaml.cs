@@ -254,7 +254,7 @@ namespace Server.UtilityWindows
         Storyboard triggerd;
         Storyboard default_Down;
         Storyboard default_Up;
-        private void controlPanel_TBTN_RightMouseDown(object sender, MouseButtonEventArgs e)
+        private void ControlPanel_TBTN_RightMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
             {
@@ -264,7 +264,7 @@ namespace Server.UtilityWindows
             }
         }
 
-        private void controlPanel_TBTN_MouseMove(object sender, MouseEventArgs e)
+        private void ControlPanel_TBTN_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDragging)
             {
@@ -273,26 +273,26 @@ namespace Server.UtilityWindows
 
                 if (currentPosition.Y < this.ActualHeight / 2)
                 {
-                    if (controlPanel_Grid.VerticalAlignment != VerticalAlignment.Top)
+                    if (ControlPanel_Grid.VerticalAlignment != VerticalAlignment.Top)
                     {
-                        controlPanel_TBTN.IsChecked = false;
-                        controlPanel_Grid.VerticalAlignment = VerticalAlignment.Top;
+                        ControlPanel_TBTN.IsChecked = false;
+                        ControlPanel_Grid.VerticalAlignment = VerticalAlignment.Top;
                         BeginStoryboard((Storyboard)this.Resources["up"]);
                     }
                 }
                 else
                 {
-                    if (controlPanel_Grid.VerticalAlignment != VerticalAlignment.Bottom)
+                    if (ControlPanel_Grid.VerticalAlignment != VerticalAlignment.Bottom)
                     {
-                        controlPanel_TBTN.IsChecked = false;
-                        controlPanel_Grid.VerticalAlignment = VerticalAlignment.Bottom;
+                        ControlPanel_TBTN.IsChecked = false;
+                        ControlPanel_Grid.VerticalAlignment = VerticalAlignment.Bottom;
                         BeginStoryboard((Storyboard)this.Resources["down"]);
                     }
                 }
             }
         }
 
-        private void controlPanel_TBTN_RightMouseUp(object sender, MouseButtonEventArgs e)
+        private void ControlPanel_TBTN_RightMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (isDragging)
             {
@@ -301,19 +301,19 @@ namespace Server.UtilityWindows
             }
         }
 
-        private void controlPanel_TBTN_Checked(object sender, RoutedEventArgs e)
+        private void ControlPanel_TBTN_Checked(object sender, RoutedEventArgs e)
         {
             triggerd.Begin();
         }
 
-        private void controlPanel_TBTN_Unchecked(object sender, RoutedEventArgs e)
+        private void ControlPanel_TBTN_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (controlPanel_Grid.VerticalAlignment == VerticalAlignment.Top)
+            if (ControlPanel_Grid.VerticalAlignment == VerticalAlignment.Top)
             {
                 default_Up.Begin();
             }
 
-            if (controlPanel_Grid.VerticalAlignment == VerticalAlignment.Bottom)
+            if (ControlPanel_Grid.VerticalAlignment == VerticalAlignment.Bottom)
             {
                 default_Down.Begin();
             }
