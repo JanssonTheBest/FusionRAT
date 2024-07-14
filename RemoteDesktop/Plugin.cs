@@ -127,6 +127,8 @@ namespace RemoteDesktopPlugin
             }
         }
 
+
+
         private static ImageCodecInfo GetEncoder(ImageFormat format)
         {
             return ImageCodecInfo.GetImageEncoders().FirstOrDefault(codec => codec.FormatID == format.Guid);
