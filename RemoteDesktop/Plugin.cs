@@ -9,12 +9,12 @@ namespace RemoteDesktopPlugin
 {
     public class Plugin
     {
+        private readonly ConcurrentDictionary<int, Bitmap> _oldBitmaps = new();
+        private readonly EncoderParameters _encoderParameters;
+        private readonly int[] _screen = [1920, 1080];
+        private readonly ImageCodecInfo _jpegEncoder;
         private readonly Session _session;
         private readonly int _bitrate = 6;
-        private readonly int[] _screen = [1920, 1080];
-        private readonly ConcurrentDictionary<int, Bitmap> _oldBitmaps = new();
-        private readonly ImageCodecInfo _jpegEncoder;
-        private readonly EncoderParameters _encoderParameters;
 
         public Plugin(Session session)
         {
