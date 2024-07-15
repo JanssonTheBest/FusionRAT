@@ -3,6 +3,7 @@ using Server.CoreServerFunctionality;
 using Server.UtilityWindows.Interface;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -180,8 +181,25 @@ namespace Server.UtilityWindows
             e.Handled = true;
         }
 
+        DateTime oldtimeDateTime;
         private async void frame_MouseMove(object sender, MouseEventArgs e)
         {
+            DateTime currentTime = DateTime.Now;
+            if (oldtimeDateTime == null)
+            {
+                oldtimeDateTime = DateTime.Now;
+            }
+            else
+            {
+                TimeSpan span = (currentTime - oldtimeDateTime);
+                if(span.TotalMilliseconds < 50)
+                {
+                    return;
+                }
+            }
+
+            oldtimeDateTime = currentTime;
+
             var pos = e.GetPosition(frame);
             double xFac = pos.X / frame.ActualWidth;
             double yFac = pos.Y / frame.ActualHeight;
