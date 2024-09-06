@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using FFmpeg.AutoGen;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
@@ -11,7 +13,7 @@ namespace Server
         public MainWindow()
         {
             InitializeComponent();
-
+            ffmpeg.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg\\ffmpeg-n5.1-latest-win64-gpl-shared-5.1\\bin");
             ImpactSidePanel = (Storyboard)FindResource("Impact_SidePanel");
             ExpandSidePanel = (Storyboard)FindResource("Expand_SidePanel");
 

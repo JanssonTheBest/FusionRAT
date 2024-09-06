@@ -10,135 +10,132 @@ using System.Drawing;
 using System.Windows;
 using System.Timers;
 using System.IO;
+using Server.VideoProcessing;
+using System.Windows.Media;
+using System.IO.Pipelines;
+using FFmpeg.AutoGen;
+using System.Windows.Controls;
+using System.Windows.Media.Media3D;
+using System.Collections.Concurrent;
+using System.Buffers;
 
 namespace Server.UtilityWindows
 {
 
     public partial class RemoteDesktop : Window, IUtilityWindow
     {
-        private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
+        ServerSession _session;
+        VideoStreamPlayer _videoStreamPlayer;
+        WriteableBitmap _bitmap;
+        Pipe _pipe;
+        CancellationTokenSource cts = new CancellationTokenSource();
+        CancellationToken ct;
 
-        private readonly System.Timers.Timer _fpsTimer;
-
-        private readonly ServerSession _serverSession;
-
-        private readonly int[] _screen = [1920, 1080];
-        private readonly int _horizontalAmount;
-        private readonly int _verticalAmount;
-        private readonly int _screenArea;
-
-        private readonly Graphics _graphics;
-        private readonly int _bmpPartSize;
-        private readonly Bitmap _bmp;
-
-        private readonly int _bitrate = 6;
-        private int _frameCounter;
-
-        public RemoteDesktop(ServerSession serverSession)
+        public RemoteDesktop(ServerSession session)
         {
             InitializeComponent();
-            _serverSession = serverSession;
-            _serverSession.OnRemoteDesktop += HandlePacket;
-            _serverSession.SendPlugin(typeof(RemoteDesktopPlugin.Plugin));
+            ct = cts.Token;
+            _session = session;
+            session.OnRemoteDesktop += HandlePacket;
+            CopyAndSendDependecies();
+            _pipe = new();
 
-            _screenArea = _screen[0] * _screen[1];
-            _bmpPartSize = (int)Math.Round(MathF.Sqrt(_screenArea / _bitrate));
-            _horizontalAmount = _screen[0] / _bmpPartSize + 1;
-            _verticalAmount = _screen[1] / _bmpPartSize + 1;
-
-            _bmp = new Bitmap(_screen[0], _screen[1]);
-            _graphics = Graphics.FromImage(_bmp);
-
-            _fpsTimer = new System.Timers.Timer(1000);
-            _fpsTimer.Elapsed += OnTimerCallBack;
-            _fpsTimer.AutoReset = true;
-            _fpsTimer.Start();
+            Closed += WindowIsClosing;
 
             triggerd = (FindResource("ControlPanel_Triggered") as Storyboard);
             default_Down = (FindResource("ControlPanel_Default_Down") as Storyboard);
             default_Up = (FindResource("ControlPanel_Default_Up") as Storyboard);
         }
 
+        private async void WindowIsClosing(object? sender, EventArgs e)
+        {
+           await Stop();
+        }
+
+        SemaphoreSlim semaphore = new SemaphoreSlim(1,1);
         private async void HandlePacket(object? sender, EventArgs e)
         {
             var dto = sender as RemoteDesktopDTO;
-            if (dto?.Screen != null)
+            if (dto?.Options != null)
             {
-                //await Application.Current.Dispatcher.InvokeAsync(() => screens.Items.Add(string.Join("|", dto.Screen)));
+                AssignScreens(dto.Options);
                 return;
             }
-            await DisplayFrame(dto?.Frame);
+            try
+            {
+                await semaphore.WaitAsync(ct);
+                await _pipe.Writer.WriteAsync(dto.VideoChunk, ct);
+                semaphore.Release();
+            }
+            catch(Exception ex)
+            {
+            }
         }
 
-        private async Task<Bitmap> ConcatenateBitmap(byte[][] bmpBytes)
+
+        private async Task Stop()
         {
-            Parallel.For(0, _verticalAmount, i =>
+            await _session.SendPacketAsync(new RemoteDesktopDTO());
+            cts.Cancel();
+            _videoStreamPlayer?.Stop();
+            
+        }
+
+        private void AssignScreens(string[] screens)
+        {
+            foreach (var screen in screens)
             {
-                Parallel.For(0, _horizontalAmount, j =>
+                var screenInfo = screen.Split('|');
+                Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    int index = j + i * _horizontalAmount;
-                    var point = new System.Drawing.Point(j * _bmpPartSize, i * _bmpPartSize);
-
-                    if (bmpBytes[index] != null)
-                    {
-
-                        using var ms = new MemoryStream(bmpBytes[index]);
-                        var partBmp = new Bitmap(ms);
-
-                        lock (_graphics)
-                        {
-                            _graphics.DrawImage(partBmp, point);
-
-                        }
-                    }
+                    Button button = new Button();
+                    button.Content = string.Join(",", screenInfo);
+                    button.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    button.VerticalAlignment = VerticalAlignment.Stretch;
+                    button.Foreground = System.Windows.SystemColors.ControlLightBrush;
+                    button.Background = System.Windows.SystemColors.ControlDarkDarkBrush;
+                    button.Click += ScreenSelected;
+                    screenControlPanel.Children.Add(button);
                 });
-            });
+            }
 
-            return _bmp;
         }
 
-
-        private async Task DisplayFrame(byte[][] frameBytes)
+        private async void ScreenSelected(object sender, RoutedEventArgs e)
         {
-            var bmp = await ConcatenateBitmap(frameBytes);
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
+            Button button = (Button)sender;
+            string[] options = ((string)button.Content).Split(",");
+            _bitmap = new(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
+            frame.Source = _bitmap;
+            _videoStreamPlayer = new(_bitmap, _pipe.Reader);
+            _videoStreamPlayer.Start();
+            _session.SendPacketAsync(new RemoteDesktopDTO()
             {
-                frame.Source = await ToImageSource(bmp);
-                _frameCounter++;
-            }, DispatcherPriority.Render);
-        }
-
-        private readonly MemoryStream memory = new();
-        private async Task<BitmapImage> ToImageSource(Bitmap bmp)
-        {
-            memory.SetLength(0);
-            bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-            memory.Position = 0;
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = memory;
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.EndInit();
-            return bitmapImage;
-        }
-
-        private void OnTimerCallBack(object? sender, ElapsedEventArgs e)
-        {
-            Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                fpsTextBlockContent.Text = _frameCounter.ToString();
-                fpsTextBlockContent.Text = $"Fusion - Remote Desktop | {_frameCounter} FPS : 30 MS";
-                _frameCounter = 0;
+                Options = options
             });
         }
 
-        //private async void screens_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        //{
-        //    await _serverSession.SendPacketAsync(new RemoteDesktopDTO
-        //    {
-        //        Screen = new[] { "dd" }
-        //    });
-        //}
+        private async void CopyAndSendDependecies()
+        {
+            await _session.SendPlugin(typeof(RemoteDesktopPlugin.Plugin));
+
+            string[] files = Directory.GetFiles(ffmpeg.RootPath).Select(a => a.Substring(a.LastIndexOf("\\") + 1, a.Length - a.LastIndexOf("\\") - 1)).ToArray();
+
+            Dictionary<string, byte[]> libavFiles = new Dictionary<string, byte[]>();
+
+            foreach (string file in files)
+            {
+                string path = Path.Combine(ffmpeg.RootPath, file);
+                libavFiles.Add(file, File.ReadAllBytes(path));
+            }
+
+            RemoteDesktopDTO dto = new RemoteDesktopDTO()
+            {
+                LibAVFiles = libavFiles
+            };
+
+            await _session.SendPacketAsync(dto);
+        }
 
         #region TitleBar
         private bool isDraggingFromMaximized = false;

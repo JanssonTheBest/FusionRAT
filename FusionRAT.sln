@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseShellPlugin", "Rever
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Launcher", "Launcher\Launcher.csproj", "{10F9A1A8-AFCB-4103-ABA7-D6AAED32F475}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiddenVNC", "HVNC\HiddenVNC.csproj", "{2135B8A7-8F1D-4BCD-9D3B-77E6BFEA4AD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HiddenVNC", "HVNC\HiddenVNC.csproj", "{2135B8A7-8F1D-4BCD-9D3B-77E6BFEA4AD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
