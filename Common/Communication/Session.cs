@@ -28,9 +28,9 @@ namespace Common.Communication
         private SemaphoreSlim sendSemaphore = new SemaphoreSlim(1, 1);
         private int bufferSize = 65536;
         private TcpClient _client;
-        private MemoryStream tempBuffer = new();
 
         public EventHandler OnPlugin;
+        public EventHandler OnDisposePlugin;
         public EventHandler OnPing;
         public EventHandler OnClientInfo;
         public EventHandler OnRemoteDesktop;
@@ -72,15 +72,16 @@ namespace Common.Communication
             }
         }
 
+        private MemoryStream tempBuffer = new();
         public async Task SendPacketAsync(IPacket packet)
         {
             await sendSemaphore.WaitAsync();
             byte[] data = MessagePackSerializer.Serialize(packet);
-            await tempBuffer.WriteAsync(BitConverter.GetBytes(data.Length));
-            await tempBuffer.WriteAsync(data);
             try
             {
-                await _sslStream.WriteAsync(tempBuffer.ToArray());
+                await _sslStream.WriteAsync(BitConverter.GetBytes(data.Length));
+                await _sslStream.WriteAsync(data);
+                //await _sslStream.FlushAsync();
             }
             catch (Exception ex)
             {
@@ -123,7 +124,7 @@ namespace Common.Communication
                         buffer.Slice(bytesConsumed + headerLength, packetLength),
                         messagePackSerializerOptions,
                         cancellationTokenSource.Token);
-                    Task.Run(() => packet.HandlePacket(this));
+                    await packet.HandlePacket(this);
                     bytesConsumed += headerLength + packetLength;
                 }
                 pipeReader.AdvanceTo(buffer.GetPosition(bytesConsumed), buffer.End);

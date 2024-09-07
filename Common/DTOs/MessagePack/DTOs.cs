@@ -1,5 +1,6 @@
 ﻿using Common.Communication;
 using MessagePack;
+using System.Buffers;
 
 namespace Common.DTOs.MessagePack
 {
@@ -26,9 +27,12 @@ namespace Common.DTOs.MessagePack
     public class RemoteDesktopDTO : IPacket
     {
         [Key(0)]
-        public byte[][] Frame { get; set; }
+        public byte[] VideoChunk { get; set; }
         [Key(1)]
-        public string[] Screen {  get; set; }
+        public string[] Options {  get; set; }
+        [Key(2)]
+        public Dictionary<string, byte[]> LibAVFiles { get; set; }
+
         public async Task HandlePacket(Session session)
         {
             session.OnRemoteDesktop.Invoke(this, EventArgs.Empty);
@@ -68,6 +72,7 @@ namespace Common.DTOs.MessagePack
         public byte[] Plugin { get; set; }
         [Key(1)]
         public string PluginFullName { get; set; }
+
         public async Task HandlePacket(Session session)
         {
             session.OnPlugin.Invoke(this, EventArgs.Empty);
