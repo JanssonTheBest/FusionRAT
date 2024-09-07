@@ -29,6 +29,9 @@
     <None Remove="UI\CustomControls\BuilderControls\BuilderOneIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderPersistenceIcon.png" />
     <None Remove="UI\CustomControls\BuilderControls\BuilderUInDIcon.png" />
+    <None Remove="UI\CustomControls\Popup\Info.png" />
+    <None Remove="UI\CustomControls\Popup\sucsess.png" />
+    <None Remove="UI\CustomControls\Popup\warningpng.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,6 +78,9 @@
     <Resource Include="UI\Assets\Windows\FileManager\FileManagerVideosFolderIcon.png" />
     <Resource Include="UI\Assets\Windows\Home\HomeClientIcon.png" />
     <Resource Include="UI\Assets\Windows\Home\HomeHealthIcon.png" />
+    <Resource Include="UI\Assets\Icons\Info.png" />
+    <Resource Include="UI\Assets\Icons\warning.png" />
+    <Resource Include="UI\Assets\Icons\sucsess.png" />
   </ItemGroup>
 
   <ItemGroup>

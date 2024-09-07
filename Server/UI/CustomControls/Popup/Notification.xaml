@@ -1,0 +1,68 @@
+﻿<Window x:Class="Server.UI.CustomControls.Popup.Notification"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Server.UI.CustomControls.Popup"
+        mc:Ignorable="d"
+        Title="Notification" UseLayoutRounding="True" WindowStyle="None"
+        TextOptions.TextFormattingMode="Display" AllowsTransparency="True"
+        d:Height="300" d:Width="500" WindowStartupLocation="CenterScreen"
+        FontFamily="Inter" Foreground="White" Background="Transparent">
+
+    <Border CornerRadius="5" Background="#2B2B2B" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="300">
+        <StackPanel>
+            <!--//Header-->
+            <Border Background="{DynamicResource Primary}"
+                    Height="30"
+                    CornerRadius="5,5,0,0"
+                    BorderThickness="0,0,0,1"
+                    x:Name="borderBrushPop">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="\UI\Assets\Icons\Logo.png"
+                           Height="22"
+                           Width="22"
+                           Margin="10,0,6,0"/>
+                    <TextBlock Text="{Binding ElementName=headerPop, Path=Text}" FontSize="14" Foreground="{DynamicResource Text}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!--//Main-->
+            <Border Grid.Row="1"
+                    Background="{DynamicResource Secondary}"
+                    CornerRadius="0,0,5,5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border x:Name="statusBG" CornerRadius="5">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.0,0" StartPoint="0.5,1">
+                                <GradientStop Color="Transparent"/>
+                                <GradientStop Color="Transparent" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border Padding="20,20,100,20" Grid.ColumnSpan="2">
+                        <StackPanel Orientation="Horizontal">
+
+                            <!--tation="Horizontal">-->
+                            <Image x:Name="statusImgPop"
+                                   Height="34"
+                                   Width="34"
+                                   Margin="0,0,20,0"
+                                   VerticalAlignment="Top"/>
+                            <StackPanel>
+                                <TextBlock x:Name="headerPop" FontWeight="Medium" Text="" FontSize="16" Foreground="{DynamicResource Text}"/>
+                                <TextBlock x:Name="ContentPop" Text="" FontSize="14" Foreground="{DynamicResource Text}" MaxWidth="300" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Border>
+</Window>

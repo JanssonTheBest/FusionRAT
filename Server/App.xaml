@@ -15,7 +15,7 @@
                 <ResourceDictionary Source="\UI\Style\Common\ComboBox.xaml"/>
                 <ResourceDictionary Source="\UI\Style\Common\RadioButton.xaml"/>
                 <ResourceDictionary Source="\UI\CustomControls\ChangeLogItem\Item.xaml"/>
-                
+
                 <!--//Theme//-->
                 <ResourceDictionary Source="\UI\Assets\Theme.xaml"/>
                 <ResourceDictionary Source="\UI\Style\Common\NavigationRBTN.xaml"/>
