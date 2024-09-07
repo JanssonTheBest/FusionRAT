@@ -32,7 +32,7 @@ namespace Server
 
             new Notification("Client Disconnected", "Evoq disconnected from server 2332 ", "#2686E6", "pack://application:,,,/UI/Assets/Icons/Info.png", "Transparent", "#1100ACFF").Show();
             new Notification("Client Disconnected", "Evoq disconnected from server 2332 ", "#E80000", "pack://application:,,,/UI/Assets/Icons/warning.png", "Transparent", "#11FF0000").Show();
-            new Notification("Client Disconnected", "Evoq disconnected from server 2332 Evoq disconnected from server 2332", "#52FF00", "pack://application:,,,/UI/Assets/Icons/sucsess.png", "Transparent", "#1152FF00").Show();§
+            new Notification("Client Disconnected", "Evoq disconnected from server 2332 Evoq disconnected from server 2332 from server 2332 from server 2332 from server 2332 from server 2332 from server 2332 from server 2332", "#52FF00", "pack://application:,,,/UI/Assets/Icons/sucsess.png", "Transparent", "#1152FF00").Show();
         }
 
         private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
