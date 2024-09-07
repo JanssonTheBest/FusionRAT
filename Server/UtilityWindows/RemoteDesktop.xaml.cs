@@ -34,10 +34,11 @@ namespace Server.UtilityWindows
         public RemoteDesktop(ServerSession session)
         {
             InitializeComponent();
+
             ct = cts.Token;
             _session = session;
+
             session.OnRemoteDesktop += HandlePacket;
-            CopyAndSendDependecies();
             _pipe = new();
 
             Closed += WindowIsClosing;
@@ -45,14 +46,18 @@ namespace Server.UtilityWindows
             triggerd = (FindResource("ControlPanel_Triggered") as Storyboard);
             default_Down = (FindResource("ControlPanel_Default_Down") as Storyboard);
             default_Up = (FindResource("ControlPanel_Default_Up") as Storyboard);
+
+            _session.SendPlugin(typeof(RemoteDesktopPlugin.Plugin));
         }
 
         private async void WindowIsClosing(object? sender, EventArgs e)
         {
-           await Stop();
+            await Stop();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
-        SemaphoreSlim semaphore = new SemaphoreSlim(1,1);
+        SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
         private async void HandlePacket(object? sender, EventArgs e)
         {
             var dto = sender as RemoteDesktopDTO;
@@ -61,14 +66,23 @@ namespace Server.UtilityWindows
                 AssignScreens(dto.Options);
                 return;
             }
+
+            if (dto?.LibAVFiles != null)
+            {
+                CopyAndSendDependecies();
+                return;
+            }
+
+
             try
             {
-                await semaphore.WaitAsync(ct);
-                await _pipe.Writer.WriteAsync(dto.VideoChunk, ct);
+                await semaphore.WaitAsync();
+                await _pipe.Writer.WriteAsync(dto.VideoChunk);
                 semaphore.Release();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                semaphore.Release();    
             }
         }
 
@@ -78,7 +92,9 @@ namespace Server.UtilityWindows
             await _session.SendPacketAsync(new RemoteDesktopDTO());
             cts.Cancel();
             _videoStreamPlayer?.Stop();
-            
+            _pipe.Reader.Complete();
+            _pipe.Writer.Complete();
+            _pipe.Reset();
         }
 
         private void AssignScreens(string[] screens)
@@ -108,17 +124,19 @@ namespace Server.UtilityWindows
             _bitmap = new(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
             frame.Source = _bitmap;
             _videoStreamPlayer = new(_bitmap, _pipe.Reader);
+            bool result = cts.TryReset();
+            ct = cts.Token;
             _videoStreamPlayer.Start();
             _session.SendPacketAsync(new RemoteDesktopDTO()
             {
                 Options = options
             });
+
+
         }
 
         private async void CopyAndSendDependecies()
         {
-            await _session.SendPlugin(typeof(RemoteDesktopPlugin.Plugin));
-
             string[] files = Directory.GetFiles(ffmpeg.RootPath).Select(a => a.Substring(a.LastIndexOf("\\") + 1, a.Length - a.LastIndexOf("\\") - 1)).ToArray();
 
             Dictionary<string, byte[]> libavFiles = new Dictionary<string, byte[]>();
@@ -126,8 +144,12 @@ namespace Server.UtilityWindows
             foreach (string file in files)
             {
                 string path = Path.Combine(ffmpeg.RootPath, file);
-                libavFiles.Add(file, File.ReadAllBytes(path));
+                libavFiles.Add(file, await File.ReadAllBytesAsync(path));
             }
+
+            string ffmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "FFmpeg.AutoGen.dll");
+
+            libavFiles.Add("FFmpeg.AutoGen.dll", await File.ReadAllBytesAsync(ffmpegPath));
 
             RemoteDesktopDTO dto = new RemoteDesktopDTO()
             {

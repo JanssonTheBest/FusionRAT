@@ -375,7 +375,7 @@
 
             <!-- Main Content -->
             <Grid Grid.Row="2">
-                <Image x:Name="frame" Stretch="Fill" Panel.ZIndex="-1"/>
+                <Image x:Name="frame" Stretch="Fill" Panel.ZIndex="-1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
             </Grid>
 
             <Grid x:Name="ControlPanel_Grid" Height="71" VerticalAlignment="Bottom" Margin="0,0,0,-51" Grid.Row="1">

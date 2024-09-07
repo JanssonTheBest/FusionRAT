@@ -11,13 +11,13 @@ using SharpDX.Direct3D11;
 using SharpDX;
 using System.Runtime.CompilerServices;
 using System.Buffers;
+using Common.Plugin;
 
 namespace RemoteDesktopPlugin
 {
     public unsafe class Plugin
     {
         private BlockingCollection<IntPtr> framesToEncodeBuffer = new BlockingCollection<IntPtr>();
-        private BlockingCollection<byte[]> framesToSendBuffer = new BlockingCollection<byte[]>();
         private CancellationTokenSource cts = new CancellationTokenSource();
         private CancellationToken ct;
         Pipe pipe = new Pipe();
@@ -27,10 +27,36 @@ namespace RemoteDesktopPlugin
 
         public Plugin(Session session)
         {
+
+
             _session = session;
             _session.OnRemoteDesktop += HandlePacket;
             ct = cts.Token;
-            //ffmpeg.av_log_set_level(ffmpeg.AV_LOG_DEBUG);
+            string currentPath = Path.GetFullPath(Directory.GetCurrentDirectory());
+            string ffmpegRootPath = Path.GetFullPath(ffmpeg.RootPath);
+            if (AreDirectoriesSame(currentPath,ffmpegRootPath))
+            {
+                RequestDependencies();
+            }
+            else
+            {
+                SendScreens();
+            }
+        }
+
+        bool AreDirectoriesSame(string path1, string path2)
+        {
+            var fullPath1 = Path.GetFullPath(path1).TrimEnd(Path.DirectorySeparatorChar);
+            var fullPath2 = Path.GetFullPath(path2).TrimEnd(Path.DirectorySeparatorChar);
+            return string.Equals(fullPath1, fullPath2, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void RequestDependencies()
+        {
+            _session.SendPacketAsync(new RemoteDesktopDTO()
+            {
+                LibAVFiles = new Dictionary<string, byte[]>()
+            });
         }
 
         private void HandlePacket(object? sender, EventArgs e)
@@ -52,7 +78,6 @@ namespace RemoteDesktopPlugin
             }
 
             Stop();
-            GC.Collect();
         }
 
 
@@ -61,12 +86,14 @@ namespace RemoteDesktopPlugin
         private void InitilizeDependencies(Dictionary<string, byte[]> nameFilePairs)
         {
             ffmpeg.RootPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+
             Directory.CreateDirectory(ffmpeg.RootPath);
 
             foreach (var dependency in nameFilePairs)
             {
                 File.WriteAllBytes(Path.Combine(ffmpeg.RootPath, dependency.Key), dependency.Value);
             }
+
             SendScreens();
         }
 
@@ -108,8 +135,53 @@ namespace RemoteDesktopPlugin
             screenCaptureThread.Join();
             pipe.Writer.Complete();
             while (framesToEncodeBuffer.TryTake(out _)) ;
-            Directory.Delete(ffmpeg.RootPath, true);
+            _session.OnRemoteDesktop -= HandlePacket;
+            _session.OnDisposePlugin.DynamicInvoke(this, EventArgs.Empty);
             GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        // Import FreeLibrary from kernel32.dll
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool FreeLibrary(IntPtr hModule);
+
+        public static void FreeLibrariesFromPath(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Console.WriteLine($"Directory not found: {path}");
+                return;
+            }
+
+            // Get all DLL files in the specified path
+            string[] dllFiles = Directory.GetFiles(path, "*.dll");
+
+            foreach (string dll in dllFiles)
+            {
+                string fileName = Path.GetFileName(dll);
+                IntPtr handle = GetModuleHandle(fileName);
+
+                if (handle != IntPtr.Zero)
+                {
+                    // Try to free the library
+                    if (FreeLibrary(handle))
+                    {
+                        Console.WriteLine($"Successfully freed {fileName}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Failed to free {fileName}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Library {fileName} not loaded.");
+                }
+            }
         }
 
         private int WriteCallback(void* opaque, byte* buf, int buf_size)
@@ -125,9 +197,11 @@ namespace RemoteDesktopPlugin
 
         private void Start(int fps, int bitrate, int adapter, int output)
         {
+            cts.TryReset();
+            ct = cts.Token;
             if (startThread != null)
             {
-                if (!startThread.IsAlive)
+                if (startThread.IsAlive)
                 {
                     Stop();
                 }
@@ -239,6 +313,7 @@ namespace RemoteDesktopPlugin
                 }
                 finally
                 {
+                    ffmpeg.avcodec_close(codecContext);
                     ffmpeg.av_packet_free(&packet);
                     ffmpeg.sws_freeContext(swsContext);
                     ffmpeg.av_free(codecContext);

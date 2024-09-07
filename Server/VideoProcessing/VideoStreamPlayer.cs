@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using FFmpeg.AutoGen;
 using System.Buffers;
 using System.Windows;
+using System.Runtime.Intrinsics.X86;
+using System.Runtime.Intrinsics;
 
 namespace Server.VideoProcessing
 {
@@ -39,6 +41,8 @@ namespace Server.VideoProcessing
 
         public void Start()
         {
+            bool result = cts.TryReset();
+            ct = cts.Token;
             decodingThread = new Thread(DecodingThreadMethod);
             decodingThread.Start();
         }
@@ -99,43 +103,56 @@ namespace Server.VideoProcessing
             ffmpeg.avcodec_open2(codecContext, null, null);
 
             AVPacket* packet = ffmpeg.av_packet_alloc();
-
-            while (!ct.IsCancellationRequested)
+            try
             {
-                ffmpeg.av_packet_unref(packet);
-                result = ffmpeg.av_read_frame(formatContext, packet);
-
-                if (packet->stream_index != stream->index)
-                {
-                    continue;
-                }
-
-                result = ffmpeg.avcodec_send_packet(codecContext, packet);
-
                 while (!ct.IsCancellationRequested)
                 {
-                    AVFrame* frame = ffmpeg.av_frame_alloc();
-                    result = ffmpeg.avcodec_receive_frame(codecContext, frame);
+                    ffmpeg.av_packet_unref(packet);
+                    result = ffmpeg.av_read_frame(formatContext, packet);
 
-                    if (result == ffmpeg.AVERROR(ffmpeg.EAGAIN) || result == ffmpeg.AVERROR_EOF)
+                    if (packet->stream_index != stream->index)
                     {
-                        ffmpeg.av_frame_free(&frame);
-                        break;
+                        continue;
                     }
 
-                    var frameWrapper = new AVFrameWrapper(frame);
-                    decodedFramesBuffer.Add(frameWrapper, ct);
+                    result = ffmpeg.avcodec_send_packet(codecContext, packet);
+
+                    while (!ct.IsCancellationRequested)
+                    {
+                        AVFrame* frame = ffmpeg.av_frame_alloc();
+                        result = ffmpeg.avcodec_receive_frame(codecContext, frame);
+
+                        if (result == ffmpeg.AVERROR(ffmpeg.EAGAIN) || result == ffmpeg.AVERROR_EOF)
+                        {
+                            ffmpeg.av_frame_free(&frame);
+                            break;
+                        }
+
+                        var frameWrapper = new AVFrameWrapper(frame);
+
+
+                        decodedFramesBuffer.Add(frameWrapper, ct);
+
+
+                    }
                 }
             }
-
-            ffmpeg.av_packet_free(&packet);
-            ffmpeg.avcodec_free_context(&codecContext);
-            ffmpeg.avformat_close_input(&formatContext);
-            ffmpeg.av_free(ioContext->buffer);
-            ffmpeg.avio_context_free(&ioContext);
-            gcHandle.Free();
-
-            decodedFramesBuffer.CompleteAdding();
+            catch (Exception e)
+            {
+            }
+            finally
+            {
+                ffmpeg.av_packet_free(&packet);
+                ffmpeg.avcodec_free_context(&codecContext);
+                ffmpeg.avformat_close_input(&formatContext);
+                ffmpeg.av_free(ioContext->buffer);
+                ffmpeg.avio_context_free(&ioContext);
+                gcHandle.Free();
+                while (decodedFramesBuffer.TryTake(out _)) ;
+                decodedFramesBuffer.CompleteAdding();
+                probeStream.SetLength(0);
+                probeStream.Seek(0, SeekOrigin.Begin);
+            }
         }
 
 
@@ -146,7 +163,7 @@ namespace Server.VideoProcessing
             var converter = new FastYuvToRgbConverter();
             System.Timers.Timer timer = new System.Timers.Timer(1000);
             timer.Elapsed += FPSCallback;
-            Task.Run(timer.Start);
+            Task timerTask = Task.Run(timer.Start);
 
             while (!ct.IsCancellationRequested && !decodedFramesBuffer.IsCompleted)
             {
@@ -186,6 +203,11 @@ namespace Server.VideoProcessing
                 {
                     break;
                 }
+                finally
+                {
+                    timer.Stop();
+                    timerTask.Wait();
+                }
             }
         }
 
@@ -214,7 +236,7 @@ namespace Server.VideoProcessing
                     pipeReader.AdvanceTo(readResult.Buffer.GetPosition(bytesRead));
                 }
             }
-            catch (OperationCanceledException) {}
+            catch (OperationCanceledException) { }
 
             return bytesRead;
         }
@@ -244,6 +266,8 @@ namespace Server.VideoProcessing
             cts.Cancel();
             decodingThread.Join();
             bitmapThread.Join();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
     }
 
@@ -289,6 +313,181 @@ namespace Server.VideoProcessing
             }
         }
     }
+
+
+
+
+
+
+
+    //internal unsafe class FastYuvToRgbConverter
+    //{
+    //    private const int YOffset = 16;
+    //    private const int UVOffset = 128;
+    //    private const int YMultiplier = 298;
+    //    private const int UMultiplierB = 516;
+    //    private const int UMultiplierG = -100;
+    //    private const int VMultiplierG = -208;
+    //    private const int VMultiplierR = 409;
+
+    //    public void ConvertYuvToRgb(byte[] yPlane, byte[] uPlane, byte[] vPlane, byte[] rgbBuffer, int width, int height)
+    //    {
+    //        if (yPlane == null || uPlane == null || vPlane == null || rgbBuffer == null)
+    //            throw new ArgumentNullException("Input arrays cannot be null");
+
+    //        if (width <= 0 || height <= 0)
+    //            throw new ArgumentException("Width and height must be positive");
+
+    //        int ySize = width * height;
+    //        int uvSize = (width / 2) * (height / 2);
+    //        int rgbSize = rgbBuffer.Length;
+
+    //        if (yPlane.Length < ySize || uPlane.Length < uvSize || vPlane.Length < uvSize)
+    //            throw new ArgumentException("Input YUV arrays are not large enough for the specified dimensions");
+
+    //        if (rgbSize < width * height * 3)
+    //            throw new ArgumentException("RGB buffer is not large enough for the specified dimensions");
+
+    //        fixed (byte* yPtr = yPlane)
+    //        fixed (byte* uPtr = uPlane)
+    //        fixed (byte* vPtr = vPlane)
+    //        fixed (byte* rgbPtr = rgbBuffer)
+    //        {
+    //            if (Avx2.IsSupported)
+    //            {
+    //                ConvertYuvToRgbAvx2(yPtr, uPtr, vPtr, rgbPtr, width, height);
+    //            }
+    //            else
+    //            {
+    //                ConvertYuvToRgbFallback(yPtr, uPtr, vPtr, rgbPtr, width, height);
+    //            }
+    //        }
+    //    }
+
+    //    private static unsafe void ConvertYuvToRgbAvx2(byte* yPtr, byte* uPtr, byte* vPtr, byte* rgbPtr, int width, int height)
+    //    {
+    //        Vector256<int> yMul = Vector256.Create(YMultiplier);
+    //        Vector256<int> uMulB = Vector256.Create(UMultiplierB);
+    //        Vector256<int> uMulG = Vector256.Create(UMultiplierG);
+    //        Vector256<int> vMulG = Vector256.Create(VMultiplierG);
+    //        Vector256<int> vMulR = Vector256.Create(VMultiplierR);
+    //        Vector256<short> yOffset = Vector256.Create((short)YOffset);
+    //        Vector256<short> uvOffset = Vector256.Create((short)UVOffset);
+
+    //        int vectorWidth = Vector256<byte>.Count / 2; // 16 pixels at a time (changed from 32)
+    //        int vectorizedWidth = (width / vectorWidth) * vectorWidth;
+
+    //        for (int y = 0; y < height; y++)
+    //        {
+    //            byte* yLine = yPtr + y * width;
+    //            byte* uLine = uPtr + (y / 2) * (width / 2);
+    //            byte* vLine = vPtr + (y / 2) * (width / 2);
+    //            byte* rgbLine = rgbPtr + y * width * 3;
+
+    //            for (int x = 0; x < vectorizedWidth; x += vectorWidth)
+    //            {
+    //                Vector256<short> yVec = Avx2.ConvertToVector256Int16(yLine + x);
+    //                Vector256<short> uVec = Avx2.ConvertToVector256Int16(uLine + x / 2);
+    //                Vector256<short> vVec = Avx2.ConvertToVector256Int16(vLine + x / 2);
+
+    //                // Expand U and V to match Y
+    //                uVec = Avx2.UnpackLow(uVec, uVec);
+    //                vVec = Avx2.UnpackLow(vVec, vVec);
+
+    //                // Subtract offset
+    //                yVec = Avx2.SubtractSaturate(yVec, yOffset);
+    //                uVec = Avx2.SubtractSaturate(uVec, uvOffset);
+    //                vVec = Avx2.SubtractSaturate(vVec, uvOffset);
+
+    //                // Convert to int32 and multiply
+    //                Vector256<int> yLow = Avx2.MultiplyLow(Avx2.ConvertToVector256Int32(yVec.GetLower()), yMul);
+    //                Vector256<int> yHigh = Avx2.MultiplyLow(Avx2.ConvertToVector256Int32(yVec.GetUpper()), yMul);
+
+    //                Vector256<int> uLow = Avx2.ConvertToVector256Int32(uVec.GetLower());
+    //                Vector256<int> uHigh = Avx2.ConvertToVector256Int32(uVec.GetUpper());
+    //                Vector256<int> vLow = Avx2.ConvertToVector256Int32(vVec.GetLower());
+    //                Vector256<int> vHigh = Avx2.ConvertToVector256Int32(vVec.GetUpper());
+
+    //                // Calculate RGB values
+    //                Vector256<int> bLow = Avx2.Add(yLow, Avx2.MultiplyLow(uLow, uMulB));
+    //                Vector256<int> bHigh = Avx2.Add(yHigh, Avx2.MultiplyLow(uHigh, uMulB));
+    //                Vector256<int> gLow = Avx2.Add(Avx2.Add(yLow, Avx2.MultiplyLow(uLow, uMulG)), Avx2.MultiplyLow(vLow, vMulG));
+    //                Vector256<int> gHigh = Avx2.Add(Avx2.Add(yHigh, Avx2.MultiplyLow(uHigh, uMulG)), Avx2.MultiplyLow(vHigh, vMulG));
+    //                Vector256<int> rLow = Avx2.Add(yLow, Avx2.MultiplyLow(vLow, vMulR));
+    //                Vector256<int> rHigh = Avx2.Add(yHigh, Avx2.MultiplyLow(vHigh, vMulR));
+
+    //                // Right shift and saturate
+    //                Vector256<short> b = Avx2.PackSignedSaturate(Avx2.ShiftRightArithmetic(bLow, 8), Avx2.ShiftRightArithmetic(bHigh, 8));
+    //                Vector256<short> g = Avx2.PackSignedSaturate(Avx2.ShiftRightArithmetic(gLow, 8), Avx2.ShiftRightArithmetic(gHigh, 8));
+    //                Vector256<short> r = Avx2.PackSignedSaturate(Avx2.ShiftRightArithmetic(rLow, 8), Avx2.ShiftRightArithmetic(rHigh, 8));
+
+    //                // Pack to bytes with unsigned saturation
+    //                Vector256<byte> bBytes = Avx2.PackUnsignedSaturate(b, b);
+    //                Vector256<byte> gBytes = Avx2.PackUnsignedSaturate(g, g);
+    //                Vector256<byte> rBytes = Avx2.PackUnsignedSaturate(r, r);
+
+    //                // Interleave B, G, and R components
+    //                Vector256<byte> bg = Avx2.UnpackLow(bBytes, gBytes);
+    //                Vector256<byte> ra = Avx2.UnpackLow(rBytes, Vector256<byte>.Zero);
+
+    //                Vector256<byte> bgr0 = Avx2.UnpackLow(bg, ra);
+    //                Vector256<byte> bgr1 = Avx2.UnpackHigh(bg, ra);
+
+    //                // Store results
+    //                Avx2.Store(rgbLine + x * 3, bgr0);
+    //                Avx2.Store(rgbLine + x * 3 + 24, bgr1);
+    //            }
+
+    //            // Handle remaining pixels
+    //            for (int x = vectorizedWidth; x < width; x++)
+    //            {
+    //                int yValue = (yLine[x] - YOffset) * YMultiplier;
+    //                int u = uLine[x / 2] - UVOffset;
+    //                int v = vLine[x / 2] - UVOffset;
+
+    //                int r = (yValue + VMultiplierR * v) >> 8;
+    //                int g = (yValue + UMultiplierG * u + VMultiplierG * v) >> 8;
+    //                int b = (yValue + UMultiplierB * u) >> 8;
+
+    //                int index = x * 3;
+    //                rgbLine[index] = (byte)Math.Clamp(b, 0, 255);
+    //                rgbLine[index + 1] = (byte)Math.Clamp(g, 0, 255);
+    //                rgbLine[index + 2] = (byte)Math.Clamp(r, 0, 255);
+    //            }
+    //        }
+    //    }
+
+    //    private static unsafe void ConvertYuvToRgbFallback(byte* yPtr, byte* uPtr, byte* vPtr, byte* rgbPtr, int width, int height)
+    //    {
+    //        for (int y = 0; y < height; y++)
+    //        {
+    //            byte* yLine = yPtr + y * width;
+    //            byte* uLine = uPtr + (y / 2) * (width / 2);
+    //            byte* vLine = vPtr + (y / 2) * (width / 2);
+    //            byte* rgbLine = rgbPtr + y * width * 3;
+
+    //            for (int x = 0; x < width; x++)
+    //            {
+    //                int yValue = (yLine[x] - YOffset) * YMultiplier;
+    //                int u = uLine[x / 2] - UVOffset;
+    //                int v = vLine[x / 2] - UVOffset;
+
+    //                int r = (yValue + VMultiplierR * v) >> 8;
+    //                int g = (yValue + UMultiplierG * u + VMultiplierG * v) >> 8;
+    //                int b = (yValue + UMultiplierB * u) >> 8;
+
+    //                int index = x * 3;
+    //                rgbLine[index] = (byte)Math.Clamp(b, 0, 255);
+    //                rgbLine[index + 1] = (byte)Math.Clamp(g, 0, 255);
+    //                rgbLine[index + 2] = (byte)Math.Clamp(r, 0, 255);
+    //            }
+    //        }
+    //    }
+    //}
+
+
+
+
 
     internal unsafe class AVFrameWrapper : IDisposable
     {

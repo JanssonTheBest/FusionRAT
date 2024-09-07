@@ -35,7 +35,7 @@ namespace Common.DTOs.MessagePack
 
         public async Task HandlePacket(Session session)
         {
-            session.OnRemoteDesktop(this, EventArgs.Empty);
+            session.OnRemoteDesktop.Invoke(this, EventArgs.Empty);
         }
     }
 

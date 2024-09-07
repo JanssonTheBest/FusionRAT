@@ -30,6 +30,7 @@ namespace Common.Communication
         private TcpClient _client;
 
         public EventHandler OnPlugin;
+        public EventHandler OnDisposePlugin;
         public EventHandler OnPing;
         public EventHandler OnClientInfo;
         public EventHandler OnRemoteDesktop;
