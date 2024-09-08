@@ -389,36 +389,10 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Orientation="Horizontal">
-                            <ToggleButton Style="{StaticResource startTBTN}"
-                                          Margin="0,0,22,0"
-                                          Checked="ToggleStream_Checked"
-                                          Unchecked="ToggleStream_Unchecked">
-                                <ToggleButton.Triggers>
-                                    <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="tbox" Storyboard.TargetProperty="Text">
-                                                    <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Stop" />
-                                                </StringAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <StringAnimationUsingKeyFrames Storyboard.TargetName="tbox" Storyboard.TargetProperty="Text">
-                                                    <DiscreteStringKeyFrame KeyTime="0:0:0" Value="Start" />
-                                                </StringAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </ToggleButton.Triggers>
-                                <TextBlock Text="Start" Margin="0,0,0,1" x:Name="tbox" FontSize="13" Foreground="#fff" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </ToggleButton>
 
-                            <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Screen:" VerticalAlignment="Center" Margin="0,0,11,0"/>
-                                <ComboBox Style="{StaticResource Common_ComboBox}" x:Name="screenControlComboBox" Width="103" Height="28" SelectedIndex="0">
+                                <ComboBox Style="{StaticResource Common_ComboBox}" x:Name="screenControlComboBox" Width="103" Height="28" SelectedIndex="0" SelectionChanged="screenControlComboBox_SelectionChanged">
                                 
                                 </ComboBox>
                             </StackPanel>

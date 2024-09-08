@@ -113,57 +113,31 @@ namespace Server.UtilityWindows
 
         private async void ToggleStream_Checked(object sender, RoutedEventArgs e)
         {
-            if (screenControlComboBox.SelectedItem is ComboBoxItem selectedItem)
-            {
-                string[] options = ((string)selectedItem.Content).Split(",");
-
-                _bitmap = new WriteableBitmap(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
-                frame.Source = _bitmap;
-
-                _videoStreamPlayer = new VideoStreamPlayer();
-                cts = new CancellationTokenSource();
-                ct = cts.Token;
-
-                _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
-
-                await _session.SendPacketAsync(new RemoteDesktopDTO()
-                {
-                    Options = options
-                });
-            }
-            else
-            {
-                MessageBox.Show("Please select a screen before starting the stream.", "No Screen Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
-                ((ToggleButton)sender).IsChecked = false; 
-            }
+           
         }
 
         private async void ToggleStream_Unchecked(object sender, RoutedEventArgs e)
         {
-            await Stop();
         }
 
         private async Task ChangeScreen(object screen)
         {
-            if (screen is ComboBoxItem selectedItem)
-            {
-                string[] options = ((string)selectedItem.Content).Split(",");
-                await _session.SendPacketAsync(new RemoteDesktopDTO() { Options = options });
-                cts.Cancel();
-                await Task.Delay(200);
-                _videoStreamPlayer?.Stop();
-                _pipe.Reader.CancelPendingRead();
-                _pipe.Reader.Complete();
-                _pipe.Writer.Complete();
+            ComboBoxItem button = (ComboBoxItem)screen;
+            string[] options = ((string)button.Content).Split(",");
+            await _session.SendPacketAsync(new RemoteDesktopDTO() { Options = options });
+            cts.Cancel();
+            await Task.Delay(200);
+            _videoStreamPlayer?.Stop();
+            _pipe.Reader.CancelPendingRead();
+            _pipe.Reader.Complete();
+            _pipe.Writer.Complete();
+            _bitmap = new(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
+            frame.Source = _bitmap;
+            _pipe = new Pipe();
 
-                _bitmap = new WriteableBitmap(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
-                frame.Source = _bitmap;
-                _pipe = new Pipe();
-
-                cts = new CancellationTokenSource();
-                ct = cts.Token;
-                _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
-            }
+            cts = new CancellationTokenSource();
+            ct = cts.Token;
+            _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
         }
 
         private async void CopyAndSendDependencies()
@@ -262,5 +236,32 @@ namespace Server.UtilityWindows
             window?.Close();
         }
         #endregion
+
+        private async void screenControlComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            object item = screenControlComboBox.SelectedItem;
+            if (_videoStreamPlayer != null)
+            {
+                if (_videoStreamPlayer.IsPlaying)
+                {
+                    await ChangeScreen(sender);
+                    return;
+                }
+            }
+
+            ComboBoxItem button = (ComboBoxItem)item;
+            string[] options = ((string)button.Content).Split(",");
+            _bitmap = new(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
+            frame.Source = _bitmap;
+            _videoStreamPlayer = new();
+            cts = new CancellationTokenSource();
+            ct = cts.Token;
+            _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
+            _session.SendPacketAsync(new RemoteDesktopDTO()
+            {
+                Options = options
+            });
+
+        }
     }
 }
