@@ -252,9 +252,16 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/UI/Assets/Icons/Logo.png" Margin="10,5,0,0" Width="18" VerticalAlignment="Top" />
-                        <TextBlock x:Name="fpsTextBlockContent" VerticalAlignment="Top" Margin="5,5,0,0" Foreground="{DynamicResource Text}" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="/UI/Assets/Icons/Logo.png" Margin="10,0,6,0" Width="18" VerticalAlignment="Top" />
+                        <TextBlock Text="Fusion - Remote Desktop | " FontSize="13" FontWeight="SemiBold"/>
+
+                        <!--FPS textbloxk-->
+                        <TextBlock Text="60 FPS" FontSize="13" x:Name="fpsTblock"/>
+                        <TextBlock Text=" : " FontSize="13"/>
+                        
+                        <!--MS textbloxk-->
+                        <TextBlock Text="30 MS" FontSize="13" x:Name="msTblock"/>
                     </StackPanel>
 
                     <Button Style="{StaticResource ButtonAnimationStyle}" Grid.Column="1" Width="44" VerticalAlignment="Top" Height="27" Click="MinimizeButton_Click">
@@ -395,6 +402,8 @@
                                 <ComboBox Style="{StaticResource Common_ComboBox}" x:Name="screenControlComboBox" Width="103" Height="28" SelectedIndex="0" SelectionChanged="screenControlComboBox_SelectionChanged">
                                 
                                 </ComboBox>
+                            
+                            
                             </StackPanel>
                         </StackPanel>
 
