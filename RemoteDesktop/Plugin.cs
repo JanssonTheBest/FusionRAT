@@ -84,7 +84,7 @@ namespace RemoteDesktopPlugin
                     Thread.Sleep(200);
                 }
 
-                Start(60, 2500000, adapter, output);
+                Start(70, 250000, adapter, output);
                 return;
             }
 
@@ -258,7 +258,7 @@ namespace RemoteDesktopPlugin
                     bool navidia = true;
                     AVCodec* codec = null;
 
-                    codec = ffmpeg.avcodec_find_encoder_by_name("h264_nvenc");
+                    codec = null;
                     if (codec == null)
                     {
                         codec = ffmpeg.avcodec_find_encoder(AVCodecID.AV_CODEC_ID_H264);
@@ -294,10 +294,12 @@ namespace RemoteDesktopPlugin
 
                     if (!navidia)
                     {
-                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "ultrafast", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "zerolatency", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "crf", "23", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "x264opts", "no-mbtree:sliced-threads:sync-lookahead=0", 0);
+                     
+
+                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "ultrafast", 0);         // Fastest encoding, lowest quality
+                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "zerolatency", 0);         // Ensures low-latency encoding, removes lookahead, buffers
+                        ffmpeg.av_opt_set(codecContext->priv_data, "crf", "30", 0);                   // Balance quality and speed (lower CRF = higher quality, more CPU usage)
+                        ffmpeg.av_opt_set(codecContext->priv_data, "x264opts", "no-mbtree:sliced-threads:sync-lookahead=0:scenecut=0:intra-refresh=1", 0);
                     }
                     else
                     {

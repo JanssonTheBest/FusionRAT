@@ -1,6 +1,7 @@
 ﻿using Common.DTOs.MessagePack;
 using MessagePack;
 using System.Buffers;
+using System.Collections.Concurrent;
 using System.IO.Pipelines;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -23,6 +24,7 @@ namespace Common.Communication
         private Pipe pipe = new();
         private PipeReader pipeReader;
         private PipeWriter pipeWriter;
+        BlockingCollection<IPacket> sendBuffer = new BlockingCollection<IPacket>();
         private int headerLength = 4;
         private readonly MessagePackSerializerOptions messagePackSerializerOptions = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block).WithResolver(MessagePack.Resolvers.StandardResolver.Instance);
         private SemaphoreSlim sendSemaphore = new SemaphoreSlim(1, 1);
@@ -43,7 +45,8 @@ namespace Common.Communication
             pipeReader = pipe.Reader;
             pipeWriter = pipe.Writer;
             _client = connectionProperties.Client;
-            Task.Run(StartReceivingData);
+            Task.Factory.StartNew(StartReceivingData, TaskCreationOptions.LongRunning);
+            Task.Factory.StartNew(SenderWorkerMethod, TaskCreationOptions.LongRunning);
         }
 
 
@@ -71,25 +74,43 @@ namespace Common.Communication
                 return;
             }
         }
-        private MemoryStream tempBuffer = new();
         public async Task SendPacketAsync(IPacket packet)
         {
-            try
+            sendBuffer.Add(packet);
+        }
+
+        private MemoryStream tempBuffer = new();
+        private readonly byte[] lengthBuffer = new byte[4];
+
+        private async Task SenderWorkerMethod()
+        {
+            while (!cancellationTokenSource.Token.IsCancellationRequested)
             {
-                await sendSemaphore.WaitAsync();
-                byte[] data = MessagePackSerializer.Serialize(packet);
-                await _sslStream.WriteAsync(BitConverter.GetBytes(data.Length));
-                await _sslStream.WriteAsync(data);
-                tempBuffer.SetLength(0);
-                sendSemaphore.Release();
-                //await _sslStream.FlushAsync();
-            }
-            catch (Exception ex)
-            {
-                tempBuffer.SetLength(0);
-                sendSemaphore.Release();
+                try
+                {
+                    var message = sendBuffer.Take();
+                    byte[] data = MessagePackSerializer.Serialize(message);
+                    int length = data.Length;
+                    BitConverter.TryWriteBytes(lengthBuffer, length);
+                    await _sslStream.WriteAsync(lengthBuffer, 0, lengthBuffer.Length);
+                    await _sslStream.WriteAsync(data, 0, data.Length);
+                    await _sslStream.FlushAsync();
+                }
+                catch (IOException ioEx)
+                {
+                    Console.WriteLine($"Network error: {ioEx.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+                finally
+                {
+                    tempBuffer.SetLength(0);
+                }
             }
         }
+
 
         private async Task ExtractPacketsLoop()
         {

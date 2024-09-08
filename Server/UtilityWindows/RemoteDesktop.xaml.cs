@@ -113,7 +113,7 @@ namespace Server.UtilityWindows
 
         private async void ToggleStream_Checked(object sender, RoutedEventArgs e)
         {
-           
+
         }
 
         private async void ToggleStream_Unchecked(object sender, RoutedEventArgs e)
@@ -254,12 +254,23 @@ namespace Server.UtilityWindows
             _bitmap = new(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
             frame.Source = _bitmap;
             _videoStreamPlayer = new();
+            _videoStreamPlayer.OnFPSCallback += UpdateFPSAndMS;
             cts = new CancellationTokenSource();
             ct = cts.Token;
             _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
             _session.SendPacketAsync(new RemoteDesktopDTO()
             {
                 Options = options
+            });
+
+        }
+
+        private void UpdateFPSAndMS(object? sender, VideoStreamInfo e)
+        {
+            Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                fpsTblock.Text = $"{e.FPS} FPS";
+                msTblock.Text = $"{e.DelayMS} MS";
             });
 
         }
