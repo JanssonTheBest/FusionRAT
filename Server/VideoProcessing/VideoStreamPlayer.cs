@@ -48,7 +48,7 @@ namespace Server.VideoProcessing
         private void DecodingThreadMethod()
         {
             int result = 0;
-            ulong bufferSize = 4096;
+            ulong bufferSize = 4096*3;
             int probeSize = 1024 * 500;
             AVFormatContext* formatContext = ffmpeg.avformat_alloc_context();
             formatContext->probesize = probeSize;

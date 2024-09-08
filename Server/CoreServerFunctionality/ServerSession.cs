@@ -57,12 +57,15 @@ namespace Server.CoreServerFunctionality
         DateTime oldTime = DateTime.Now;
         private async void HandlePing(object? sender, EventArgs e)
         {
-            var dateTime = DateTime.Now;
-            Ping = Convert.ToString((dateTime - oldTime).Milliseconds);
-            oldTime = dateTime;
-            await ClientHandler.UpdateClients(this);
-            await Task.Delay(2000);
-            await SendPacketAsync(new PingDTO());
+            Task.Run(async() =>
+            {
+                var dateTime = DateTime.Now;
+                Ping = Convert.ToString((dateTime - oldTime).Milliseconds);
+                oldTime = dateTime;
+                await ClientHandler.UpdateClients(this);
+                await Task.Delay(2000);
+                await SendPacketAsync(new PingDTO());
+            });
         }
 
         private void AssignClientInfo(ClientInfoDTO clientInfoDTO)
