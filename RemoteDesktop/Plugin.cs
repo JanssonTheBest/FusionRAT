@@ -268,7 +268,7 @@ namespace RemoteDesktopPlugin
 
                     formatContext = ffmpeg.avformat_alloc_context();
 
-                    int bufferSize = 4096*3;
+                    int bufferSize = 4096*8;
                     IntPtr buffer = (IntPtr)ffmpeg.av_malloc((ulong)bufferSize);
                     gcHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                     ioContext = ffmpeg.avio_alloc_context(
@@ -308,17 +308,32 @@ namespace RemoteDesktopPlugin
                         ffmpeg.av_opt_set(codecContext->priv_data, "zerolatency", "1", 0);
 
 
-                        ffmpeg.av_opt_set(codecContext->priv_data, "rc", "cbr", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "cq", "28", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "rc", "vbr", 0);
 
-                        ffmpeg.av_opt_set(codecContext->priv_data, "delay", "0", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "forced-idr", "1", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "b_adapt", "0", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "spatial-aq", "1", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "temporal-aq", "1", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "nonref_p", "1", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "strict_gop", "1", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "no-scenecut", "1", 0);
+
+
+                        codecContext->rc_max_rate = 2500000;  // Maximum bitrate: 7.5 Mbps
+                        codecContext->rc_min_rate = (int)bitrate/8;  // Minimum bitrate: 2.5 Mbps
+                        codecContext->rc_buffer_size = 15000000;  // VBV buffer size: 15 Mbps
+
+                        // Set the rate control mode to VBR
+                        ffmpeg.av_opt_set(codecContext->priv_data, "rc", "vbr", 0);
+
+                        // Set the VBR quality factor (0-51, lower is better quality)
+                        ffmpeg.av_opt_set_int(codecContext->priv_data, "cq", 23, 0);
+
+
+
+                        //ffmpeg.av_opt_set(codecContext->priv_data, "cq", "28", 0);
+
+                        //ffmpeg.av_opt_set(codecContext->priv_data, "delay", "0", 0);
+                        //ffmpeg.av_opt_set(codecContext->priv_data, "forced-idr", "1", 0);
+                        //ffmpeg.av_opt_set(codecContext->priv_data, "b_adapt", "0", 0);
+                        //ffmpeg.av_opt_set(codecContext->priv_data, "spatial-aq", "1", 0);
+                        //ffmpeg.av_opt_set(codecContext->priv_data, "temporal-aq", "1", 0);
+                        //ffmpeg.av_opt_set(codecContext->priv_data, "nonref_p", "1", 0);
+                        //ffmpeg.av_opt_set(codecContext->priv_data, "strict_gop", "1", 0);
+                        //ffmpeg.av_opt_set(codecContext->priv_data, "no-scenecut", "1", 0);
 
                     }
 
