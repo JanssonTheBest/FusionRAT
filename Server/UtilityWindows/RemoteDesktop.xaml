@@ -9,6 +9,31 @@
 
     <Window.Resources>
 
+        <Style TargetType="{x:Type Button}" x:Key="HighODown">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Width="26"
+                                Height="10"
+                                Background="{DynamicResource Secondary}"
+                                CornerRadius="3">
+                            <Path x:Name="icon" Width="7" Height="9" Margin="1,1,0,0" Fill="{DynamicResource Text}" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center" Data="M13.071,12L9.25,8.179c-0.414-0.414-0.414-1.086,0-1.5l0,0c0.414-0.414,1.086-0.414,1.5,0l4.614,4.614 c0.391,0.391,0.391,1.024,0,1.414l-4.614,4.614c-0.414,0.414-1.086,0.414-1.5,0h0c-0.414-0.414-0.414-1.086,0-1.5L13.071,12z">
+                                <Path.LayoutTransform>
+                                    <RotateTransform Angle="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Path.LayoutTransform>
+                            </Path>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="icon" Value="{DynamicResource ResourceKey=Accent}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style TargetType="{x:Type ToggleButton}" x:Key="ToggleButtonBase">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
@@ -81,7 +106,7 @@
                                             </DoubleAnimation>
                                             <ColorAnimation Storyboard.TargetName="toggleSwitchBackgroundGradientStop"
                                                 Storyboard.TargetProperty="Color"
-                                                To="#1E9BFD" Duration="0:0:0.4">
+                                                To="{StaticResource Trigger_Accent}" Duration="0:0:0.4">
                                                 <ColorAnimation.EasingFunction>
                                                     <QuadraticEase EasingMode="EaseInOut"/>
                                                 </ColorAnimation.EasingFunction>
@@ -173,13 +198,13 @@
                             </ToggleButton>
 
                             <Popup IsOpen="{TemplateBinding IsDropDownOpen}"
-                               Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-                               AllowsTransparency="True"
-                               Focusable="True"
-                               PopupAnimation="Slide" 
-                               VerticalOffset="1"
-                               StaysOpen="True"
-                               Placement="Bottom">
+                                   Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                   AllowsTransparency="True"
+                                   Focusable="True"
+                                   PopupAnimation="Slide" 
+                                   VerticalOffset="1"
+                                   StaysOpen="True"
+                                   Placement="Bottom">
 
                                 <Border CornerRadius="0,0,5,5" MaxHeight="60" Background="#202020">
                                     <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" SnapsToDevicePixels="True" CanContentScroll="False">
@@ -395,19 +420,64 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Screen:" VerticalAlignment="Center" Margin="0,0,11,0"/>
+                        <ComboBox Style="{StaticResource Common_ComboBox}" x:Name="screenControlComboBox" Width="103" Height="28" SelectedIndex="0" SelectionChanged="screenControlComboBox_SelectionChanged">
 
-                        <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Screen:" VerticalAlignment="Center" Margin="0,0,11,0"/>
-                                <ComboBox Style="{StaticResource Common_ComboBox}" x:Name="screenControlComboBox" Width="103" Height="28" SelectedIndex="0" SelectionChanged="screenControlComboBox_SelectionChanged">
-                                
-                                </ComboBox>
-                            
-                            
+                        </ComboBox>
+
+                        <StackPanel Margin="22,0,0,0"
+                                    Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Height="28"
+                                        CornerRadius="5,0,0,5"
+                                        MaxWidth="70"
+                                        Background="{DynamicResource Primary}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Padding="10,0,0,0" Text="Fps: " FontSize="13" FontWeight="Medium" VerticalAlignment="Center" Margin="0,0,0,1"/>
+                                        <TextBox Style="{StaticResource Common_TextBox}" Padding="0,0,10,0" Text="60" FontSize="13" FontWeight="Medium" VerticalAlignment="Center" Margin="0,0,0,1"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Height="28"
+                                        Width="46"
+                                        CornerRadius="0,5,5,0"
+                                        BorderThickness="1,0,0,0"
+                                        BorderBrush="{DynamicResource Border}"
+                                        Background="{DynamicResource Primary}">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <Button Style="{StaticResource HighODown}" Margin="0,0,0,2" Tag="-90" />
+                                        <Button Style="{StaticResource HighODown}" Tag="90"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="11,0,0,0">
+                                <Border Height="28"
+                                        CornerRadius="5,0,0,5"
+                                        MaxWidth="100"
+                                        Background="{DynamicResource Primary}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Padding="10,0,0,0" Text="kbps: " FontSize="13" FontWeight="Medium" VerticalAlignment="Center" Margin="0,0,0,1"/>
+                                        <TextBox Style="{StaticResource Common_TextBox}" Padding="0,0,10,0" Text="2500" FontSize="13" FontWeight="Medium" VerticalAlignment="Center" Margin="0,0,0,1"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Height="28"
+                                        Width="46"
+                                        CornerRadius="0,5,5,0"
+                                        BorderThickness="1,0,0,0"
+                                        BorderBrush="{DynamicResource Border}"
+                                        Background="{DynamicResource Primary}">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <Button Style="{StaticResource HighODown}" Margin="0,0,0,2" Tag="-90" />
+                                        <Button Style="{StaticResource HighODown}" Tag="90"/>
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </StackPanel>
+                    </StackPanel>
 
-                        <StackPanel Orientation="Horizontal"
+                    <StackPanel Orientation="Horizontal"
                                     Grid.Column="2">
 
                             <StackPanel Orientation="Horizontal">
