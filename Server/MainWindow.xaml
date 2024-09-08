@@ -15,7 +15,7 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
-        <ResourceDictionary >
+        <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="\UI\Assets\MainAnimations.xaml"/>
             </ResourceDictionary.MergedDictionaries>

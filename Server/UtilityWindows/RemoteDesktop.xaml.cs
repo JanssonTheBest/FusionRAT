@@ -1,35 +1,32 @@
-﻿using System.Windows.Controls.Primitives;
-using Server.UtilityWindows.Interface;
-using Server.CoreServerFunctionality;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using Common.DTOs.MessagePack;
-using System.Windows.Input;
-using System.Drawing;
-using System.Windows;
-using System.Timers;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using Server.VideoProcessing;
-using System.Windows.Media;
 using System.IO.Pipelines;
-using FFmpeg.AutoGen;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Media3D;
-using System.Collections.Concurrent;
-using System.Buffers;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Server.CoreServerFunctionality;
+using Server.UtilityWindows.Interface;
+using Server.VideoProcessing;
+using Common.DTOs.MessagePack;
+using FFmpeg.AutoGen;
 
 namespace Server.UtilityWindows
 {
-
     public partial class RemoteDesktop : Window, IUtilityWindow
     {
-        ServerSession _session;
-        VideoStreamPlayer _videoStreamPlayer;
-        WriteableBitmap _bitmap;
-        Pipe _pipe;
-        CancellationTokenSource cts = new CancellationTokenSource();
-        CancellationToken ct;
+        private ServerSession _session;
+        private VideoStreamPlayer _videoStreamPlayer;
+        private WriteableBitmap _bitmap;
+        private Pipe _pipe;
+        private CancellationTokenSource cts = new CancellationTokenSource();
+        private CancellationToken ct;
 
         public RemoteDesktop(ServerSession session)
         {
@@ -39,13 +36,9 @@ namespace Server.UtilityWindows
             _session = session;
 
             session.OnRemoteDesktop += HandlePacket;
-            _pipe = new();
+            _pipe = new Pipe();
 
             Closed += WindowIsClosing;
-
-            triggerd = (FindResource("ControlPanel_Triggered") as Storyboard);
-            default_Down = (FindResource("ControlPanel_Default_Down") as Storyboard);
-            default_Up = (FindResource("ControlPanel_Default_Up") as Storyboard);
 
             _session.SendPlugin(typeof(RemoteDesktopPlugin.Plugin));
         }
@@ -59,7 +52,7 @@ namespace Server.UtilityWindows
             GC.WaitForPendingFinalizers();
         }
 
-        SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+        private SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
         private async void HandlePacket(object? sender, EventArgs e)
         {
             var dto = sender as RemoteDesktopDTO;
@@ -71,7 +64,7 @@ namespace Server.UtilityWindows
 
             if (dto?.LibAVFiles != null)
             {
-                CopyAndSendDependecies();
+                CopyAndSendDependencies();
                 return;
             }
 
@@ -84,14 +77,12 @@ namespace Server.UtilityWindows
             {
                 await semaphore.WaitAsync();
                 await _pipe.Writer.WriteAsync(dto.VideoChunk);
-                semaphore.Release();
             }
-            catch (Exception ex)
+            finally
             {
                 semaphore.Release();
             }
         }
-
 
         private async Task Stop()
         {
@@ -109,70 +100,75 @@ namespace Server.UtilityWindows
                 var screenInfo = screen.Split('|');
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    Button button = new Button();
-                    button.Content = string.Join(",", screenInfo);
-                    button.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    button.VerticalAlignment = VerticalAlignment.Stretch;
-                    button.Foreground = System.Windows.SystemColors.ControlLightBrush;
-                    button.Background = System.Windows.SystemColors.ControlDarkDarkBrush;
-                    button.Click += ScreenSelected;
-                    screenControlPanel.Children.Add(button);
+                    ComboBoxItem comboBoxItem = new ComboBoxItem
+                    {
+                        Content = string.Join(",", screenInfo),
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        VerticalAlignment = VerticalAlignment.Stretch
+                    };
+                    screenControlComboBox.Items.Add(comboBoxItem);
                 });
             }
-
         }
 
-        private async void ScreenSelected(object sender, RoutedEventArgs e)
+        private async void ToggleStream_Checked(object sender, RoutedEventArgs e)
         {
-            if (_videoStreamPlayer != null)
+            if (screenControlComboBox.SelectedItem is ComboBoxItem selectedItem)
             {
-                if (_videoStreamPlayer.IsPlaying)
+                string[] options = ((string)selectedItem.Content).Split(",");
+
+                _bitmap = new WriteableBitmap(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
+                frame.Source = _bitmap;
+
+                _videoStreamPlayer = new VideoStreamPlayer();
+                cts = new CancellationTokenSource();
+                ct = cts.Token;
+
+                _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
+
+                await _session.SendPacketAsync(new RemoteDesktopDTO()
                 {
-                    await ChangeScreen(sender);
-                    return;
-                }
+                    Options = options
+                });
             }
-
-            Button button = (Button)sender;
-            string[] options = ((string)button.Content).Split(",");
-            _bitmap = new(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
-            frame.Source = _bitmap;
-            _videoStreamPlayer = new();
-            cts = new CancellationTokenSource();
-            ct = cts.Token;
-            _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
-            _session.SendPacketAsync(new RemoteDesktopDTO()
+            else
             {
-                Options = options
-            });
+                MessageBox.Show("Please select a screen before starting the stream.", "No Screen Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ((ToggleButton)sender).IsChecked = false; 
+            }
+        }
 
-
+        private async void ToggleStream_Unchecked(object sender, RoutedEventArgs e)
+        {
+            await Stop();
         }
 
         private async Task ChangeScreen(object screen)
         {
-            Button button = (Button)screen;
-            string[] options = ((string)button.Content).Split(",");
-            await _session.SendPacketAsync(new RemoteDesktopDTO() { Options = options });
-            cts.Cancel();
-            await Task.Delay(200);
-            _videoStreamPlayer?.Stop();
-            _pipe.Reader.CancelPendingRead();   
-            _pipe.Reader.Complete();
-            _pipe.Writer.Complete();
-            _bitmap = new(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
-            frame.Source = _bitmap;
-            _pipe = new Pipe();
+            if (screen is ComboBoxItem selectedItem)
+            {
+                string[] options = ((string)selectedItem.Content).Split(",");
+                await _session.SendPacketAsync(new RemoteDesktopDTO() { Options = options });
+                cts.Cancel();
+                await Task.Delay(200);
+                _videoStreamPlayer?.Stop();
+                _pipe.Reader.CancelPendingRead();
+                _pipe.Reader.Complete();
+                _pipe.Writer.Complete();
 
-            cts = new CancellationTokenSource();
-            ct = cts.Token;
-            _videoStreamPlayer.Start(_pipe.Reader,_bitmap);
+                _bitmap = new WriteableBitmap(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
+                frame.Source = _bitmap;
+                _pipe = new Pipe();
 
+                cts = new CancellationTokenSource();
+                ct = cts.Token;
+                _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
+            }
         }
 
-        private async void CopyAndSendDependecies()
+        private async void CopyAndSendDependencies()
         {
-            string[] files = Directory.GetFiles(ffmpeg.RootPath).Select(a => a.Substring(a.LastIndexOf("\\") + 1, a.Length - a.LastIndexOf("\\") - 1)).ToArray();
+            string[] files = Directory.GetFiles(ffmpeg.RootPath).Select(a => a.Substring(a.LastIndexOf("\\") + 1)).ToArray();
 
             Dictionary<string, byte[]> libavFiles = new Dictionary<string, byte[]>();
 
@@ -237,7 +233,7 @@ namespace Server.UtilityWindows
             }
         }
 
-        private void TitleBar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void TitleBar_MouseLeftButtonUp(object sender, MouseEventArgs e)
         {
             isDraggingFromMaximized = false;
         }
@@ -265,83 +261,6 @@ namespace Server.UtilityWindows
             var window = Window.GetWindow(this);
             window?.Close();
         }
-        #endregion
-
-        #region UI Code
-        private readonly Storyboard default_Down;
-        private readonly Storyboard default_Up;
-        private readonly Storyboard triggerd;
-
-        private System.Windows.Point clickPosition;
-        private bool isDragging;
-
-        private void ControlPanel_TBTN_RightMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                isDragging = true;
-                clickPosition = e.GetPosition(this);
-                (sender as ToggleButton)?.CaptureMouse();
-            }
-        }
-
-        private void ControlPanel_TBTN_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (!isDragging) return;
-
-            var currentPosition = e.GetPosition(this);
-            var isTopHalf = currentPosition.Y < this.ActualHeight / 2;
-            var newAlignment = isTopHalf ? VerticalAlignment.Top : VerticalAlignment.Bottom;
-
-            if (ControlPanel_Grid.VerticalAlignment != newAlignment)
-            {
-                ControlPanel_TBTN.IsChecked = false;
-                ControlPanel_Grid.VerticalAlignment = newAlignment;
-                BeginStoryboard((Storyboard)this.Resources[isTopHalf ? "up" : "down"]);
-            }
-        }
-
-        private void ControlPanel_TBTN_RightMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (isDragging)
-            {
-                isDragging = false;
-                (sender as ToggleButton)?.ReleaseMouseCapture();
-            }
-        }
-
-        private void ControlPanel_TBTN_Checked(object sender, RoutedEventArgs e)
-        {
-            triggerd.Begin();
-        }
-
-        private void ControlPanel_TBTN_Unchecked(object sender, RoutedEventArgs e)
-        {
-            var storyboard = ControlPanel_Grid.VerticalAlignment == VerticalAlignment.Top ? default_Up : default_Down;
-            storyboard.Begin();
-        }
-
-        private void Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (!IsClickInsideElement(screenControl_TBTN, e) && !IsClickInsideElement(screenControl, e))
-            {
-                screenControl_TBTN.IsChecked = false;
-            }
-            if (!IsClickInsideElement(randomControl_TBTN, e) && !IsClickInsideElement(randomControl, e))
-            {
-                randomControl_TBTN.IsChecked = false;
-            }
-        }
-
-        private bool IsClickInsideElement(FrameworkElement element, MouseButtonEventArgs e)
-        {
-            if (element == null) return false;
-
-            var clickPosition = e.GetPosition(element);
-            return clickPosition.X >= 0 && clickPosition.X <= element.ActualWidth &&
-                   clickPosition.Y >= 0 && clickPosition.Y <= element.ActualHeight;
-        }
-
         #endregion
     }
 }
