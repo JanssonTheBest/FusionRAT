@@ -41,7 +41,7 @@ namespace Client.Communication
 
         private async void HandlePing(object? sender, EventArgs e)
         {
-            await SendPacketAsync(new PingDTO());
+            SendPacketAsync(new PingDTO());
         }
     }
 }

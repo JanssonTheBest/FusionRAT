@@ -84,7 +84,7 @@ namespace RemoteDesktopPlugin
                     Thread.Sleep(200);
                 }
 
-                Start(80, 250000, adapter, output);
+                Start(80, 100000, adapter, output);
                 return;
             }
 
@@ -268,7 +268,7 @@ namespace RemoteDesktopPlugin
 
                     formatContext = ffmpeg.avformat_alloc_context();
 
-                    int bufferSize = 4096;
+                    int bufferSize = 4096*3;
                     IntPtr buffer = (IntPtr)ffmpeg.av_malloc((ulong)bufferSize);
                     gcHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                     ioContext = ffmpeg.avio_alloc_context(

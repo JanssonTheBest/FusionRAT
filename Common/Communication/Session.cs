@@ -112,17 +112,12 @@ namespace Common.Communication
         }
 
 
-
-
-
         private async Task ExtractPacketsLoop()
         {
-            const int MinReadThreshold = 4; 
-            int readThreshold = MinReadThreshold;
-
+            int readSize = sizeof(int); // Start with reading the packet length
             while (!cancellationTokenSource.Token.IsCancellationRequested)
             {
-                ReadResult result = await pipeReader.ReadAtLeastAsync(readThreshold, cancellationTokenSource.Token);
+                ReadResult result = await pipeReader.ReadAsync(cancellationTokenSource.Token);
                 ReadOnlySequence<byte> buffer = result.Buffer;
 
                 try
@@ -130,6 +125,16 @@ namespace Common.Communication
                     while (TryReadPacket(ref buffer, out IPacket packet))
                     {
                         await HandlePacketSafely(packet);
+                    }
+
+                    if (buffer.Length >= sizeof(int))
+                    {
+                        int nextPacketLength = BitConverter.ToInt32(buffer.Slice(0, sizeof(int)).ToArray());
+                        readSize = nextPacketLength + sizeof(int);
+                    }
+                    else
+                    {
+                        readSize = sizeof(int);
                     }
                 }
                 finally
@@ -141,15 +146,12 @@ namespace Common.Communication
                 {
                     break;
                 }
-
-                readThreshold = buffer.Length > 0 ? MinReadThreshold : readThreshold;
             }
         }
 
         private bool TryReadPacket(ref ReadOnlySequence<byte> buffer, out IPacket packet)
         {
             packet = null;
-
             if (buffer.Length < sizeof(int))
             {
                 return false;
