@@ -1,6 +1,4 @@
-﻿#define DEBUG_MODE 
-
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.IO.Pipelines;
 using System.IO;
 using System.Runtime.InteropServices;

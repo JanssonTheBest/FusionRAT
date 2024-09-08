@@ -9,6 +9,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
+
   <ItemGroup>
     <None Remove="UI\Assets\Icons\BuilderConnectionIcon.png" />
     <None Remove="UI\Assets\Icons\BuilderEnPIcon.png" />
@@ -97,5 +101,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+	<PropertyGroup>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
 
 </Project>

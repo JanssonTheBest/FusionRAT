@@ -1,6 +1,4 @@
-﻿
-
-using System.Windows.Controls.Primitives;
+﻿using System.Windows.Controls.Primitives;
 using Server.UtilityWindows.Interface;
 using Server.CoreServerFunctionality;
 using System.Windows.Media.Animation;
