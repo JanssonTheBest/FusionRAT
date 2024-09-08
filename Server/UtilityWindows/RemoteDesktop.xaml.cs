@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls.Primitives;
+﻿
+
+using System.Windows.Controls.Primitives;
 using Server.UtilityWindows.Interface;
 using Server.CoreServerFunctionality;
 using System.Windows.Media.Animation;
@@ -53,6 +55,8 @@ namespace Server.UtilityWindows
         private async void WindowIsClosing(object? sender, EventArgs e)
         {
             await Stop();
+            _videoStreamPlayer = null;
+            _session.OnRemoteDesktop -= HandlePacket;
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
@@ -73,6 +77,10 @@ namespace Server.UtilityWindows
                 return;
             }
 
+            if (!_videoStreamPlayer.IsPlaying)
+            {
+                return;
+            }
 
             try
             {
@@ -82,7 +90,7 @@ namespace Server.UtilityWindows
             }
             catch (Exception ex)
             {
-                semaphore.Release();    
+                semaphore.Release();
             }
         }
 
@@ -92,7 +100,6 @@ namespace Server.UtilityWindows
             await _session.SendPacketAsync(new RemoteDesktopDTO());
             cts.Cancel();
             _videoStreamPlayer?.Stop();
-            _pipe.Reader.Complete();
             _pipe.Writer.Complete();
             _pipe.Reset();
         }
@@ -119,19 +126,49 @@ namespace Server.UtilityWindows
 
         private async void ScreenSelected(object sender, RoutedEventArgs e)
         {
+            if (_videoStreamPlayer != null)
+            {
+                if (_videoStreamPlayer.IsPlaying)
+                {
+                    await ChangeScreen(sender);
+                    return;
+                }
+            }
+
             Button button = (Button)sender;
             string[] options = ((string)button.Content).Split(",");
             _bitmap = new(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
             frame.Source = _bitmap;
-            _videoStreamPlayer = new(_bitmap, _pipe.Reader);
-            bool result = cts.TryReset();
+            _videoStreamPlayer = new();
+            cts = new CancellationTokenSource();
             ct = cts.Token;
-            _videoStreamPlayer.Start();
+            _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
             _session.SendPacketAsync(new RemoteDesktopDTO()
             {
                 Options = options
             });
 
+
+        }
+
+        private async Task ChangeScreen(object screen)
+        {
+            Button button = (Button)screen;
+            string[] options = ((string)button.Content).Split(",");
+            await _session.SendPacketAsync(new RemoteDesktopDTO() { Options = options });
+            cts.Cancel();
+            await Task.Delay(200);
+            _videoStreamPlayer?.Stop();
+            _pipe.Reader.CancelPendingRead();   
+            _pipe.Reader.Complete();
+            _pipe.Writer.Complete();
+            _bitmap = new(Convert.ToInt32(options[2]), Convert.ToInt32(options[3]), 96, 96, PixelFormats.Bgr24, null);
+            frame.Source = _bitmap;
+            _pipe = new Pipe();
+
+            cts = new CancellationTokenSource();
+            ct = cts.Token;
+            _videoStreamPlayer.Start(_pipe.Reader,_bitmap);
 
         }
 
@@ -146,10 +183,6 @@ namespace Server.UtilityWindows
                 string path = Path.Combine(ffmpeg.RootPath, file);
                 libavFiles.Add(file, await File.ReadAllBytesAsync(path));
             }
-
-            string ffmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "FFmpeg.AutoGen.dll");
-
-            libavFiles.Add("FFmpeg.AutoGen.dll", await File.ReadAllBytesAsync(ffmpegPath));
 
             RemoteDesktopDTO dto = new RemoteDesktopDTO()
             {

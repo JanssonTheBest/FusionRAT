@@ -71,23 +71,20 @@ namespace Common.Communication
                 return;
             }
         }
-
         private MemoryStream tempBuffer = new();
         public async Task SendPacketAsync(IPacket packet)
         {
-            await sendSemaphore.WaitAsync();
-            byte[] data = MessagePackSerializer.Serialize(packet);
             try
             {
+                await sendSemaphore.WaitAsync();
+                byte[] data = MessagePackSerializer.Serialize(packet);
                 await _sslStream.WriteAsync(BitConverter.GetBytes(data.Length));
                 await _sslStream.WriteAsync(data);
+                tempBuffer.SetLength(0);
+                sendSemaphore.Release();
                 //await _sslStream.FlushAsync();
             }
             catch (Exception ex)
-            {
-
-            }
-            finally
             {
                 tempBuffer.SetLength(0);
                 sendSemaphore.Release();
@@ -124,7 +121,12 @@ namespace Common.Communication
                         buffer.Slice(bytesConsumed + headerLength, packetLength),
                         messagePackSerializerOptions,
                         cancellationTokenSource.Token);
-                    await packet.HandlePacket(this);
+                    try
+                    {
+                        await packet.HandlePacket(this);
+                    }
+                    catch (Exception ex) { }
+
                     bytesConsumed += headerLength + packetLength;
                 }
                 pipeReader.AdvanceTo(buffer.GetPosition(bytesConsumed), buffer.End);

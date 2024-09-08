@@ -1,4 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿#define DEBUG_MODE
+
+
+using System;
+using System.Runtime.InteropServices;
 using System.Collections.Concurrent;
 using Common.DTOs.MessagePack;
 using System.Drawing.Imaging;
@@ -12,29 +16,32 @@ using SharpDX;
 using System.Runtime.CompilerServices;
 using System.Buffers;
 using Common.Plugin;
+using System.Diagnostics;
+using System.Threading;
 
 namespace RemoteDesktopPlugin
 {
     public unsafe class Plugin
     {
-        private BlockingCollection<IntPtr> framesToEncodeBuffer = new BlockingCollection<IntPtr>();
+        private BlockingCollection<AVFrameWrapper> framesToEncodeBuffer = new BlockingCollection<AVFrameWrapper>();
         private CancellationTokenSource cts = new CancellationTokenSource();
         private CancellationToken ct;
         Pipe pipe = new Pipe();
         Thread startThread;
         Thread screenCaptureThread;
         Session _session;
-
+        bool isStreaming = false;
+        avio_alloc_context_write_packet writeCallback;
         public Plugin(Session session)
         {
-
-
             _session = session;
             _session.OnRemoteDesktop += HandlePacket;
             ct = cts.Token;
+
+            writeCallback = new avio_alloc_context_write_packet(WriteCallback);
             string currentPath = Path.GetFullPath(Directory.GetCurrentDirectory());
             string ffmpegRootPath = Path.GetFullPath(ffmpeg.RootPath);
-            if (AreDirectoriesSame(currentPath,ffmpegRootPath))
+            if (AreDirectoriesSame(currentPath, ffmpegRootPath))
             {
                 RequestDependencies();
             }
@@ -73,15 +80,18 @@ namespace RemoteDesktopPlugin
             {
                 int adapter = Convert.ToInt32(dto.Options[0]);
                 int output = Convert.ToInt32(dto.Options[1]);
+                if (isStreaming)
+                {
+                    Stop();
+                    Thread.Sleep(200);
+                }
+
                 Start(60, 2500000, adapter, output);
                 return;
             }
 
-            Stop();
+            Stop(true);
         }
-
-
-
 
         private void InitilizeDependencies(Dictionary<string, byte[]> nameFilePairs)
         {
@@ -127,16 +137,51 @@ namespace RemoteDesktopPlugin
             return screens;
         }
 
-
-        private void Stop()
+        private void Stop(bool cleanupResources = false)
         {
+            isStreaming = false;
             cts.Cancel();
-            startThread.Join();
-            screenCaptureThread.Join();
-            pipe.Writer.Complete();
-            while (framesToEncodeBuffer.TryTake(out _)) ;
+            startThread?.Join();
+            screenCaptureThread?.Join();
+            Thread.Sleep(500);
+            try
+            {
+
+                pipe.Writer.Complete();
+                pipe.Reader.CancelPendingRead();
+                pipe.Reader.Complete();
+                pipe = new Pipe();
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+            }
+
+            try
+            {
+                while (framesToEncodeBuffer.TryTake(out var frameWrapper))
+                {
+                    frameWrapper.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+            }
+
+            if (cleanupResources)
+            {
+                CleanupResources();
+            }
+        }
+
+        private void CleanupResources()
+        {
             _session.OnRemoteDesktop -= HandlePacket;
             _session.OnDisposePlugin.DynamicInvoke(this, EventArgs.Empty);
+            cts.Dispose();
+            pipe.Reader.Complete();
+            pipe.Writer.Complete();
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
@@ -144,7 +189,6 @@ namespace RemoteDesktopPlugin
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
 
-        // Import FreeLibrary from kernel32.dll
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool FreeLibrary(IntPtr hModule);
@@ -157,7 +201,6 @@ namespace RemoteDesktopPlugin
                 return;
             }
 
-            // Get all DLL files in the specified path
             string[] dllFiles = Directory.GetFiles(path, "*.dll");
 
             foreach (string dll in dllFiles)
@@ -167,7 +210,6 @@ namespace RemoteDesktopPlugin
 
                 if (handle != IntPtr.Zero)
                 {
-                    // Try to free the library
                     if (FreeLibrary(handle))
                     {
                         Console.WriteLine($"Successfully freed {fileName}");
@@ -190,34 +232,19 @@ namespace RemoteDesktopPlugin
             _session.SendPacketAsync(new RemoteDesktopDTO()
             {
                 VideoChunk = temp.ToArray()
-            }).GetAwaiter().GetResult();
-
+            }).Wait();
             return buf_size;
         }
 
         private void Start(int fps, int bitrate, int adapter, int output)
         {
-            cts.TryReset();
+            isStreaming = true;
+            cts = new CancellationTokenSource();
             ct = cts.Token;
-            if (startThread != null)
-            {
-                if (startThread.IsAlive)
-                {
-                    Stop();
-                }
-            }
+
 
             startThread = new Thread(() =>
             {
-                try
-                {
-                    pipe.Reset();
-                }
-                catch (System.InvalidOperationException ex)
-                {
-                    //Reset is not required
-                }
-
                 AVRational timeBase = new AVRational { num = 1, den = fps };
 
                 Tuple<int, int> dimensions = ScreenCaptureLoop(timeBase, adapter, output);
@@ -231,13 +258,15 @@ namespace RemoteDesktopPlugin
                 try
                 {
                     bool navidia = true;
-                    //AVCodec* codec = ffmpeg.avcodec_find_encoder_by_name("h264_nvenc");
                     AVCodec* codec = null;
-                    //if (codec == null)
-                    //{
-                    codec = ffmpeg.avcodec_find_encoder(AVCodecID.AV_CODEC_ID_H264);
-                    navidia = false;
-                    //}
+
+                    codec = ffmpeg.avcodec_find_encoder_by_name("h264_nvenc");
+                    if (codec == null)
+                    {
+                        codec = ffmpeg.avcodec_find_encoder(AVCodecID.AV_CODEC_ID_H264);
+                        navidia = false;
+                    }
+
 
                     formatContext = ffmpeg.avformat_alloc_context();
 
@@ -250,24 +279,20 @@ namespace RemoteDesktopPlugin
                    1,
                    null,
                    null,
-                   new avio_alloc_context_write_packet(WriteCallback),
+                   writeCallback,
                    null
                );
                     formatContext->pb = ioContext;
                     formatContext->flags |= ffmpeg.AVFMT_FLAG_CUSTOM_IO;
                     formatContext->oformat = ffmpeg.av_guess_format("mp4", null, null);
-
                     codecContext = ffmpeg.avcodec_alloc_context3(codec);
                     codecContext->codec_type = AVMediaType.AVMEDIA_TYPE_VIDEO;
                     codecContext->width = dimensions.Item1;
                     codecContext->height = dimensions.Item2;
                     codecContext->time_base = timeBase;
                     codecContext->bit_rate = bitrate;
-                    codecContext->max_b_frames = 0;
                     codecContext->pix_fmt = AVPixelFormat.AV_PIX_FMT_YUV420P;
 
-
-                    codecContext->flags |= ffmpeg.AV_CODEC_FLAG_LOW_DELAY;  // Enable low delay mode
 
                     if (!navidia)
                     {
@@ -278,18 +303,33 @@ namespace RemoteDesktopPlugin
                     }
                     else
                     {
-                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "p4", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "ll", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "p2", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "ull", 0);  // Ultra-low latency tuning
                         ffmpeg.av_opt_set(codecContext->priv_data, "zerolatency", "1", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "rc", "vbr", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "cq", "23", 0);
+
+
+                        ffmpeg.av_opt_set(codecContext->priv_data, "rc", "cbr", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "cq", "28", 0);
+
+                        ffmpeg.av_opt_set(codecContext->priv_data, "delay", "0", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "forced-idr", "1", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "b_adapt", "0", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "spatial-aq", "1", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "temporal-aq", "1", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "nonref_p", "1", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "strict_gop", "1", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "no-scenecut", "1", 0);
+
                     }
 
-                    codecContext->thread_count = 4;
+
+                    codecContext->max_b_frames = 0;
                     codecContext->gop_size = 1;
+
+                    codecContext->flags |= ffmpeg.AV_CODEC_FLAG_LOW_DELAY;  // Enable low delay mode
+
+                    codecContext->thread_count = 4;
                     codecContext->thread_type = ffmpeg.FF_THREAD_FRAME | ffmpeg.FF_THREAD_SLICE;
-
-
                     codecContext->flags |= ffmpeg.AV_CODEC_FLAG_GLOBAL_HEADER;
                     int result = ffmpeg.avcodec_open2(codecContext, codec, null);
                     AVStream* stream = ffmpeg.avformat_new_stream(formatContext, null);
@@ -352,82 +392,89 @@ namespace RemoteDesktopPlugin
 
             screenCaptureThread = new Thread(() =>
             {
-                var texture = new Texture2D(device, textureDesc);
+                using var texture = new Texture2D(device, textureDesc);
                 long startTime = ffmpeg.av_gettime();
-
                 DateTime debugDate = DateTime.Now;
 
-                while (!ct.IsCancellationRequested)
+                try
                 {
-                    try
+                    while (!ct.IsCancellationRequested)
                     {
-                        var result = outputDuplication.TryAcquireNextFrame(1, out var frameInfo, out var resource);
-                        if (result.Failure)
+                        try
                         {
-                            continue;
+                            var result = outputDuplication.TryAcquireNextFrame(1, out var frameInfo, out var resource);
+                            if (result.Failure)
+                            {
+                                continue;
+                            }
+
+                            long currentTime = ffmpeg.av_gettime();
+                            long pts = ffmpeg.av_rescale_q(currentTime - startTime, ffmpeg.av_get_time_base_q(), timeBase);
+
+                            using (var t = resource.QueryInterface<Texture2D>())
+                            {
+                                device.ImmediateContext.CopyResource(t, texture);
+                            }
+
+                            var frameWrapper = new AVFrameWrapper();
+                            frameWrapper.Frame->format = (int)AVPixelFormat.AV_PIX_FMT_BGRA;
+                            frameWrapper.Frame->width = textureDesc.Width;
+                            frameWrapper.Frame->height = textureDesc.Height;
+                            frameWrapper.Frame->pts = pts;
+
+                            int ret = ffmpeg.av_frame_get_buffer(frameWrapper.Frame, 32);
+                            if (ret < 0)
+                            {
+                                continue;
+                            }
+
+                            var map = device.ImmediateContext.MapSubresource(texture, 0, MapMode.Read, SharpDX.Direct3D11.MapFlags.None);
+                            var dataPtr = map.DataPointer;
+
+                            for (int y = 0; y < frameWrapper.Frame->height; y++)
+                            {
+                                System.Buffer.MemoryCopy(dataPtr.ToPointer(),
+                                    frameWrapper.Frame->data[0] + y * frameWrapper.Frame->linesize[0],
+                                    frameWrapper.Frame->linesize[0],
+                                    frameWrapper.Frame->width * 4);
+                                dataPtr = IntPtr.Add(dataPtr, map.RowPitch);
+                            }
+
+                            device.ImmediateContext.UnmapSubresource(texture, 0);
+
+                            framesToEncodeBuffer.Add(frameWrapper);
+
+                            resource.Dispose();
+                            outputDuplication.ReleaseFrame();
+
+                            long elapsedTime = ffmpeg.av_gettime() - currentTime;
+                            long sleepTime = (delay * 1000) - elapsedTime;
+                            if (sleepTime > 0)
+                            {
+                                Thread.Sleep((int)(sleepTime / 1000));
+                            }
                         }
-
-                        long currentTime = ffmpeg.av_gettime();
-                        long pts = ffmpeg.av_rescale_q(currentTime - startTime, ffmpeg.av_get_time_base_q(), timeBase);
-
-                        using (var t = resource.QueryInterface<Texture2D>())
+                        catch (SharpDXException ex) when (ex.ResultCode.Code == SharpDX.DXGI.ResultCode.WaitTimeout.Result.Code)
                         {
-                            device.ImmediateContext.CopyResource(t, texture);
+                            // GPU timeout, continue
                         }
-
-                        var frame = ffmpeg.av_frame_alloc();
-                        frame->format = (int)AVPixelFormat.AV_PIX_FMT_BGRA;
-                        frame->width = textureDesc.Width;
-                        frame->height = textureDesc.Height;
-                        frame->pts = pts;
-
-                        int ret = ffmpeg.av_frame_get_buffer(frame, 32);
-                        if (ret < 0)
-                        {
-                            ffmpeg.av_frame_unref(frame);
-                            continue;
-                        }
-
-                        var map = device.ImmediateContext.MapSubresource(texture, 0, MapMode.Read, SharpDX.Direct3D11.MapFlags.None);
-                        var dataPtr = map.DataPointer;
-
-                        for (int y = 0; y < frame->height; y++)
-                        {
-                            System.Buffer.MemoryCopy(dataPtr.ToPointer(),
-                                frame->data[0] + y * frame->linesize[0],
-                                frame->linesize[0],
-                                frame->width * 4);
-                            dataPtr = IntPtr.Add(dataPtr, map.RowPitch);
-                        }
-
-                        device.ImmediateContext.UnmapSubresource(texture, 0);
-
-                        framesToEncodeBuffer.Add((IntPtr)frame);
-
-                        resource.Dispose();
-                        outputDuplication.ReleaseFrame();
-
-                        long elapsedTime = ffmpeg.av_gettime() - currentTime;
-                        long sleepTime = (delay * 1000) - elapsedTime;
-                        if (sleepTime > 0)
-                        {
-                            Thread.Sleep((int)(sleepTime / 1000));
-                        }
-                    }
-                    catch (SharpDXException ex) when (ex.ResultCode.Code == SharpDX.DXGI.ResultCode.WaitTimeout.Result.Code)
-                    {
-                        // GPU timeout, continue
                     }
                 }
+                catch (Exception ex)
+                {
+                    // Log or handle the exception
+                }
+                finally
+                {
+                    Console.WriteLine("Estimated video length: " + (DateTime.Now - debugDate).TotalMilliseconds + "ms");
 
-                Console.WriteLine("Estimated video length: " + (DateTime.Now - debugDate).TotalMilliseconds + "ms");
-
-                output1.Dispose();
-                output.Dispose();
-                adapter.Dispose();
-                device.Dispose();
-                factory.Dispose();
-                outputDuplication.Dispose();
+                    output1.Dispose();
+                    output.Dispose();
+                    adapter.Dispose();
+                    device.Dispose();
+                    factory.Dispose();
+                    outputDuplication.Dispose();
+                }
             });
 
             screenCaptureThread.Start();
@@ -437,64 +484,130 @@ namespace RemoteDesktopPlugin
 
         private void EncodingLoop(AVFormatContext* formatContext, AVCodecContext* codecContext, SwsContext* swsContext, AVStream* stream, AVPacket* packet)
         {
-            AVFrame* convertedFrame = ffmpeg.av_frame_alloc();
-
-            while (!ct.IsCancellationRequested)
+            try
             {
-                try
+                while (!ct.IsCancellationRequested)
                 {
-                    IntPtr framePtr = framesToEncodeBuffer.Take(ct);
-                    AVFrame* frame = (AVFrame*)framePtr;
-
-                    convertedFrame->format = (int)codecContext->pix_fmt;
-                    convertedFrame->width = codecContext->width;
-                    convertedFrame->height = codecContext->height;
-                    ffmpeg.av_frame_get_buffer(convertedFrame, 32);
-
-                    ffmpeg.sws_scale(swsContext, frame->data, frame->linesize, 0, frame->height,
-                                     convertedFrame->data, convertedFrame->linesize);
-
-                    convertedFrame->pts = frame->pts;
-
-                    int result = ffmpeg.avcodec_send_frame(codecContext, convertedFrame);
-
-                    while (result >= 0)
+                    using (var convertedFrameWrapper = new AVFrameWrapper())
                     {
-                        result = ffmpeg.avcodec_receive_packet(codecContext, packet);
-                        if (result == ffmpeg.AVERROR(ffmpeg.EAGAIN) || result == ffmpeg.AVERROR_EOF)
+                        using (var frameWrapper = framesToEncodeBuffer.Take(ct))
                         {
-                            break;
+                            convertedFrameWrapper.Frame->format = (int)codecContext->pix_fmt;
+                            convertedFrameWrapper.Frame->width = codecContext->width;
+                            convertedFrameWrapper.Frame->height = codecContext->height;
+                            ffmpeg.av_frame_get_buffer(convertedFrameWrapper.Frame, 32);
+
+                            ffmpeg.sws_scale(swsContext, frameWrapper.Frame->data, frameWrapper.Frame->linesize, 0, frameWrapper.Frame->height,
+                                             convertedFrameWrapper.Frame->data, convertedFrameWrapper.Frame->linesize);
+
+                            convertedFrameWrapper.Frame->pts = frameWrapper.Frame->pts;
+                            int result = ffmpeg.avcodec_send_frame(codecContext, convertedFrameWrapper.Frame);
+
+                            while (result >= 0)
+                            {
+                                result = ffmpeg.avcodec_receive_packet(codecContext, packet);
+                                if (result == ffmpeg.AVERROR(ffmpeg.EAGAIN) || result == ffmpeg.AVERROR_EOF)
+                                {
+                                    break;
+                                }
+
+                                packet->stream_index = stream->index;
+                                ffmpeg.av_packet_rescale_ts(packet, codecContext->time_base, stream->time_base);
+
+                                result = ffmpeg.av_interleaved_write_frame(formatContext, packet);
+                            }
+
+                            frameWrapper.Unref();
+                            convertedFrameWrapper.Unref();
                         }
 
-                        packet->stream_index = stream->index;
-                        ffmpeg.av_packet_rescale_ts(packet, codecContext->time_base, stream->time_base);
-
-                        result = ffmpeg.av_interleaved_write_frame(formatContext, packet);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in EncodingLoop: {ex.Message}");
+            }
+            finally
+            {
+                int ret = ffmpeg.avcodec_send_frame(codecContext, null);
+                while (ret >= 0)
+                {
+                    ret = ffmpeg.avcodec_receive_packet(codecContext, packet);
+                    if (ret == ffmpeg.AVERROR_EOF)
+                    {
+                        break;
                     }
 
-                    ffmpeg.av_frame_unref(frame);
-                    ffmpeg.av_frame_unref(convertedFrame);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error in EncodingLoop: {ex.Message}");
-                }
-            }
+                    packet->stream_index = stream->index;
+                    ffmpeg.av_packet_rescale_ts(packet, codecContext->time_base, stream->time_base);
 
-            int ret = ffmpeg.avcodec_send_frame(codecContext, null);
-            while (ret >= 0)
-            {
-                ret = ffmpeg.avcodec_receive_packet(codecContext, packet);
-                if (ret == ffmpeg.AVERROR_EOF)
-                {
-                    break;
+                    ret = ffmpeg.av_interleaved_write_frame(formatContext, packet);
                 }
-
-                packet->stream_index = stream->index;
-                ffmpeg.av_packet_rescale_ts(packet, codecContext->time_base, stream->time_base);
-
-                ret = ffmpeg.av_interleaved_write_frame(formatContext, packet);
             }
         }
+
+
+
+
+
+        public unsafe class AVFrameWrapper : IDisposable
+        {
+            public AVFrame* Frame;
+            private bool _disposed = false;
+
+            public AVFrameWrapper()
+            {
+                Frame = ffmpeg.av_frame_alloc();
+                if (Frame == null)
+                {
+                    throw new InvalidOperationException("Failed to allocate AVFrame");
+                }
+            }
+
+            public void Unref()
+            {
+                if (Frame != null)
+                {
+                    ffmpeg.av_frame_unref(Frame);
+                }
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.Collect();
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (!_disposed)
+                {
+                    if (disposing)
+                    {
+                        // Dispose managed resources
+                    }
+
+                    // Dispose unmanaged resources
+                    if (Frame != null)
+                    {
+                        fixed (AVFrame** frame = &Frame)
+                        {
+                            ffmpeg.av_frame_free(frame);
+                        }
+                        Frame = null;
+                    }
+
+                    _disposed = true;
+                }
+            }
+
+            ~AVFrameWrapper()
+            {
+                Dispose(false);
+            }
+        }
+
     }
 }
