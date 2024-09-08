@@ -244,7 +244,7 @@ namespace Server.UtilityWindows
             {
                 if (_videoStreamPlayer.IsPlaying)
                 {
-                    await ChangeScreen(sender);
+                    await ChangeScreen(item);
                     return;
                 }
             }
