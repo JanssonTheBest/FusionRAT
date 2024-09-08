@@ -84,7 +84,7 @@ namespace RemoteDesktopPlugin
                     Thread.Sleep(200);
                 }
 
-                Start(30, 250000, adapter, output);
+                Start(80, 250000, adapter, output);
                 return;
             }
 
@@ -258,7 +258,7 @@ namespace RemoteDesktopPlugin
                     bool navidia = true;
                     AVCodec* codec = null;
 
-                    codec = null;
+                    codec = ffmpeg.avcodec_find_decoder_by_name("h264_nvenc");
                     if (codec == null)
                     {
                         codec = ffmpeg.avcodec_find_encoder(AVCodecID.AV_CODEC_ID_H264);
