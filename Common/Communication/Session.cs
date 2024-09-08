@@ -112,55 +112,78 @@ namespace Common.Communication
         }
 
 
+
+
+
         private async Task ExtractPacketsLoop()
         {
-            int readThreashold = headerLength + 1;
+            const int MinReadThreshold = 4; 
+            int readThreshold = MinReadThreshold;
+
             while (!cancellationTokenSource.Token.IsCancellationRequested)
             {
-                var result = await pipeReader.ReadAtLeastAsync(readThreashold);
+                ReadResult result = await pipeReader.ReadAtLeastAsync(readThreshold, cancellationTokenSource.Token);
                 ReadOnlySequence<byte> buffer = result.Buffer;
-                int bytesConsumed = 0;
-                bool packetIncomplete = false;
 
-                while (!cancellationTokenSource.Token.IsCancellationRequested)
+                try
                 {
-                    if (buffer.Length < bytesConsumed + headerLength)
+                    while (TryReadPacket(ref buffer, out IPacket packet))
                     {
-                        packetIncomplete = true;
-                        readThreashold = headerLength + 1;
-                        break;
+                        await HandlePacketSafely(packet);
                     }
-                    int packetLength = BitConverter.ToInt32(buffer.Slice(bytesConsumed, headerLength).ToArray());
+                }
+                finally
+                {
+                    pipeReader.AdvanceTo(buffer.Start, buffer.End);
+                }
 
-                    if (buffer.Length < bytesConsumed + headerLength + packetLength)
-                    {
-                        packetIncomplete = true;
-                        readThreashold = headerLength + packetLength;
-                        break;
-                    }
-                    IPacket packet = MessagePackSerializer.Deserialize<IPacket>(
-                        buffer.Slice(bytesConsumed + headerLength, packetLength),
-                        messagePackSerializerOptions,
-                        cancellationTokenSource.Token);
-                    try
-                    {
-                        await packet.HandlePacket(this);
-                    }
-                    catch (Exception ex) { }
+                if (result.IsCompleted)
+                {
+                    break;
+                }
 
-                    bytesConsumed += headerLength + packetLength;
-                }
-                pipeReader.AdvanceTo(buffer.GetPosition(bytesConsumed), buffer.End);
-                if (packetIncomplete)
-                {
-                    readThreashold = headerLength + 1;
-                }
-                else
-                {
-                    readThreashold = headerLength;
-                }
+                readThreshold = buffer.Length > 0 ? MinReadThreshold : readThreshold;
             }
         }
+
+        private bool TryReadPacket(ref ReadOnlySequence<byte> buffer, out IPacket packet)
+        {
+            packet = null;
+
+            if (buffer.Length < sizeof(int))
+            {
+                return false;
+            }
+
+            int packetLength = BitConverter.ToInt32(buffer.Slice(0, sizeof(int)).ToArray());
+            int totalLength = sizeof(int) + packetLength;
+
+            if (buffer.Length < totalLength)
+            {
+                return false;
+            }
+
+            packet = MessagePackSerializer.Deserialize<IPacket>(
+                buffer.Slice(sizeof(int), packetLength),
+                messagePackSerializerOptions,
+                cancellationTokenSource.Token);
+
+            buffer = buffer.Slice(totalLength);
+            return true;
+        }
+
+        private async Task HandlePacketSafely(IPacket packet)
+        {
+            try
+            {
+                await packet.HandlePacket(this);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error handling packet: {ex.Message}");
+            }
+        }
+
 
     }
 }
