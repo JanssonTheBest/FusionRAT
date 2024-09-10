@@ -37,6 +37,12 @@
     <None Remove="UI\CustomControls\Popup\Info.png" />
     <None Remove="UI\CustomControls\Popup\sucsess.png" />
     <None Remove="UI\CustomControls\Popup\warningpng.png" />
+    <None Remove="UtilityWindows\dot_bat-5.png" />
+    <None Remove="UtilityWindows\dot_dll-5.png" />
+    <None Remove="UtilityWindows\dot_exe-5.png" />
+    <None Remove="UtilityWindows\dot_folder-5.png" />
+    <None Remove="UtilityWindows\dot_txt-5.png" />
+    <None Remove="UtilityWindows\dot_zip.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -94,6 +100,12 @@
     <Resource Include="UI\Assets\Icons\Info.png" />
     <Resource Include="UI\Assets\Icons\warning.png" />
     <Resource Include="UI\Assets\Icons\sucsess.png" />
+    <Resource Include="UtilityWindows\dot_bat-5.png" />
+    <Resource Include="UtilityWindows\dot_dll-5.png" />
+    <Resource Include="UtilityWindows\dot_exe-5.png" />
+    <Resource Include="UtilityWindows\dot_folder-5.png" />
+    <Resource Include="UtilityWindows\dot_txt-5.png" />
+    <Resource Include="UtilityWindows\dot_zip.png" />
   </ItemGroup>
 
   <ItemGroup>

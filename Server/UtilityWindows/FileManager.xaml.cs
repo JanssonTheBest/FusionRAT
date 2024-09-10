@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -23,11 +24,25 @@ namespace Server.UtilityWindows
     {
         private readonly ServerSession _serverSession;
         public ObservableCollection<YourDataModel> DataItems { get; set; }
+        private Storyboard nav_Shrink;
+        private Storyboard nav_Expand;
 
         public FileManager(ServerSession serverSession)
         {
             InitializeComponent();
             _serverSession = serverSession;
+            nav_Shrink = (Storyboard)FindResource("navShrink");
+            nav_Expand = (Storyboard)FindResource("navExpand");
+
+            SizeChanged += FileManager_SizeChanged;
+            if (Width <= 710)
+            {
+                nav_Shrink.Begin(this);
+            }
+            else
+            {
+                nav_Expand.Begin(this);
+            }
 
             DataItems = new ObservableCollection<YourDataModel>
             {
@@ -51,6 +66,18 @@ namespace Server.UtilityWindows
             };
 
             dataGridPorts.ItemsSource = DataItems;
+        }
+
+        private void FileManager_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (Width <= 710)
+            {
+                nav_Shrink.Begin(this);
+            }
+            else
+            {
+                nav_Expand.Begin(this);
+            }
         }
         public class YourDataModel
         {

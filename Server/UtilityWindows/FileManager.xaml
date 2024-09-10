@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Server.UtilityWindows"
+        xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
         mc:Ignorable="d"
         Title="FileManager" 
-        Height="560" Width="760" MinHeight="416" MinWidth="710"
+        Height="560" Width="760" MinHeight="416" MinWidth="605" 
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" Background="Transparent"
         AllowsTransparency="True" UseLayoutRounding="True" 
@@ -15,6 +16,8 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
+    
+    
 
     <Window.Resources>
         <Style x:Key="navBTN" TargetType="{x:Type Button}">
@@ -42,7 +45,7 @@
         <Storyboard x:Key="navShrink">
             <DoubleAnimation Storyboard.TargetName="navPanel"
                              Storyboard.TargetProperty="Width"
-                             To="43" Duration="0:0:0.2">
+                             To="43" Duration="0">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -51,7 +54,7 @@
         <Storyboard x:Key="navExpand">
             <DoubleAnimation Storyboard.TargetName="navPanel"
                              Storyboard.TargetProperty="Width"
-                             To="180" Duration="0:0:0.2">
+                             To="180" Duration="0">
                 <DoubleAnimation.EasingFunction>
                     <QuadraticEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -201,6 +204,8 @@
     </Window.Resources>
 
     <Border Background="{DynamicResource Secondary}"
+            BorderBrush="{DynamicResource Border}"
+            BorderThickness="1"
             CornerRadius="5">
         <Grid>
             <Grid.RowDefinitions>
@@ -244,13 +249,13 @@
                     </Grid.ColumnDefinitions>
                     <Border CornerRadius="5"
                             Background="#05CCCCCC">
-
+                        <TextBox Style="{StaticResource Common_TextBox}" Foreground="#fff" Opacity="0.8"/>
                     </Border>
 
                     <Border CornerRadius="5"
                             Background="#05CCCCCC"
                             Grid.Column="2">
-
+                        <TextBox Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="Search" Foreground="#fff" Opacity="0.8"/>
                     </Border>
                 </Grid>
 
@@ -258,6 +263,7 @@
                 <Border BorderThickness="0,0,1,0"
                         BorderBrush="{DynamicResource Border}"
                         Width="180"
+                        HorizontalAlignment="Left"
                         x:Name="navPanel"
                         Margin="0,63,0,36">
                     <Grid Margin="6,0,4,0">
@@ -286,7 +292,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Width="18" Margin="11,0,0,0" Source="/Info.png"/>
+                                        <Image Width="22" Margin="11,3,0,0" Source="/UtilityWindows/dot_folder-5.png" />
                                         <TextBlock Text="{Binding Name}" Style="{StaticResource CenteredTextBlockStyle}"/>
                                     </StackPanel>
                                 </DataTemplate>
