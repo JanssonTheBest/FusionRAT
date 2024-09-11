@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.IO.Pipelines;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Threading.Channels;
 
 
 namespace Common.Communication
@@ -24,7 +25,7 @@ namespace Common.Communication
         private Pipe pipe = new();
         private PipeReader pipeReader;
         private PipeWriter pipeWriter;
-        BlockingCollection<IPacket> sendBuffer = new BlockingCollection<IPacket>();
+        Channel<IPacket> sendBuffer = Channel.CreateUnbounded<IPacket>();
         private int headerLength = 4;
         private readonly MessagePackSerializerOptions messagePackSerializerOptions = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block).WithResolver(MessagePack.Resolvers.StandardResolver.Instance);
         private int bufferSize = 65536;
@@ -57,7 +58,7 @@ namespace Common.Communication
 
         private async Task StartReceivingData()
         {
-            extractPacketTask = Task.Run(ExtractPacketsLoop, cancellationTokenSource.Token);
+            extractPacketTask = Task.Factory.StartNew(ExtractPacketsLoop, TaskCreationOptions.LongRunning);
             try
             {
                 while (!cancellationTokenSource.Token.IsCancellationRequested)
@@ -75,17 +76,16 @@ namespace Common.Communication
         }
         public async Task SendPacketAsync(IPacket packet)
         {
-            sendBuffer.Add(packet);
+           await sendBuffer.Writer.WriteAsync(packet);
         }
 
         private readonly byte[] lengthBuffer = new byte[4];
         private async Task SenderWorkerMethod()
         {
-            while (!cancellationTokenSource.Token.IsCancellationRequested)
+            await foreach (var message in sendBuffer.Reader.ReadAllAsync(cancellationTokenSource.Token))
             {
                 try
                 {
-                    var message = sendBuffer.Take();
                     byte[] data = MessagePackSerializer.Serialize(message);
                     int length = data.Length;
                     BitConverter.TryWriteBytes(lengthBuffer, length);
@@ -95,18 +95,12 @@ namespace Common.Communication
                 }
                 catch (IOException ioEx)
                 {
-                    Console.WriteLine($"Network error: {ioEx.Message}");
                 }
                 catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                }
-                finally
                 {
                 }
             }
         }
-
 
 
         private async Task ExtractPacketsLoop()
@@ -139,29 +133,22 @@ namespace Common.Communication
         {
             packet = null;
             var reader = new SequenceReader<byte>(buffer);
-
             if (!reader.TryReadLittleEndian(out int packetLength))
             {
-                return false;
+                return false; 
             }
-
             int totalLength = sizeof(int) + packetLength;
             if (buffer.Length < totalLength)
             {
-                return false;
+                return false; 
             }
-
-            var packetData = buffer.Slice(sizeof(int), packetLength);
-            packet = MessagePackSerializer.Deserialize<IPacket>(
-                packetData.IsSingleSegment ? packetData.First : packetData.ToArray(),
-                messagePackSerializerOptions,
-                cancellationTokenSource.Token);
-
+            ReadOnlySequence<byte> packetData = buffer.Slice(reader.Position, packetLength);
+            packet = MessagePackSerializer.Deserialize<IPacket>(packetData,messagePackSerializerOptions,cancellationTokenSource.Token);
             buffer = buffer.Slice(totalLength);
             return true;
         }
 
-        private async Task HandlePacketSafely(IPacket packet)
+        private async ValueTask HandlePacketSafely(IPacket packet)
         {
             try
             {
@@ -169,84 +156,7 @@ namespace Common.Communication
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error handling packet: {ex.Message}");
             }
         }
-
-
-
-        //private async Task ExtractPacketsLoop()
-        //{
-        //    int readSize = sizeof(int); // Start with reading the packet length
-        //    while (!cancellationTokenSource.Token.IsCancellationRequested)
-        //    {
-        //        ReadResult result = await pipeReader.ReadAsync(cancellationTokenSource.Token);
-        //        ReadOnlySequence<byte> buffer = result.Buffer;
-
-        //        try
-        //        {
-        //            while (TryReadPacket(ref buffer, out IPacket packet))
-        //            {
-        //                await HandlePacketSafely(packet);
-        //            }
-
-        //            if (buffer.Length >= sizeof(int))
-        //            {
-        //                int nextPacketLength = BitConverter.ToInt32(buffer.Slice(0, sizeof(int)).ToArray());
-        //                readSize = nextPacketLength + sizeof(int);
-        //            }
-        //            else
-        //            {
-        //                readSize = sizeof(int);
-        //            }
-        //        }
-        //        finally
-        //        {
-        //            pipeReader.AdvanceTo(buffer.Start, buffer.End);
-        //        }
-
-        //        if (result.IsCompleted)
-        //        {
-        //            break;
-        //        }
-        //    }
-        //}
-
-        //private bool TryReadPacket(ref ReadOnlySequence<byte> buffer, out IPacket packet)
-        //{
-        //    packet = null;
-        //    if (buffer.Length < sizeof(int))
-        //    {
-        //        return false;
-        //    }
-
-        //    int packetLength = BitConverter.ToInt32(buffer.Slice(0, sizeof(int)).ToArray());
-        //    int totalLength = sizeof(int) + packetLength;
-
-        //    if (buffer.Length < totalLength)
-        //    {
-        //        return false;
-        //    }
-
-        //    packet = MessagePackSerializer.Deserialize<IPacket>(
-        //        buffer.Slice(sizeof(int), packetLength),
-        //        messagePackSerializerOptions,
-        //        cancellationTokenSource.Token);
-
-        //    buffer = buffer.Slice(totalLength);
-        //    return true;
-        //}
-
-        //private async Task HandlePacketSafely(IPacket packet)
-        //{
-        //    try
-        //    {
-        //        await packet.HandlePacket(this);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error handling packet: {ex.Message}");
-        //    }
-        //}
     }
 }

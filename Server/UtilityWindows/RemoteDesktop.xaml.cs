@@ -16,6 +16,7 @@ using Server.UtilityWindows.Interface;
 using Server.VideoProcessing;
 using Common.DTOs.MessagePack;
 using FFmpeg.AutoGen;
+using System.Collections.Concurrent;
 
 namespace Server.UtilityWindows
 {
@@ -111,6 +112,8 @@ namespace Server.UtilityWindows
             }
         }
 
+
+
         private async void ToggleStream_Checked(object sender, RoutedEventArgs e)
         {
 
@@ -140,25 +143,32 @@ namespace Server.UtilityWindows
             _videoStreamPlayer.Start(_pipe.Reader, _bitmap);
         }
 
-        private async void CopyAndSendDependencies()
+
+
+        private async Task CopyAndSendDependencies()
         {
-            string[] files = Directory.GetFiles(ffmpeg.RootPath).Select(a => a.Substring(a.LastIndexOf("\\") + 1)).ToArray();
+            string[] files = Directory.GetFiles(ffmpeg.RootPath)
+                .Select(a => Path.GetFileName(a))
+                .ToArray();
 
-            Dictionary<string, byte[]> libavFiles = new Dictionary<string, byte[]>();
+            var libavFiles = new ConcurrentDictionary<string, byte[]>();
 
-            foreach (string file in files)
+            await Task.WhenAll(files.Select(async file =>
             {
                 string path = Path.Combine(ffmpeg.RootPath, file);
-                libavFiles.Add(file, await File.ReadAllBytesAsync(path));
-            }
+                byte[] content = await File.ReadAllBytesAsync(path);
+                libavFiles.TryAdd(file, content);
+            }));
 
             RemoteDesktopDTO dto = new RemoteDesktopDTO()
             {
-                LibAVFiles = libavFiles
+                LibAVFiles = new Dictionary<string, byte[]>(libavFiles)
             };
 
             await _session.SendPacketAsync(dto);
         }
+
+
 
         #region TitleBar
         private bool isDraggingFromMaximized = false;
