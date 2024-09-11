@@ -52,8 +52,8 @@ namespace Server.VideoProcessing
             int probeSize = 1024 * 500;
             AVFormatContext* formatContext = ffmpeg.avformat_alloc_context();
             formatContext->probesize = probeSize;
-            IntPtr buffer = (IntPtr)ffmpeg.av_malloc(bufferSize);
-            GCHandle gcHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            void* buffer = ffmpeg.av_malloc(bufferSize);
+
             AVIOContext* ioContext = ffmpeg.avio_alloc_context((byte*)buffer, (int)bufferSize, 0, null, new avio_alloc_context_read_packet(ReadPacket), null, new avio_alloc_context_seek(Seek));
             formatContext->pb = ioContext;
             formatContext->flags |= ffmpeg.AVFMT_FLAG_CUSTOM_IO | ffmpeg.AVFMT_FLAG_IGNIDX;
@@ -149,7 +149,6 @@ namespace Server.VideoProcessing
                 ffmpeg.avformat_close_input(&formatContext);
                 ffmpeg.av_free(ioContext->buffer);
                 ffmpeg.avio_context_free(&ioContext);
-                gcHandle.Free();
 
                 while (decodedFramesBuffer.TryTake(out var frameWrapper))
                 {
@@ -183,7 +182,7 @@ namespace Server.VideoProcessing
                             swsContext = ffmpeg.sws_getContext(
                                 width, height, AVPixelFormat.AV_PIX_FMT_YUV420P,
                                 width, height, AVPixelFormat.AV_PIX_FMT_BGR24,
-                                ffmpeg.SWS_BILINEAR, null, null, null);
+                                ffmpeg.SWS_FAST_BILINEAR, null, null, null);
                         }
 
                         byte[] rgbBuffer = new byte[width * height * 3];

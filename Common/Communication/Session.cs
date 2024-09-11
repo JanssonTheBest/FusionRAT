@@ -27,7 +27,6 @@ namespace Common.Communication
         BlockingCollection<IPacket> sendBuffer = new BlockingCollection<IPacket>();
         private int headerLength = 4;
         private readonly MessagePackSerializerOptions messagePackSerializerOptions = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block).WithResolver(MessagePack.Resolvers.StandardResolver.Instance);
-        private SemaphoreSlim sendSemaphore = new SemaphoreSlim(1, 1);
         private int bufferSize = 65536;
         private TcpClient _client;
 
@@ -79,9 +78,7 @@ namespace Common.Communication
             sendBuffer.Add(packet);
         }
 
-        private MemoryStream tempBuffer = new();
         private readonly byte[] lengthBuffer = new byte[4];
-
         private async Task SenderWorkerMethod()
         {
             while (!cancellationTokenSource.Token.IsCancellationRequested)
@@ -106,15 +103,14 @@ namespace Common.Communication
                 }
                 finally
                 {
-                    tempBuffer.SetLength(0);
                 }
             }
         }
 
 
+
         private async Task ExtractPacketsLoop()
         {
-            int readSize = sizeof(int); // Start with reading the packet length
             while (!cancellationTokenSource.Token.IsCancellationRequested)
             {
                 ReadResult result = await pipeReader.ReadAsync(cancellationTokenSource.Token);
@@ -125,16 +121,6 @@ namespace Common.Communication
                     while (TryReadPacket(ref buffer, out IPacket packet))
                     {
                         await HandlePacketSafely(packet);
-                    }
-
-                    if (buffer.Length >= sizeof(int))
-                    {
-                        int nextPacketLength = BitConverter.ToInt32(buffer.Slice(0, sizeof(int)).ToArray());
-                        readSize = nextPacketLength + sizeof(int);
-                    }
-                    else
-                    {
-                        readSize = sizeof(int);
                     }
                 }
                 finally
@@ -152,21 +138,22 @@ namespace Common.Communication
         private bool TryReadPacket(ref ReadOnlySequence<byte> buffer, out IPacket packet)
         {
             packet = null;
-            if (buffer.Length < sizeof(int))
+            var reader = new SequenceReader<byte>(buffer);
+
+            if (!reader.TryReadLittleEndian(out int packetLength))
             {
                 return false;
             }
 
-            int packetLength = BitConverter.ToInt32(buffer.Slice(0, sizeof(int)).ToArray());
             int totalLength = sizeof(int) + packetLength;
-
             if (buffer.Length < totalLength)
             {
                 return false;
             }
 
+            var packetData = buffer.Slice(sizeof(int), packetLength);
             packet = MessagePackSerializer.Deserialize<IPacket>(
-                buffer.Slice(sizeof(int), packetLength),
+                packetData.IsSingleSegment ? packetData.First : packetData.ToArray(),
                 messagePackSerializerOptions,
                 cancellationTokenSource.Token);
 
@@ -187,5 +174,79 @@ namespace Common.Communication
         }
 
 
+
+        //private async Task ExtractPacketsLoop()
+        //{
+        //    int readSize = sizeof(int); // Start with reading the packet length
+        //    while (!cancellationTokenSource.Token.IsCancellationRequested)
+        //    {
+        //        ReadResult result = await pipeReader.ReadAsync(cancellationTokenSource.Token);
+        //        ReadOnlySequence<byte> buffer = result.Buffer;
+
+        //        try
+        //        {
+        //            while (TryReadPacket(ref buffer, out IPacket packet))
+        //            {
+        //                await HandlePacketSafely(packet);
+        //            }
+
+        //            if (buffer.Length >= sizeof(int))
+        //            {
+        //                int nextPacketLength = BitConverter.ToInt32(buffer.Slice(0, sizeof(int)).ToArray());
+        //                readSize = nextPacketLength + sizeof(int);
+        //            }
+        //            else
+        //            {
+        //                readSize = sizeof(int);
+        //            }
+        //        }
+        //        finally
+        //        {
+        //            pipeReader.AdvanceTo(buffer.Start, buffer.End);
+        //        }
+
+        //        if (result.IsCompleted)
+        //        {
+        //            break;
+        //        }
+        //    }
+        //}
+
+        //private bool TryReadPacket(ref ReadOnlySequence<byte> buffer, out IPacket packet)
+        //{
+        //    packet = null;
+        //    if (buffer.Length < sizeof(int))
+        //    {
+        //        return false;
+        //    }
+
+        //    int packetLength = BitConverter.ToInt32(buffer.Slice(0, sizeof(int)).ToArray());
+        //    int totalLength = sizeof(int) + packetLength;
+
+        //    if (buffer.Length < totalLength)
+        //    {
+        //        return false;
+        //    }
+
+        //    packet = MessagePackSerializer.Deserialize<IPacket>(
+        //        buffer.Slice(sizeof(int), packetLength),
+        //        messagePackSerializerOptions,
+        //        cancellationTokenSource.Token);
+
+        //    buffer = buffer.Slice(totalLength);
+        //    return true;
+        //}
+
+        //private async Task HandlePacketSafely(IPacket packet)
+        //{
+        //    try
+        //    {
+        //        await packet.HandlePacket(this);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error handling packet: {ex.Message}");
+        //    }
+        //}
     }
 }

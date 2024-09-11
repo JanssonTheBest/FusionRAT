@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Collections.Concurrent;
 using Common.DTOs.MessagePack;
@@ -226,11 +225,16 @@ namespace RemoteDesktopPlugin
 
         private int WriteCallback(void* opaque, byte* buf, int buf_size)
         {
-            Span<byte> temp = new Span<byte>(buf, buf_size);
-            _session.SendPacketAsync(new RemoteDesktopDTO()
+            byte[] videoChunk = new byte[buf_size];
+            fixed (byte* ptrArray = videoChunk)
             {
-                VideoChunk = temp.ToArray()
+                System.Buffer.MemoryCopy(buf, ptrArray, buf_size, buf_size);
+            }
+            _session.SendPacketAsync(new RemoteDesktopDTO
+            {
+                VideoChunk = videoChunk,
             }).Wait();
+
             return buf_size;
         }
 
@@ -252,7 +256,6 @@ namespace RemoteDesktopPlugin
                 SwsContext* swsContext = null;
                 AVPacket* packet = null;
                 AVIOContext* ioContext = null;
-                GCHandle gcHandle = new GCHandle();
                 try
                 {
                     bool navidia = true;
@@ -268,9 +271,8 @@ namespace RemoteDesktopPlugin
 
                     formatContext = ffmpeg.avformat_alloc_context();
 
-                    int bufferSize = 4096*8;
-                    IntPtr buffer = (IntPtr)ffmpeg.av_malloc((ulong)bufferSize);
-                    gcHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                    int bufferSize = 4096 * 8;
+                    void* buffer = ffmpeg.av_malloc((ulong)bufferSize);
                     ioContext = ffmpeg.avio_alloc_context(
                    (byte*)buffer,
                    bufferSize,
@@ -292,59 +294,34 @@ namespace RemoteDesktopPlugin
                     codecContext->pix_fmt = AVPixelFormat.AV_PIX_FMT_YUV420P;
 
 
+
                     if (!navidia)
                     {
-                     
-
-                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "ultrafast", 0);         // Fastest encoding, lowest quality
-                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "zerolatency", 0);         // Ensures low-latency encoding, removes lookahead, buffers
-                        ffmpeg.av_opt_set(codecContext->priv_data, "crf", "30", 0);                   // Balance quality and speed (lower CRF = higher quality, more CPU usage)
+                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "ultrafast", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "zerolatency", 0);
+                        ffmpeg.av_opt_set(codecContext->priv_data, "crf", "35", 0);
                         ffmpeg.av_opt_set(codecContext->priv_data, "x264opts", "no-mbtree:sliced-threads:sync-lookahead=0:scenecut=0:intra-refresh=1", 0);
                     }
                     else
                     {
-                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "p2", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "ull", 0);  // Ultra-low latency tuning
+                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "p1", 0); 
+                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "ull", 0);
                         ffmpeg.av_opt_set(codecContext->priv_data, "zerolatency", "1", 0);
-
-
                         ffmpeg.av_opt_set(codecContext->priv_data, "rc", "vbr", 0);
-
-
-
-                        codecContext->rc_max_rate = 2500000;  // Maximum bitrate: 7.5 Mbps
-                        codecContext->rc_min_rate = (int)bitrate/8;  // Minimum bitrate: 2.5 Mbps
-                        codecContext->rc_buffer_size = 15000000;  // VBV buffer size: 15 Mbps
-
-                        // Set the rate control mode to VBR
-                        ffmpeg.av_opt_set(codecContext->priv_data, "rc", "vbr", 0);
-
-                        // Set the VBR quality factor (0-51, lower is better quality)
+                        codecContext->rc_max_rate = 2500000;
+                        codecContext->rc_min_rate = bitrate / 8;
+                        codecContext->rc_buffer_size = 15000000;
                         ffmpeg.av_opt_set_int(codecContext->priv_data, "cq", 23, 0);
-
-
-
-                        //ffmpeg.av_opt_set(codecContext->priv_data, "cq", "28", 0);
-
-                        //ffmpeg.av_opt_set(codecContext->priv_data, "delay", "0", 0);
-                        //ffmpeg.av_opt_set(codecContext->priv_data, "forced-idr", "1", 0);
-                        //ffmpeg.av_opt_set(codecContext->priv_data, "b_adapt", "0", 0);
-                        //ffmpeg.av_opt_set(codecContext->priv_data, "spatial-aq", "1", 0);
-                        //ffmpeg.av_opt_set(codecContext->priv_data, "temporal-aq", "1", 0);
-                        //ffmpeg.av_opt_set(codecContext->priv_data, "nonref_p", "1", 0);
-                        //ffmpeg.av_opt_set(codecContext->priv_data, "strict_gop", "1", 0);
-                        //ffmpeg.av_opt_set(codecContext->priv_data, "no-scenecut", "1", 0);
-
                     }
 
-
                     codecContext->max_b_frames = 0;
-                    codecContext->gop_size = 1;
-
-                    codecContext->flags |= ffmpeg.AV_CODEC_FLAG_LOW_DELAY;  // Enable low delay mode
-
-                    codecContext->thread_count = 4;
+                    codecContext->gop_size = 2;
+                    codecContext->flags |= ffmpeg.AV_CODEC_FLAG_LOW_DELAY;
+                    codecContext->thread_count = 8;
                     codecContext->thread_type = ffmpeg.FF_THREAD_FRAME | ffmpeg.FF_THREAD_SLICE;
+                    codecContext->flags |= ffmpeg.AV_CODEC_FLAG_GLOBAL_HEADER;
+                    codecContext->refs = 1; 
+                    codecContext->trellis = 0; 
                     codecContext->flags |= ffmpeg.AV_CODEC_FLAG_GLOBAL_HEADER;
                     int result = ffmpeg.avcodec_open2(codecContext, codec, null);
                     AVStream* stream = ffmpeg.avformat_new_stream(formatContext, null);
@@ -355,7 +332,7 @@ namespace RemoteDesktopPlugin
                     result = ffmpeg.avformat_write_header(formatContext, &options);
                     swsContext = ffmpeg.sws_getContext(dimensions.Item1, dimensions.Item2, AVPixelFormat.AV_PIX_FMT_BGRA,
                                                        dimensions.Item1, dimensions.Item2, codecContext->pix_fmt,
-                                                       ffmpeg.SWS_BILINEAR, null, null, null);
+                                                       ffmpeg.SWS_FAST_BILINEAR, null, null, null);
 
                     packet = ffmpeg.av_packet_alloc();
                     EncodingLoop(formatContext, codecContext, swsContext, stream, packet);
@@ -375,7 +352,6 @@ namespace RemoteDesktopPlugin
                     ffmpeg.avformat_free_context(formatContext);
                     ffmpeg.av_free(ioContext->buffer);
                     ffmpeg.avio_context_free(&ioContext);
-                    gcHandle.Free();
                 }
             });
             startThread.Start();
@@ -497,45 +473,46 @@ namespace RemoteDesktopPlugin
             return new Tuple<int, int>(textureDesc.Width, textureDesc.Height);
         }
 
+
+
+
         private void EncodingLoop(AVFormatContext* formatContext, AVCodecContext* codecContext, SwsContext* swsContext, AVStream* stream, AVPacket* packet)
         {
+            AVFrameWrapper convertedFrameWrapper = new AVFrameWrapper();
+
             try
             {
+                convertedFrameWrapper.Frame->format = (int)codecContext->pix_fmt;
+                convertedFrameWrapper.Frame->width = codecContext->width;
+                convertedFrameWrapper.Frame->height = codecContext->height;
+                ffmpeg.av_frame_get_buffer(convertedFrameWrapper.Frame, 32);
+
                 while (!ct.IsCancellationRequested)
                 {
-                    using (var convertedFrameWrapper = new AVFrameWrapper())
+                    using (var frameWrapper = framesToEncodeBuffer.Take(ct))
                     {
-                        using (var frameWrapper = framesToEncodeBuffer.Take(ct))
+                        ffmpeg.sws_scale(swsContext, frameWrapper.Frame->data, frameWrapper.Frame->linesize, 0, frameWrapper.Frame->height,
+                                         convertedFrameWrapper.Frame->data, convertedFrameWrapper.Frame->linesize);
+
+                        convertedFrameWrapper.Frame->pts = frameWrapper.Frame->pts;
+
+                        int result = ffmpeg.avcodec_send_frame(codecContext, convertedFrameWrapper.Frame);
+                        if (result < 0) continue; 
+
+                        while (result >= 0)
                         {
-                            convertedFrameWrapper.Frame->format = (int)codecContext->pix_fmt;
-                            convertedFrameWrapper.Frame->width = codecContext->width;
-                            convertedFrameWrapper.Frame->height = codecContext->height;
-                            ffmpeg.av_frame_get_buffer(convertedFrameWrapper.Frame, 32);
-
-                            ffmpeg.sws_scale(swsContext, frameWrapper.Frame->data, frameWrapper.Frame->linesize, 0, frameWrapper.Frame->height,
-                                             convertedFrameWrapper.Frame->data, convertedFrameWrapper.Frame->linesize);
-
-                            convertedFrameWrapper.Frame->pts = frameWrapper.Frame->pts;
-                            int result = ffmpeg.avcodec_send_frame(codecContext, convertedFrameWrapper.Frame);
-
-                            while (result >= 0)
+                            result = ffmpeg.avcodec_receive_packet(codecContext, packet);
+                            if (result == ffmpeg.AVERROR(ffmpeg.EAGAIN) || result == ffmpeg.AVERROR_EOF)
                             {
-                                result = ffmpeg.avcodec_receive_packet(codecContext, packet);
-                                if (result == ffmpeg.AVERROR(ffmpeg.EAGAIN) || result == ffmpeg.AVERROR_EOF)
-                                {
-                                    break;
-                                }
-
-                                packet->stream_index = stream->index;
-                                ffmpeg.av_packet_rescale_ts(packet, codecContext->time_base, stream->time_base);
-
-                                result = ffmpeg.av_interleaved_write_frame(formatContext, packet);
+                                break;
                             }
 
-                            frameWrapper.Unref();
-                            convertedFrameWrapper.Unref();
+                            packet->stream_index = stream->index;
+                            ffmpeg.av_packet_rescale_ts(packet, codecContext->time_base, stream->time_base);
+                            ffmpeg.av_interleaved_write_frame(formatContext, packet);
                         }
 
+                        frameWrapper.Unref();
                     }
                 }
             }
@@ -556,11 +533,12 @@ namespace RemoteDesktopPlugin
 
                     packet->stream_index = stream->index;
                     ffmpeg.av_packet_rescale_ts(packet, codecContext->time_base, stream->time_base);
-
-                    ret = ffmpeg.av_interleaved_write_frame(formatContext, packet);
+                    ffmpeg.av_interleaved_write_frame(formatContext, packet);
                 }
+                convertedFrameWrapper.Unref();
             }
         }
+
 
 
 
@@ -626,3 +604,6 @@ namespace RemoteDesktopPlugin
 
     }
 }
+
+
+
