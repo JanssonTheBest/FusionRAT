@@ -1,176 +1,327 @@
-﻿<Window x:Class="Server.UtilityWindows.FileManager" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:header="clr-namespace:Server.UI.CustomControls.WindowHeaders"
-        xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
+﻿<Window x:Class="Server.UtilityWindows.FileManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Server.UtilityWindows"
-        Title="File Manager - Fusion" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
-        MinHeight="600" MinWidth="800" Width="1145" Height="700" Foreground="{DynamicResource Text}">
+        xmlns:helpers="clr-namespace:Server.UI.Style.Common.CommonHelper"
+        mc:Ignorable="d"
+        Title="FileManager" 
+        Height="560" Width="760" MinHeight="416" MinWidth="605" 
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" Background="Transparent"
+        AllowsTransparency="True" UseLayoutRounding="True" 
+        TextOptions.TextFormattingMode="Display"
+        Foreground="{DynamicResource Text}" FontSize="13">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="2.2" CornerRadius="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
+    
+    
+
     <Window.Resources>
-        <local:PercentageConverter x:Key="PercentageConverter"/>
+        <Style x:Key="navBTN" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Height="35">
+                            <Border x:Name="hoverIndicator" Background="#CCCCCC" Opacity="0" CornerRadius="5"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Fill="#CCCCCC" Margin="8,1,11,0" Width="16" VerticalAlignment="Center" Stretch="Uniform" Data="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}"/>
+                                <TextBlock Text="{TemplateBinding Content}" Foreground="#CCCCCC" FontSize="13" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" TargetName="hoverIndicator" Value="0.03"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <DataTemplate x:Key="FolderTemplate">
-            <Border Width="120" Height="120" CornerRadius="4" Background="{DynamicResource Primary}">
-                <Grid Margin="12,14,0,0" HorizontalAlignment="Left">
-                    <Image Source="{Binding ImageSource}" Width="45" VerticalAlignment="Top"/>
-                    <StackPanel VerticalAlignment="Bottom">
-                        <TextBlock Text="{Binding FolderTitle}" FontWeight="Medium" FontSize="15" />
-                        <TextBlock Text="{Binding FileCount}" Foreground="{StaticResource Text}" Opacity="0.6" FontSize="13" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </DataTemplate>
+        <Storyboard x:Key="navShrink">
+            <DoubleAnimation Storyboard.TargetName="navPanel"
+                             Storyboard.TargetProperty="Width"
+                             To="43" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="navExpand">
+            <DoubleAnimation Storyboard.TargetName="navPanel"
+                             Storyboard.TargetProperty="Width"
+                             To="180" Duration="0">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
 
-        <DataTemplate x:Key="DriveTemplate">
-            <Border Width="315" CornerRadius="4" Background="{DynamicResource Primary}">
-                <StackPanel Margin="14,12,10,16" HorizontalAlignment="Left">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                        <Border Width="42" Height="41" Background="#272727" CornerRadius="2">
-                            <Image Width="36" Height="35" Margin="3" Source="/UI/Assets/Windows/FileManager/FileManagerHardDriveIcon.png" />
-                        </Border>
-                        <TextBlock Text="{Binding DriveTitle}" FontSize="15" FontWeight="Bold" Margin="8,0,6,0" />
-                        <Image Width="14" Height="14"/>
-                    </StackPanel>
 
-                    <TextBlock Text="{Binding FileSystem}" FontWeight="Medium" FontSize="13" Margin="0,12,0,7" />
-                    <TextBlock Text="{Binding Hardware}" FontWeight="Medium" FontSize="13" />
-                </StackPanel>
-            </Border>
-        </DataTemplate>
+        <!-- Style for the DataGrid -->
+        <Style TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserResizeRows" Value="False" />
+            <Setter Property="RowHeight" Value="36" />
+            <Setter Property="ColumnHeaderHeight" Value="36" />
+            <Setter Property="GridLinesVisibility" Value="None" />
+            <Setter Property="AlternatingRowBackground" Value="#0D000000" />
+            <Setter Property="RowBackground" Value="Transparent" />
+            <Setter Property="EnableRowVirtualization" Value="True" />
+            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+        </Style>
 
-        <DataTemplate x:Key="RecentFileTemplate">
-            <Border CornerRadius="4" Background="{DynamicResource Primary}" Height="45" Margin="0,0,0,12">
-                <Grid VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="19"/>
-                        <ColumnDefinition Width="35"/> <!-- Image -->
-                        <ColumnDefinition Width="15"/>
-                        <ColumnDefinition Width="*"/> <!-- File Name -->
-                        <ColumnDefinition Width="15"/>
-                        <ColumnDefinition Width="*"/> <!-- File Type -->
-                        <ColumnDefinition Width="15"/>
-                        <ColumnDefinition Width="*"/> <!-- File Size -->
-                        <ColumnDefinition Width="15"/>
-                        <ColumnDefinition Width="*"/> <!-- Last Modified -->
-                        <ColumnDefinition Width="28"/>
-                        <ColumnDefinition Width="18"/> <!-- Download -->
-                        <ColumnDefinition Width="29"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Width="35" Height="35" Background="#07FFFFFF" CornerRadius="4" Grid.Column="1">
-                        <Image Source="{Binding FileTypeImage}" Width="25" Height="25" Margin="5"/>
-                    </Border>
-                    <TextBlock Text="{Binding FileName}" MinWidth="100" Width="Auto" Margin="15,0,0,0" VerticalAlignment="Center" Grid.Column="3"/>
-                    <TextBlock Text="{Binding FileType}" Width="60" Margin="10,0" VerticalAlignment="Center" Grid.Column="5"/>
-                    <TextBlock Text="{Binding FileSize}" Width="50" Margin="10,0" VerticalAlignment="Center" Grid.Column="7"/>
-                    <TextBlock Text="{Binding LastModified}" Width="200" Margin="10,0" VerticalAlignment="Center" Grid.Column="9"/>
-                    <Grid Width="20" Height="20">
-                        <Path Stretch="Uniform" Margin="10,0" VerticalAlignment="Center" Grid.Column="11" Data="M 23.99 6.06 Q 25.44 6.06 25.45 7.28 Q 25.53 18.36 25.51 28.10 Q 25.50 28.89 26.07 28.33 L 29.00 25.41 A 1.38 1.34 -40.2 0 1 31.08 25.56 L 31.26 25.83 Q 31.83 26.63 31.20 27.31 Q 28.15 30.62 24.90 33.65 Q 24.54 33.98 24.01 33.98 Q 23.47 33.98 23.11 33.65 Q 19.86 30.62 16.81 27.32 Q 16.18 26.64 16.75 25.84 L 16.93 25.57 A 1.38 1.34 40.1 0 1 19.01 25.41 L 21.94 28.33 Q 22.51 28.89 22.50 28.10 Q 22.47 18.36 22.54 7.28 Q 22.55 6.06 23.99 6.06 Z M 24.00 39.00 Q 30.42 39.00 36.87 38.92 A 2.16 2.07 -89.3 0 0 38.92 36.83 L 39.07 32.52 Q 39.12 31.02 40.59 31.12 L 40.92 31.14 A 1.18 1.02 88.8 0 1 41.89 32.22 Q 42.17 36.15 41.86 37.42 Q 40.81 41.74 36.93 41.92 Q 35.34 42.00 24.00 42.00 Q 12.66 42.00 11.07 41.92 Q 7.19 41.74 6.14 37.42 Q 5.83 36.15 6.11 32.22 A 1.18 1.02 -88.8 0 1 7.08 31.14 L 7.41 31.12 Q 8.88 31.02 8.93 32.52 L 9.08 36.83 A 2.16 2.07 89.3 0 0 11.13 38.92 Q 17.58 39.00 24.00 39.00 Z" />
-                    </Grid>
-                </Grid>
-            </Border>
-        </DataTemplate>
+        <!-- Style for the DataGrid column headers -->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0,0,1,1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Border}" />
+            <Setter Property="Foreground" Value="{DynamicResource Text}" />
+            <Setter Property="FontWeight" Value="Regular" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="11,0,0,0" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
+        <!-- Style for DataGrid rows -->
+        <Style TargetType="DataGridRow">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
+        <!-- Style for DataGrid cells -->
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="11,0,0,0" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource Text}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="Regular" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource Selected}" />
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+
+        <!-- Style for TextBlocks within DataGrid cells -->
+        <Style x:Key="CenteredTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource Text}"/>
+            <Setter Property="Padding" Value="11,0,0,0"/>
+        </Style>
+
+
+
+
+
+        <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Grid x:Name="Grid">
+                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="Transparent" />
+                            <Border x:Name="Rectangle1" CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Background="{TemplateBinding Background}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="Horizontal">
+                                <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
+                                <Setter TargetName="Rectangle1" Property="Height" Value="5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--ScrollBars-->
+        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+            <Setter Property="Foreground" Value="{DynamicResource Primary}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Width" Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot" Width="5" Background="{TemplateBinding Background}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.00001*" />
+                            </Grid.RowDefinitions>
+                            <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" Style="{DynamicResource ScrollThumbs}" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Width" Value="Auto" />
+                                <Setter Property="Height" Value="5" />
+                                <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
-    <Border Background="{DynamicResource Primary}" BorderThickness="1" BorderBrush="{DynamicResource Border}">
+    <Border Background="{DynamicResource Secondary}"
+            BorderBrush="{DynamicResource Border}"
+            BorderThickness="1"
+            CornerRadius="5">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="27"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- TitleBar -->
-            <header:WindowHeader Background="{DynamicResource Primary}"/>
+            <Border Background="{DynamicResource Primary}"
+                    CornerRadius="5,5,0,0">
 
-            <!-- Main Content -->
-            <Grid Grid.Row="2">
+            </Border>
+
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="180" MinWidth="180" MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PercentageConverter}}" />
-                    <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Row="1">
+                <Button Style="{StaticResource Common_Button}"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Margin="22,23,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Width="10" Stretch="Uniform" Fill="{DynamicResource Icon}" Margin="0,3,0,0" Data="M 10 5.3417969 C 9.744125 5.3417969 9.4879688 5.4412187 9.2929688 5.6367188 L 3.6367188 11.292969 C 3.2457187 11.683969 3.2457187 12.317031 3.6367188 12.707031 L 9.2929688 18.363281 C 9.6839688 18.754281 10.317031 18.754281 10.707031 18.363281 L 10.792969 18.277344 C 11.183969 17.886344 11.183969 17.253281 10.792969 16.863281 L 6.9296875 13 L 20 13 C 20.552 13 21 12.552 21 12 C 21 11.448 20.552 11 20 11 L 6.9296875 11 L 10.792969 7.1367188 C 11.183969 6.7457187 11.183969 6.1126563 10.792969 5.7226562 L 10.707031 5.6367188 C 10.511531 5.4412187 10.255875 5.3417969 10 5.3417969 z"/>
+                        <TextBlock Text="Back" Foreground="{DynamicResource Text}" Margin="6,0,0,0"/>
+                    </StackPanel>
+                </Button>
 
+
+
+                <Grid Grid.Column="1"
+                      VerticalAlignment="Top"
+                      Margin="0,18,16,0"
+                      Height="27">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="11"/>
+                        <ColumnDefinition Width="157"/>
+                    </Grid.ColumnDefinitions>
+                    <Border CornerRadius="5"
+                            Background="#05CCCCCC">
+                        <TextBox Style="{StaticResource Common_TextBox}" Foreground="#fff" Opacity="0.8"/>
+                    </Border>
+
+                    <Border CornerRadius="5"
+                            Background="#05CCCCCC"
+                            Grid.Column="2">
+                        <TextBox Style="{StaticResource Common_TextBox}" helpers:TextBoxHelper.Placeholder="Search" Foreground="#fff" Opacity="0.8"/>
+                    </Border>
+                </Grid>
+
+                <!--Navigation-->
+                <Border BorderThickness="0,0,1,0"
+                        BorderBrush="{DynamicResource Border}"
+                        Width="180"
+                        HorizontalAlignment="Left"
+                        x:Name="navPanel"
+                        Margin="0,63,0,36">
+                    <Grid Margin="6,0,4,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <Button Style="{StaticResource navBTN}" Content="Home" Tag="M 23.951172 4 A 1.50015 1.50015 0 0 0 23.072266 4.3222656 L 8.859375 15.519531 C 7.0554772 16.941163 6 19.113506 6 21.410156 L 6 40.5 C 6 41.863594 7.1364058 43 8.5 43 L 18.5 43 C 19.863594 43 21 41.863594 21 40.5 L 21 30.5 C 21 30.204955 21.204955 30 21.5 30 L 26.5 30 C 26.795045 30 27 30.204955 27 30.5 L 27 40.5 C 27 41.863594 28.136406 43 29.5 43 L 39.5 43 C 40.863594 43 42 41.863594 42 40.5 L 42 21.410156 C 42 19.113506 40.944523 16.941163 39.140625 15.519531 L 24.927734 4.3222656 A 1.50015 1.50015 0 0 0 23.951172 4 z M 24 7.4101562 L 37.285156 17.876953 C 38.369258 18.731322 39 20.030807 39 21.410156 L 39 40 L 30 40 L 30 30.5 C 30 28.585045 28.414955 27 26.5 27 L 21.5 27 C 19.585045 27 18 28.585045 18 30.5 L 18 40 L 9 40 L 9 21.410156 C 9 20.030807 9.6307412 18.731322 10.714844 17.876953 L 24 7.4101562 z"/>
+                            <Button Style="{StaticResource navBTN}" Content="Desktop" Tag="M 5.5 6 C 3.0324991 6 1 8.0324991 1 10.5 L 1 31.5 C 1 33.967501 3.0324991 36 5.5 36 L 16 36 L 16 41 L 15.5 41 A 1.50015 1.50015 0 1 0 15.5 44 L 17.253906 44 A 1.50015 1.50015 0 0 0 17.740234 44 L 30.253906 44 A 1.50015 1.50015 0 0 0 30.740234 44 L 32.5 44 A 1.50015 1.50015 0 1 0 32.5 41 L 32 41 L 32 36 L 42.5 36 C 44.967501 36 47 33.967501 47 31.5 L 47 10.5 C 47 8.0324991 44.967501 6 42.5 6 L 5.5 6 z M 5.5 9 L 42.5 9 C 43.346499 9 44 9.6535009 44 10.5 L 44 31.5 C 44 32.346499 43.346499 33 42.5 33 L 30.746094 33 A 1.50015 1.50015 0 0 0 30.259766 33 L 17.746094 33 A 1.50015 1.50015 0 0 0 17.259766 33 L 5.5 33 C 4.6535009 33 4 32.346499 4 31.5 L 4 10.5 C 4 9.6535009 4.6535009 9 5.5 9 z M 19 36 L 29 36 L 29 41 L 19 41 L 19 36 z"/>
+                            <Button Style="{StaticResource navBTN}" Content="Downloads" Tag="M 23.976562 5.9785156 A 1.50015 1.50015 0 0 0 22.5 7.5 L 22.5 28.878906 L 19.060547 25.439453 A 1.50015 1.50015 0 0 0 17.984375 24.984375 A 1.50015 1.50015 0 0 0 16.939453 27.560547 L 22.939453 33.560547 A 1.50015 1.50015 0 0 0 25.060547 33.560547 L 31.060547 27.560547 A 1.50015 1.50015 0 1 0 28.939453 25.439453 L 25.5 28.878906 L 25.5 7.5 A 1.50015 1.50015 0 0 0 23.976562 5.9785156 z M 7.4765625 30.978516 A 1.50015 1.50015 0 0 0 6 32.5 L 6 36.5 C 6 39.519774 8.4802259 42 11.5 42 L 36.5 42 C 39.519774 42 42 39.519774 42 36.5 L 42 32.5 A 1.50015 1.50015 0 1 0 39 32.5 L 39 36.5 C 39 37.898226 37.898226 39 36.5 39 L 11.5 39 C 10.101774 39 9 37.898226 9 36.5 L 9 32.5 A 1.50015 1.50015 0 0 0 7.4765625 30.978516 z"/>
+                            <Button Style="{StaticResource navBTN}" Content="Documents" Tag="M 11.5 6 C 8.4802259 6 6 8.4802259 6 11.5 L 6 36.5 C 6 39.519774 8.4802259 42 11.5 42 L 36.5 42 C 39.519774 42 42 39.519774 42 36.5 L 42 11.5 C 42 8.4802259 39.519774 6 36.5 6 L 11.5 6 z M 11.5 9 L 36.5 9 C 37.898226 9 39 10.101774 39 11.5 L 39 36.5 C 39 37.898226 37.898226 39 36.5 39 L 11.5 39 C 10.101774 39 9 37.898226 9 36.5 L 9 11.5 C 9 10.101774 10.101774 9 11.5 9 z M 14.5 16 A 1.50015 1.50015 0 1 0 14.5 19 L 33.5 19 A 1.50015 1.50015 0 1 0 33.5 16 L 14.5 16 z M 14.5 22 A 1.50015 1.50015 0 1 0 14.5 25 L 33.5 25 A 1.50015 1.50015 0 1 0 33.5 22 L 14.5 22 z M 14.5 28 A 1.50015 1.50015 0 1 0 14.5 31 L 27.5 31 A 1.50015 1.50015 0 1 0 27.5 28 L 14.5 28 z"/>
+                            <Button Style="{StaticResource navBTN}" Content="Pictures" Tag="M 11.5 6 C 8.4802259 6 6 8.4802259 6 11.5 L 6 36.5 C 6 37.966015 6.5881101 39.301372 7.5351562 40.291016 A 1.50015 1.50015 0 0 0 8.0820312 40.792969 C 9.0234415 41.545724 10.211116 42 11.5 42 L 36.5 42 C 39.519774 42 42 39.519774 42 36.5 L 42 11.5 C 42 8.4802259 39.519774 6 36.5 6 L 11.5 6 z M 11.5 9 L 36.5 9 C 37.898226 9 39 10.101774 39 11.5 L 39 36.5 C 39 36.695853 38.972662 36.884399 38.931641 37.066406 L 27.181641 25.318359 C 26.309208 24.445927 25.154864 24.009766 24 24.009766 C 22.845136 24.009766 21.688839 24.445927 20.816406 25.318359 L 9.0683594 37.066406 C 9.0273383 36.884399 9 36.695853 9 36.5 L 9 11.5 C 9 10.101774 10.101774 9 11.5 9 z M 30.5 13 C 29.125 13 27.903815 13.569633 27.128906 14.441406 C 26.353997 15.313179 26 16.416667 26 17.5 C 26 18.583333 26.353997 19.686821 27.128906 20.558594 C 27.903815 21.430367 29.125 22 30.5 22 C 31.875 22 33.096185 21.430367 33.871094 20.558594 C 34.646003 19.686821 35 18.583333 35 17.5 C 35 16.416667 34.646003 15.313179 33.871094 14.441406 C 33.096185 13.569633 31.875 13 30.5 13 z M 30.5 16 C 31.124999 16 31.403816 16.180367 31.628906 16.433594 C 31.853997 16.686821 32 17.083333 32 17.5 C 32 17.916667 31.853997 18.313179 31.628906 18.566406 C 31.403816 18.819633 31.124999 19 30.5 19 C 29.875001 19 29.596184 18.819633 29.371094 18.566406 C 29.146003 18.313179 29 17.916667 29 17.5 C 29 17.083333 29.146003 16.686821 29.371094 16.433594 C 29.596184 16.180367 29.875001 16 30.5 16 z M 24 26.990234 C 24.38049 26.990234 24.760979 27.139886 25.060547 27.439453 L 36.609375 38.988281 C 36.57229 38.989853 36.537528 39 36.5 39 L 11.5 39 C 11.461809 39 11.426404 38.989909 11.388672 38.988281 L 22.939453 27.439453 C 23.239021 27.139886 23.61951 26.990234 24 26.990234 z"/>
+                            <Button Style="{StaticResource navBTN}" Content="Music" Tag="M 40.455078 6 A 1.50015 1.50015 0 0 0 40.167969 6.0371094 L 20.501953 10.505859 C 18.461283 10.969854 17 12.803006 17 14.894531 L 17 15.5 L 17 20.5 L 17 32.291016 C 15.713708 31.506354 14.193199 31 12.5 31 C 10.539147 31 8.7361897 31.583111 7.3574219 32.617188 C 5.978654 33.651263 5 35.21692 5 37 C 5 38.78308 5.978654 40.348737 7.3574219 41.382812 C 8.7361897 42.416889 10.539147 43 12.5 43 C 14.460853 43 16.26381 42.416889 17.642578 41.382812 C 19.021346 40.348737 20 38.78308 20 37 C 20 36.9472 19.962637 36.90593 19.960938 36.853516 A 1.50015 1.50015 0 0 0 20 36.5 L 20 21.697266 L 39 17.378906 L 39 28.291016 C 37.713708 27.506354 36.193199 27 34.5 27 C 32.539147 27 30.73619 27.583111 29.357422 28.617188 C 27.978654 29.651264 27 31.21692 27 33 C 27 34.78308 27.978654 36.348737 29.357422 37.382812 C 30.73619 38.416889 32.539147 39 34.5 39 C 36.460853 39 38.26381 38.416889 39.642578 37.382812 C 41.021346 36.348737 42 34.78308 42 33 C 42 32.9472 41.962637 32.90593 41.960938 32.853516 A 1.50015 1.50015 0 0 0 42 32.5 L 42 15.5 L 42 12.5 L 42 7.5 A 1.50015 1.50015 0 0 0 40.455078 6 z M 39 9.3789062 L 39 12.5 L 39 14.302734 L 20 18.621094 L 20 15.5 L 20 14.894531 C 20 14.186674 20.47563 13.588317 21.166016 13.431641 A 1.50015 1.50015 0 0 0 21.167969 13.431641 L 39 9.3789062 z M 34.5 30 C 35.852858 30 37.048994 30.422975 37.841797 31.017578 C 38.6346 31.612181 39 32.297798 39 33 C 39 33.702202 38.6346 34.387819 37.841797 34.982422 C 37.048994 35.577025 35.852858 36 34.5 36 C 33.147142 36 31.951006 35.577025 31.158203 34.982422 C 30.3654 34.387819 30 33.702202 30 33 C 30 32.297798 30.3654 31.612181 31.158203 31.017578 C 31.951006 30.422975 33.147142 30 34.5 30 z M 12.5 34 C 13.852858 34 15.048994 34.422975 15.841797 35.017578 C 16.6346 35.612181 17 36.297798 17 37 C 17 37.702202 16.6346 38.387819 15.841797 38.982422 C 15.048994 39.577025 13.852858 40 12.5 40 C 11.147142 40 9.9510063 39.577025 9.1582031 38.982422 C 8.3653999 38.387819 8 37.702202 8 37 C 8 36.297798 8.3653999 35.612181 9.1582031 35.017578 C 9.9510063 34.422975 11.147142 34 12.5 34 z"/>
+                            <Button Style="{StaticResource navBTN}" Content="Videos" Tag="M 10.5 9 C 6.9280619 9 4 11.928062 4 15.5 L 4 32.5 C 4 36.071938 6.9280619 39 10.5 39 L 27.5 39 C 31.071938 39 34 36.071938 34 32.5 L 34 31.150391 L 41.728516 35.787109 A 1.50015 1.50015 0 0 0 44 34.5 L 44 13.5 A 1.50015 1.50015 0 0 0 42.455078 12 A 1.50015 1.50015 0 0 0 41.728516 12.212891 L 34 16.849609 L 34 15.5 C 34 11.928062 31.071938 9 27.5 9 L 10.5 9 z M 10.5 12 L 27.5 12 C 29.450062 12 31 13.549938 31 15.5 L 31 19.453125 L 31 28.482422 L 31 32.5 C 31 34.450062 29.450062 36 27.5 36 L 10.5 36 C 8.5499381 36 7 34.450062 7 32.5 L 7 15.5 C 7 13.549938 8.5499381 12 10.5 12 z M 41 16.150391 L 41 31.849609 L 34 27.650391 L 34 20.349609 L 41 16.150391 z"/>
+                        </StackPanel>
+
+                        <Button Grid.Row="2" Style="{StaticResource navBTN}" Content="C: 237,8" Tag="M 3.8242188 2 C 3.1086145 2 2.4875446 2.5125185 2.3515625 3.2148438 L 1 10.201172 L 1 10.5 L 1 11 L 1 12.5 C 1 13.322531 1.6774686 14 2.5 14 L 13.5 14 C 14.322531 14 15 13.322531 15 12.5 L 15 11 L 15 10.5 L 15 10.201172 L 13.648438 3.2148438 C 13.512453 2.5125184 12.891385 2 12.175781 2 L 3.8242188 2 z M 3.8242188 3 L 12.175781 3 C 12.418177 3 12.619998 3.166622 12.666016 3.4042969 L 13.753906 9.0273438 C 13.670938 9.0128718 13.586827 9 13.5 9 L 2.5 9 C 2.413173 9 2.3290616 9.0128718 2.2460938 9.0273438 L 3.3339844 3.4042969 C 3.3800023 3.166622 3.5818226 3 3.8242188 3 z M 2.5 10 L 13.5 10 C 13.781469 10 14 10.218531 14 10.5 L 14 11 L 14 12.5 C 14 12.781469 13.781469 13 13.5 13 L 10 13 L 10 11 L 9 11 L 9 13 L 8 13 L 8 11 L 7 11 L 7 13 L 6 13 L 6 11 L 5 11 L 5 13 L 4 13 L 4 11 L 3 11 L 3 13 L 2.5 13 C 2.2185314 13 2 12.781469 2 12.5 L 2 11 L 2 10.5 C 2 10.218531 2.2185314 10 2.5 10 z M 12.5 11 A 0.5 0.5 0 0 0 12 11.5 A 0.5 0.5 0 0 0 12.5 12 A 0.5 0.5 0 0 0 13 11.5 A 0.5 0.5 0 0 0 12.5 11 z"/>
+                    </Grid>
                 </Border>
 
-                <GridSplitter Grid.Column="1" Width="5" Margin="0,8,0,0" Background="Transparent" Cursor="SizeWE" />
-
-                <!-- Main Content -->
-                <Border CornerRadius="8,0,0,0" Background="{DynamicResource Secondary}" BorderThickness="1,1,0,0" BorderBrush="{DynamicResource Border}" Grid.Column="2">
-                    <Grid Margin="30,18,30,0">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="31"/>
-                                <RowDefinition Height="31"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15"/>
-                                    <!--Backwards-->
-                                    <ColumnDefinition Width="25"/>
-                                    <ColumnDefinition Width="15"/>
-                                    <!--Forward-->
-                                    <ColumnDefinition Width="25"/>
-                                    <ColumnDefinition Width="6*" MinWidth="250"/>
-                                    <!--Path-->
-                                    <ColumnDefinition MinWidth="30"/>
-                                    <ColumnDefinition Width="1.4*" MinWidth="160"/>
-                                    <!--Search-->
-                                </Grid.ColumnDefinitions>
-
-                                <Grid Width="15" Height="15">
-                                    <Path Fill="{DynamicResource Icon}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M9.929 12L14.5 7.429 13 5.929 6.929 12 13 18.071 14.5 16.571z"/>
-                                </Grid>
-                                <Grid Width="15" Height="15" Grid.Column="2">
-                                    <Path Fill="{DynamicResource Icon}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M13.071 12L8.5 7.429 10 5.929 16.071 12 10 18.071 8.5 16.571z"/>
-                                </Grid>
-
-                                <Border Background="{DynamicResource Primary}" Height="30" BorderThickness="1" BorderBrush="{DynamicResource Border}" CornerRadius="2" Grid.Column="4">
-                                    <TextBlock Text="{Binding CurrentPath}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                </Border>
-
-                                <Border Background="{DynamicResource Primary}" Height="30" BorderThickness="1" BorderBrush="{DynamicResource Border}" Width="160" CornerRadius="2" Grid.Column="6">
-                                    <StackPanel Orientation="Horizontal" Background="Transparent">
-                                        <Grid Height="21" Width="21">
-                                            <Path Fill="{DynamicResource Icon}" Stretch="Uniform" Margin="5" HorizontalAlignment="Left" Opacity="0.6" Data="M 41.53 41.51 C 40.84 42.20 40.01 42.06 39.36 41.43 Q 37.13 39.27 30.09 32.16 Q 29.72 31.79 29.28 32.08 Q 21.14 37.34 13.41 33.06 C 4.99 28.40 3.64 16.91 10.27 10.27 C 16.90 3.64 28.39 4.99 33.06 13.40 Q 37.34 21.13 32.08 29.27 Q 31.80 29.71 32.17 30.08 Q 39.28 37.12 41.44 39.35 C 42.07 40.00 42.21 40.83 41.53 41.51 Z M 31.97 20.50 A 11.47 11.47 0.0 0 0 20.50 9.03 A 11.47 11.47 0.0 0 0 9.03 20.50 A 11.47 11.47 0.0 0 0 20.50 31.97 A 11.47 11.47 0.0 0 0 31.97 20.50 Z" />
-                                        </Grid>
-                                        <TextBox Background="Transparent" BorderThickness="0" VerticalAlignment="Center" helpers:TextBoxHelper.Placeholder="Search"/>
+                <DataGrid x:Name="dataGridPorts" Grid.Column="1" Background="Transparent" BorderThickness="0" Margin="0,63,-1,36">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Name" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="22" Margin="11,3,0,0" Source="/UtilityWindows/dot_folder-5.png" />
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource CenteredTextBlockStyle}"/>
                                     </StackPanel>
-                                </Border>
-                            </Grid>
-                            <Grid Grid.Row="2">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="10"/>
-                                    <RowDefinition Height="120"/>
-                                    <RowDefinition Height="31"/>
-                                    <RowDefinition Height="120"/>
-                                    <RowDefinition Height="24"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="31"/>
-                                </Grid.RowDefinitions>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                                <Label Content="Commonly Used" Padding="0" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource Text}" />
+                        <DataGridTextColumn Header="Size" Binding="{Binding Size}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource CenteredTextBlockStyle}" />
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                                <Grid Grid.Row="2">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
+                        <DataGridTextColumn Header="Modified" Binding="{Binding Modified}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource CenteredTextBlockStyle}" />
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
 
-                                    <Grid x:Name="FolderContainer" Grid.Row="1" />
-                                </Grid>
-                                
-                                <StackPanel x:Name="DriveContainer" Orientation="Horizontal" Grid.Row="4"/>
-
-                                <StackPanel x:Name="RecentFilesContainer" Orientation="Vertical" Grid.Row="6"/>
-                            </Grid>
-                        </Grid>
-                    </Grid> 
-                </Border>
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Bottom"
+                            Margin="0,0,0,10"
+                            Grid.Column="1"
+                            Opacity="0.85">
+                    <TextBlock Text="12 Objects"/>
+                    <TextBlock Text=" | "/>
+                    <TextBlock Text="1 Selected"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </Border>
