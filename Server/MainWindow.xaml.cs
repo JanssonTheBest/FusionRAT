@@ -5,6 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Server.UI.CustomControls.Popup;
+using System.Diagnostics;
 
 namespace Server
 {
@@ -14,6 +15,8 @@ namespace Server
         private Storyboard ExpandSidePanel;
         public MainWindow()
         {
+            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
+
             InitializeComponent();
             ffmpeg.RootPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg");
             ImpactSidePanel = (Storyboard)FindResource("Impact_SidePanel");

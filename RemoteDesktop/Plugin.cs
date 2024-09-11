@@ -83,7 +83,7 @@ namespace RemoteDesktopPlugin
                     Thread.Sleep(200);
                 }
 
-                Start(40, 100000, adapter, output);
+                Start(80, 100000, adapter, output);
                 return;
             }
 
