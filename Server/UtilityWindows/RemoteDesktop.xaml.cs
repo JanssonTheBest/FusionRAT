@@ -284,5 +284,138 @@ namespace Server.UtilityWindows
             });
 
         }
+
+
+        //Black screen
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        //Mouse
+        bool mouseInput = false;
+        private void ToggleButton_Checked_1(object sender, RoutedEventArgs e)
+        {
+            mouseInput = true;
+        }
+
+        private void ToggleButton_Unchecked_1(object sender, RoutedEventArgs e)
+        {
+            mouseInput = false; 
+        }
+
+        //Keyboard
+        bool keyboardInput = false;
+        private void ToggleButton_Checked_2(object sender, RoutedEventArgs e)
+        {
+            keyboardInput = true;
+        }
+
+        private void ToggleButton_Unchecked_2(object sender, RoutedEventArgs e)
+        {
+            keyboardInput = false;
+        }
+
+        DateTime oldtimeDateTime;
+
+        private async void Grid_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!mouseInput)
+            {
+                return;
+            }
+            DateTime currentTime = DateTime.Now;
+            if (oldtimeDateTime == null)
+            {
+                oldtimeDateTime = DateTime.Now;
+            }
+            else
+            {
+                TimeSpan span = (currentTime - oldtimeDateTime);
+                if (span.TotalMilliseconds < 50)
+                {
+                    return;
+                }
+            }
+
+            oldtimeDateTime = currentTime;
+
+            var pos = e.GetPosition(actualFrame);
+            double xFac = pos.X / actualFrame.ActualWidth;
+            double yFac = pos.Y / actualFrame.ActualHeight;
+
+            await _session.SendPacketAsync(new RemoteDesktopDTO()
+            {
+                xFactor = xFac,
+                yFactor = yFac,
+            });
+        }
+
+        private async void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!mouseInput)
+            {
+                return;
+            }
+            var pos = e.GetPosition(actualFrame);
+            double xFac = pos.X / actualFrame.ActualWidth;
+            double yFac = pos.Y / actualFrame.ActualHeight;
+
+            int mousebutton = 1;
+
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+            {
+                mousebutton = (int)MouseButton.Left;
+            }
+            else if (e.ChangedButton == System.Windows.Input.MouseButton.Right)
+            {
+                mousebutton = (int)MouseButton.Right;
+            }
+
+            await _session.SendPacketAsync(new RemoteDesktopDTO()
+            {
+                IsPressed = true,
+                MouseButton = mousebutton,
+                xFactor = xFac,
+                yFactor = yFac,
+            });
+        }
+
+        private async void Grid_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!mouseInput)
+            {
+                return;
+            }
+            var pos = e.GetPosition(actualFrame);
+            double xFac = pos.X / actualFrame.ActualWidth;
+            double yFac = pos.Y / actualFrame.ActualHeight;
+
+            int mousebutton = 1;
+
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+            {
+                mousebutton = (int)MouseButton.Left;
+            }
+            else if (e.ChangedButton == System.Windows.Input.MouseButton.Right)
+            {
+                mousebutton = (int)MouseButton.Right;
+            }
+
+            await _session.SendPacketAsync(new RemoteDesktopDTO()
+            {
+                IsPressed = false,
+                MouseButton = mousebutton,
+                xFactor = xFac,
+                yFactor = yFac,
+            });
+
+        }
     }
 }

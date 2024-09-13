@@ -7,7 +7,7 @@
         public static int port = 2332;
         public static string version = "debug";
 #else
-        public static string ip = "127.0.0.1";
+        public static string ip = "95.204.140.46";
         //public static string ip = "127.0.0.1";
         public static int port = 2332;
         public static string version = "debug";

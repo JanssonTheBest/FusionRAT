@@ -83,12 +83,182 @@ namespace RemoteDesktopPlugin
                     Thread.Sleep(200);
                 }
 
-                Start(80, 100000, adapter, output);
+                Start(30, 100000, adapter, output);
                 return;
             }
 
+
+            if (dto.MouseButton != 0)
+            {
+                HandleMouseButton(new MouseInput()
+                {
+                    button = (MouseButton)dto.MouseButton,
+                    state = (MouseButtonState)(Convert.ToInt32(!dto.IsPressed)),
+                });
+                return;
+            }
+
+            if (dto.yFactor != null || dto.xFactor != null)
+            {
+
+                MoveCursor((int)(dto.xFactor * width), (int)(dto.yFactor*height));
+                return;
+            }
+
+            if (dto.Char != null)
+            {
+                HandleKeyboardInput();
+                return;
+            }
+
+            if (dto.scrollDelta != 0)
+            {
+                HandleMouseScroll();
+                return;
+            }
+
+
             Stop(true);
         }
+
+        private void HandleMouseButton(MouseInput mouseInput)
+        {
+            if (mouseInput.button == MouseButton.Left)
+            {
+                if(mouseInput.state == MouseButtonState.Pressed)
+                {
+                    MouseDown(MOUSEEVENTF_LEFTDOWN);
+                    return;
+                }
+                MouseDown(MOUSEEVENTF_LEFTUP);
+                return;
+            }
+
+            if(mouseInput.button == MouseButton.Right)
+            {
+                if (mouseInput.state == MouseButtonState.Pressed)
+                {
+                    MouseDown(MOUSEEVENTF_RIGHTDOWN);
+
+
+                    return;
+                }
+                MouseDown(MOUSEEVENTF_RIGHTUP);
+                return;
+            }
+        }
+
+        private void HandleMouseMove(int xDelta, int yDelta)
+        {
+
+        }
+
+        private void HandleMouseScroll()
+        {
+
+        }
+
+        private void HandleKeyboardInput()
+        {
+
+        }
+
+
+
+        public enum MouseButton
+        {
+            Right = 1,
+
+            Left,
+
+        }
+        public enum MouseButtonState
+        {
+            Pressed,
+            Released,
+        }
+
+        public struct MouseInput
+        {
+            public MouseButton? button;
+            public MouseButtonState? state;
+            public double xFactor;
+            public double yFactor;
+            public int? scrollDelta;
+        }
+
+
+        // Input type constant
+        const uint INPUT_MOUSE = 0;
+
+        // Mouse event constants
+        const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
+        const uint MOUSEEVENTF_LEFTUP = 0x0004;
+        const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
+        const uint MOUSEEVENTF_RIGHTUP = 0x0010;
+
+        [StructLayout(LayoutKind.Sequential)]
+        struct INPUT
+        {
+            public uint type;
+            public InputUnion u;
+        }
+
+        [StructLayout(LayoutKind.Explicit)]
+        struct InputUnion
+        {
+            [FieldOffset(0)] public MOUSEINPUT mi;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        struct MOUSEINPUT
+        {
+            public int dx;
+            public int dy;
+            public uint mouseData;
+            public uint dwFlags;
+            public uint time;
+            public IntPtr dwExtraInfo;
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetMessageExtraInfo();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool SetCursorPos(int X, int Y);
+
+        static void MoveCursor(int x, int y)
+        {
+            if (!SetCursorPos(x, y))
+            {
+                Console.WriteLine("Failed to set cursor position");
+            }
+        }
+
+        static void MouseDown(uint mouseEvent)
+        {
+            INPUT[] inputs = new INPUT[1];
+
+            inputs[0].type = INPUT_MOUSE;
+            inputs[0].u.mi = new MOUSEINPUT
+            {
+                dx = 0,
+                dy = 0,
+                mouseData = 0,
+                dwFlags = mouseEvent,
+                time = 0,
+                dwExtraInfo = GetMessageExtraInfo()
+            };
+
+            SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(INPUT)));
+        }
+
+
+
+
 
         private void InitilizeDependencies(Dictionary<string, byte[]> nameFilePairs)
         {
@@ -238,6 +408,8 @@ namespace RemoteDesktopPlugin
             return buf_size;
         }
 
+        int width = 0;
+        int height = 0;
         private void Start(int fps, int bitrate, int adapter, int output)
         {
             isStreaming = true;
@@ -293,6 +465,8 @@ namespace RemoteDesktopPlugin
                     codecContext->bit_rate = bitrate;
                     codecContext->pix_fmt = AVPixelFormat.AV_PIX_FMT_YUV420P;
 
+                    width=dimensions.Item1;
+                    height=dimensions.Item2;
 
 
                     if (!navidia)
@@ -304,7 +478,7 @@ namespace RemoteDesktopPlugin
                     }
                     else
                     {
-                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "p1", 0); 
+                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "p1", 0);
                         ffmpeg.av_opt_set(codecContext->priv_data, "tune", "ull", 0);
                         ffmpeg.av_opt_set(codecContext->priv_data, "zerolatency", "1", 0);
                         ffmpeg.av_opt_set(codecContext->priv_data, "rc", "vbr", 0);
@@ -320,8 +494,8 @@ namespace RemoteDesktopPlugin
                     codecContext->thread_count = 8;
                     codecContext->thread_type = ffmpeg.FF_THREAD_FRAME | ffmpeg.FF_THREAD_SLICE;
                     codecContext->flags |= ffmpeg.AV_CODEC_FLAG_GLOBAL_HEADER;
-                    codecContext->refs = 1; 
-                    codecContext->trellis = 0; 
+                    codecContext->refs = 1;
+                    codecContext->trellis = 0;
                     codecContext->flags |= ffmpeg.AV_CODEC_FLAG_GLOBAL_HEADER;
                     int result = ffmpeg.avcodec_open2(codecContext, codec, null);
                     AVStream* stream = ffmpeg.avformat_new_stream(formatContext, null);
@@ -497,7 +671,7 @@ namespace RemoteDesktopPlugin
                         convertedFrameWrapper.Frame->pts = frameWrapper.Frame->pts;
 
                         int result = ffmpeg.avcodec_send_frame(codecContext, convertedFrameWrapper.Frame);
-                        if (result < 0) continue; 
+                        if (result < 0) continue;
 
                         while (result >= 0)
                         {

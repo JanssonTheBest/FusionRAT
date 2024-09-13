@@ -29,9 +29,21 @@ namespace Common.DTOs.MessagePack
         [Key(0)]
         public byte[] VideoChunk { get; set; }
         [Key(1)]
-        public string[] Options {  get; set; }
+        public string[] Options { get; set; }
         [Key(2)]
         public Dictionary<string, byte[]> LibAVFiles { get; set; }
+        [Key(3)]
+        public string Char { get; set; }
+        [Key(4)]
+        public int MouseButton { get; set; }
+        [Key(5)]
+        public bool IsPressed { get; set; }
+        [Key(6)]
+        public double xFactor { get; set; }
+        [Key(7)]
+        public double yFactor { get; set; }
+        [Key(8)]
+        public int scrollDelta { get; set; }
 
         public async Task HandlePacket(Session session)
         {

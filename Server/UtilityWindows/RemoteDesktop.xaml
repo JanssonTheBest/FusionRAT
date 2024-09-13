@@ -317,7 +317,7 @@
             <Border Grid.Row="1"
                     Background="{DynamicResource Secondary}"
                     x:Name="main">
-                <Grid>
+                <Grid PreviewMouseMove="Grid_PreviewMouseMove" PreviewMouseDown="Grid_PreviewMouseDown" PreviewMouseUp="Grid_PreviewMouseUp" x:Name="actualFrame">
 
                     <Image x:Name="frame" Stretch="Fill" Panel.ZIndex="-1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 
@@ -482,17 +482,17 @@
 
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Black screen:" VerticalAlignment="Center" Margin="0,0,11,0"/>
-                                <ToggleButton Style="{StaticResource CheckboxToggle}"/>
+                                <ToggleButton Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked" Style="{StaticResource CheckboxToggle}"/>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Margin="22,0">
                                 <TextBlock Text="Mouse:" VerticalAlignment="Center" Margin="0,0,11,0"/>
-                                <ToggleButton Style="{StaticResource CheckboxToggle}"/>
+                                <ToggleButton Checked="ToggleButton_Checked_1" Unchecked="ToggleButton_Unchecked_1" Style="{StaticResource CheckboxToggle}"/>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Keyboard:" VerticalAlignment="Center" Margin="0,0,11,0"/>
-                                <ToggleButton Style="{StaticResource CheckboxToggle}"/>
+                                <ToggleButton Checked="ToggleButton_Checked_2" Unchecked="ToggleButton_Unchecked_2" Style="{StaticResource CheckboxToggle}"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
