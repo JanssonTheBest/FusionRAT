@@ -187,11 +187,7 @@ namespace RemoteDesktopPlugin
             public int? scrollDelta;
         }
 
-
-        // Input type constant
         const uint INPUT_MOUSE = 0;
-
-        // Mouse event constants
         const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
         const uint MOUSEEVENTF_LEFTUP = 0x0004;
         const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;

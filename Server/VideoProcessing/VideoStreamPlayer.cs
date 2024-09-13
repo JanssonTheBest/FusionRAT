@@ -244,6 +244,16 @@ namespace Server.VideoProcessing
         BlockingCollection<(byte[], long)> frameUpdateBuffer = new BlockingCollection<(byte[], long)>();
         private void FrameUpdaterWorkerMethod(double timeBase, DateTime startTime)
         {
+            int width = 0;
+            int height = 0;
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+               width = (int)writeableBitmap.Width;
+                height = (int)writeableBitmap.Height;
+            });
+                
+            int stride = width * 3;
             try
             {
                 while (!ct.IsCancellationRequested)
@@ -258,7 +268,7 @@ namespace Server.VideoProcessing
                     }
                     Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        writeableBitmap.WritePixels(new Int32Rect(0, 0, 1920, 1080), result.Item1, 1920 * 3, 0);
+                        writeableBitmap.WritePixels(new Int32Rect(0, 0, width, height), result.Item1, stride, 0);
                     });
                 }
             }
