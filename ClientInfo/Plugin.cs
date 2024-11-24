@@ -27,6 +27,7 @@ namespace ClientInfo
                 Version = "debug",
                 Username = Environment.UserName,
                 Ping = "...",
+
                 Country = info.country,
             };
             await _session.SendPacketAsync(clientInfo);
