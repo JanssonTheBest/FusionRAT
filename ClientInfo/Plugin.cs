@@ -28,6 +28,7 @@ namespace ClientInfo
                 Username = Environment.UserName,
                 Ping = "...",
 
+
                 Country = info.country,
             };
             await _session.SendPacketAsync(clientInfo);
