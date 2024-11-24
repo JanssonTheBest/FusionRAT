@@ -83,7 +83,7 @@ namespace RemoteDesktopPlugin
                     Thread.Sleep(200);
                 }
 
-                Start(30, 100000, adapter, output);
+                Start(80, 100000, adapter, output);
                 return;
             }
 
@@ -98,10 +98,10 @@ namespace RemoteDesktopPlugin
                 return;
             }
 
-            if (dto.yFactor != null || dto.xFactor != null)
+            if (dto.yFactor != 0 || dto.xFactor != 0)
             {
 
-                MoveCursor((int)(dto.xFactor * width), (int)(dto.yFactor*height));
+                MoveCursor((int)(dto.xFactor * width), (int)(dto.yFactor * height));
                 return;
             }
 
@@ -123,9 +123,11 @@ namespace RemoteDesktopPlugin
 
         private void HandleMouseButton(MouseInput mouseInput)
         {
+            Console.WriteLine(mouseInput.button.ToString(), mouseInput.state.ToString());
+
             if (mouseInput.button == MouseButton.Left)
             {
-                if(mouseInput.state == MouseButtonState.Pressed)
+                if (mouseInput.state == MouseButtonState.Pressed)
                 {
                     MouseDown(MOUSEEVENTF_LEFTDOWN);
                     return;
@@ -134,7 +136,7 @@ namespace RemoteDesktopPlugin
                 return;
             }
 
-            if(mouseInput.button == MouseButton.Right)
+            if (mouseInput.button == MouseButton.Right)
             {
                 if (mouseInput.state == MouseButtonState.Pressed)
                 {
@@ -426,17 +428,8 @@ namespace RemoteDesktopPlugin
                 AVIOContext* ioContext = null;
                 try
                 {
-                    bool navidia = true;
                     AVCodec* codec = null;
-
-                    codec = ffmpeg.avcodec_find_decoder_by_name("h264_nvenc");
-                    if (codec == null)
-                    {
-                        codec = ffmpeg.avcodec_find_encoder(AVCodecID.AV_CODEC_ID_H264);
-                        navidia = false;
-                    }
-
-
+                    codec = ffmpeg.avcodec_find_encoder(AVCodecID.AV_CODEC_ID_H264);
                     formatContext = ffmpeg.avformat_alloc_context();
 
                     int bufferSize = 4096 * 8;
@@ -461,33 +454,19 @@ namespace RemoteDesktopPlugin
                     codecContext->bit_rate = bitrate;
                     codecContext->pix_fmt = AVPixelFormat.AV_PIX_FMT_YUV420P;
 
-                    width=dimensions.Item1;
-                    height=dimensions.Item2;
+                    width = dimensions.Item1;
+                    height = dimensions.Item2;
 
+                    ffmpeg.av_opt_set(codecContext->priv_data, "preset", "ultrafast", 0);
+                    ffmpeg.av_opt_set(codecContext->priv_data, "tune", "zerolatency", 0);
+                    ffmpeg.av_opt_set(codecContext->priv_data, "crf", "35", 0);
+                    ffmpeg.av_opt_set(codecContext->priv_data, "x264opts", "no-mbtree:sliced-threads:sync-lookahead=0:scenecut=0:intra-refresh=1", 0);
 
-                    if (!navidia)
-                    {
-                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "ultrafast", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "zerolatency", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "crf", "35", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "x264opts", "no-mbtree:sliced-threads:sync-lookahead=0:scenecut=0:intra-refresh=1", 0);
-                    }
-                    else
-                    {
-                        ffmpeg.av_opt_set(codecContext->priv_data, "preset", "p1", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "tune", "ull", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "zerolatency", "1", 0);
-                        ffmpeg.av_opt_set(codecContext->priv_data, "rc", "vbr", 0);
-                        codecContext->rc_max_rate = 2500000;
-                        codecContext->rc_min_rate = bitrate / 8;
-                        codecContext->rc_buffer_size = 15000000;
-                        ffmpeg.av_opt_set_int(codecContext->priv_data, "cq", 23, 0);
-                    }
 
                     codecContext->max_b_frames = 0;
                     codecContext->gop_size = 2;
                     codecContext->flags |= ffmpeg.AV_CODEC_FLAG_LOW_DELAY;
-                    codecContext->thread_count = 8;
+                    codecContext->thread_count = 4;
                     codecContext->thread_type = ffmpeg.FF_THREAD_FRAME | ffmpeg.FF_THREAD_SLICE;
                     codecContext->flags |= ffmpeg.AV_CODEC_FLAG_GLOBAL_HEADER;
                     codecContext->refs = 1;
@@ -527,35 +506,34 @@ namespace RemoteDesktopPlugin
             startThread.Start();
         }
 
-        private Tuple<int, int> ScreenCaptureLoop(AVRational timeBase, int adapterIndex, int outputIndex)
+        private Tuple<int, int> ScreenCaptureLoop(FFmpeg.AutoGen.AVRational timeBase, int adapterIndex, int outputIndex)
         {
-            Factory1 factory = new Factory1();
+            SharpDX.DXGI.Factory1 factory = new SharpDX.DXGI.Factory1();
             var adapter = factory.GetAdapter1(adapterIndex);
             var device = new SharpDX.Direct3D11.Device(adapter);
             var output = adapter.GetOutput(outputIndex);
-            var output1 = output.QueryInterface<Output1>();
+            var output1 = output.QueryInterface<SharpDX.DXGI.Output1>();
             var outputDuplication = output1.DuplicateOutput(device);
-            int delay = (int)Math.Round(ffmpeg.av_q2d(timeBase) * 1000);
+            int delay = (int)Math.Round(FFmpeg.AutoGen.ffmpeg.av_q2d(timeBase) * 1000);
 
-            var textureDesc = new Texture2DDescription
+            var textureDesc = new SharpDX.Direct3D11.Texture2DDescription
             {
-                CpuAccessFlags = CpuAccessFlags.Read,
-                BindFlags = BindFlags.None,
-                Format = Format.B8G8R8A8_UNorm,
+                CpuAccessFlags = SharpDX.Direct3D11.CpuAccessFlags.Read,
+                BindFlags = SharpDX.Direct3D11.BindFlags.None,
+                Format = SharpDX.DXGI.Format.B8G8R8A8_UNorm,
                 Width = output.Description.DesktopBounds.Right - output.Description.DesktopBounds.Left,
                 Height = output.Description.DesktopBounds.Bottom - output.Description.DesktopBounds.Top,
-                OptionFlags = ResourceOptionFlags.None,
+                OptionFlags = SharpDX.Direct3D11.ResourceOptionFlags.None,
                 MipLevels = 1,
                 ArraySize = 1,
                 SampleDescription = { Count = 1, Quality = 0 },
-                Usage = ResourceUsage.Staging
+                Usage = SharpDX.Direct3D11.ResourceUsage.Staging
             };
 
             screenCaptureThread = new Thread(() =>
             {
-                using var texture = new Texture2D(device, textureDesc);
-                long startTime = ffmpeg.av_gettime();
-                DateTime debugDate = DateTime.Now;
+                using var texture = new SharpDX.Direct3D11.Texture2D(device, textureDesc);
+                long startTime = FFmpeg.AutoGen.ffmpeg.av_gettime();
 
                 try
                 {
@@ -569,53 +547,33 @@ namespace RemoteDesktopPlugin
                                 continue;
                             }
 
-                            long currentTime = ffmpeg.av_gettime();
-                            long pts = ffmpeg.av_rescale_q(currentTime - startTime, ffmpeg.av_get_time_base_q(), timeBase);
-
-                            using (var t = resource.QueryInterface<Texture2D>())
+                            using (resource)
                             {
-                                device.ImmediateContext.CopyResource(t, texture);
-                            }
+                                long currentTime = FFmpeg.AutoGen.ffmpeg.av_gettime();
+                                long pts = FFmpeg.AutoGen.ffmpeg.av_rescale_q(currentTime - startTime, FFmpeg.AutoGen.ffmpeg.av_get_time_base_q(), timeBase);
 
-                            var frameWrapper = new AVFrameWrapper();
-                            frameWrapper.Frame->format = (int)AVPixelFormat.AV_PIX_FMT_BGRA;
-                            frameWrapper.Frame->width = textureDesc.Width;
-                            frameWrapper.Frame->height = textureDesc.Height;
-                            frameWrapper.Frame->pts = pts;
+                                using (var screenTexture = resource.QueryInterface<SharpDX.Direct3D11.Texture2D>())
+                                {
+                                    device.ImmediateContext.CopyResource(screenTexture, texture);
+                                }
 
-                            int ret = ffmpeg.av_frame_get_buffer(frameWrapper.Frame, 32);
-                            if (ret < 0)
-                            {
-                                continue;
-                            }
+                                var frameWrapper = CreateFrame(device, texture, textureDesc, pts);
+                                if (frameWrapper != null)
+                                {
+                                    framesToEncodeBuffer.Add(frameWrapper);
+                                }
 
-                            var map = device.ImmediateContext.MapSubresource(texture, 0, MapMode.Read, SharpDX.Direct3D11.MapFlags.None);
-                            var dataPtr = map.DataPointer;
+                                outputDuplication.ReleaseFrame();
 
-                            for (int y = 0; y < frameWrapper.Frame->height; y++)
-                            {
-                                System.Buffer.MemoryCopy(dataPtr.ToPointer(),
-                                    frameWrapper.Frame->data[0] + y * frameWrapper.Frame->linesize[0],
-                                    frameWrapper.Frame->linesize[0],
-                                    frameWrapper.Frame->width * 4);
-                                dataPtr = IntPtr.Add(dataPtr, map.RowPitch);
-                            }
-
-                            device.ImmediateContext.UnmapSubresource(texture, 0);
-
-                            framesToEncodeBuffer.Add(frameWrapper);
-
-                            resource.Dispose();
-                            outputDuplication.ReleaseFrame();
-
-                            long elapsedTime = ffmpeg.av_gettime() - currentTime;
-                            long sleepTime = (delay * 1000) - elapsedTime;
-                            if (sleepTime > 0)
-                            {
-                                Thread.Sleep((int)(sleepTime / 1000));
+                                long elapsedTime = FFmpeg.AutoGen.ffmpeg.av_gettime() - currentTime;
+                                long sleepTime = (delay * 1000) - elapsedTime;
+                                if (sleepTime > 0)
+                                {
+                                    Thread.Sleep((int)(sleepTime / 1000));
+                                }
                             }
                         }
-                        catch (SharpDXException ex) when (ex.ResultCode.Code == SharpDX.DXGI.ResultCode.WaitTimeout.Result.Code)
+                        catch (SharpDX.SharpDXException ex) when (ex.ResultCode.Code == SharpDX.DXGI.ResultCode.WaitTimeout.Result.Code)
                         {
                             // GPU timeout, continue
                         }
@@ -624,11 +582,10 @@ namespace RemoteDesktopPlugin
                 catch (Exception ex)
                 {
                     // Log or handle the exception
+                    Console.WriteLine($"Error in screen capture loop: {ex.Message}");
                 }
                 finally
                 {
-                    Console.WriteLine("Estimated video length: " + (DateTime.Now - debugDate).TotalMilliseconds + "ms");
-
                     output1.Dispose();
                     output.Dispose();
                     adapter.Dispose();
@@ -643,7 +600,61 @@ namespace RemoteDesktopPlugin
             return new Tuple<int, int>(textureDesc.Width, textureDesc.Height);
         }
 
+        private AVFrameWrapper CreateFrame(SharpDX.Direct3D11.Device device, SharpDX.Direct3D11.Texture2D texture,
+                            SharpDX.Direct3D11.Texture2DDescription textureDesc, long pts)
+        {
+            var frameWrapper = new AVFrameWrapper();
+            frameWrapper.Frame->format = (int)FFmpeg.AutoGen.AVPixelFormat.AV_PIX_FMT_BGRA;
+            frameWrapper.Frame->width = textureDesc.Width;
+            frameWrapper.Frame->height = textureDesc.Height;
+            frameWrapper.Frame->pts = pts;
 
+            int ret = FFmpeg.AutoGen.ffmpeg.av_frame_get_buffer(frameWrapper.Frame, 32);
+            if (ret < 0) return null;
+
+            var stagingDesc = new SharpDX.Direct3D11.Texture2DDescription()
+            {
+                Width = textureDesc.Width,
+                Height = textureDesc.Height,
+                MipLevels = 1,
+                ArraySize = 1,
+                Format = textureDesc.Format,
+                SampleDescription = new SharpDX.DXGI.SampleDescription(1, 0),
+                Usage = SharpDX.Direct3D11.ResourceUsage.Staging,
+                BindFlags = SharpDX.Direct3D11.BindFlags.None,
+                CpuAccessFlags = SharpDX.Direct3D11.CpuAccessFlags.Read,
+                OptionFlags = SharpDX.Direct3D11.ResourceOptionFlags.None
+            };
+
+            using (var stagingTexture = new SharpDX.Direct3D11.Texture2D(device, stagingDesc))
+            {
+                device.ImmediateContext.CopyResource(texture, stagingTexture);
+
+                var dataBox = device.ImmediateContext.MapSubresource(stagingTexture, 0, SharpDX.Direct3D11.MapMode.Read, SharpDX.Direct3D11.MapFlags.None);
+                var dataPtr = dataBox.DataPointer;
+
+            
+                    byte* sourcePtr = (byte*)dataPtr.ToPointer();
+                    byte* destPtr = frameWrapper.Frame->data[0];
+
+                    for (int y = 0; y < frameWrapper.Frame->height; y++)
+                    {
+                        System.Buffer.MemoryCopy(
+                            sourcePtr,
+                            destPtr,
+                            frameWrapper.Frame->linesize[0],
+                            frameWrapper.Frame->width * 4);
+
+                        sourcePtr += dataBox.RowPitch;
+                        destPtr += frameWrapper.Frame->linesize[0];
+                    }
+                
+
+                device.ImmediateContext.UnmapSubresource(stagingTexture, 0);
+            }
+
+            return frameWrapper;
+        }
 
 
         private void EncodingLoop(AVFormatContext* formatContext, AVCodecContext* codecContext, SwsContext* swsContext, AVStream* stream, AVPacket* packet)

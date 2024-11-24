@@ -338,7 +338,7 @@ namespace Server.UtilityWindows
             else
             {
                 TimeSpan span = (currentTime - oldtimeDateTime);
-                if (span.TotalMilliseconds < 50)
+                if (span.TotalMilliseconds < 20)
                 {
                     return;
                 }
@@ -355,6 +355,13 @@ namespace Server.UtilityWindows
                 xFactor = xFac,
                 yFactor = yFac,
             });
+        }
+
+        public enum MouseButton
+        {
+            Right = 1,
+
+            Left,
         }
 
         private async void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
